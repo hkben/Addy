@@ -1,0 +1,196 @@
+#webext_selection_tool {
+  width: 0;
+  height: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  font-size: 14px;
+
+  //****Reset CSS****//
+  div,
+  span,
+  applet,
+  object,
+  iframe,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  blockquote,
+  pre,
+  a,
+  abbr,
+  acronym,
+  address,
+  big,
+  cite,
+  code,
+  del,
+  dfn,
+  em,
+  img,
+  ins,
+  kbd,
+  q,
+  s,
+  samp,
+  small,
+  strike,
+  strong,
+  sub,
+  sup,
+  tt,
+  var,
+  b,
+  u,
+  i,
+  center,
+  dl,
+  dt,
+  dd,
+  ol,
+  ul,
+  li,
+  fieldset,
+  form,
+  label,
+  legend,
+  table,
+  caption,
+  tbody,
+  tfoot,
+  thead,
+  tr,
+  th,
+  td,
+  article,
+  aside,
+  canvas,
+  details,
+  embed,
+  figure,
+  figcaption,
+  footer,
+  header,
+  hgroup,
+  menu,
+  nav,
+  output,
+  ruby,
+  section,
+  summary,
+  time,
+  mark,
+  audio,
+  video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+  }
+  /* HTML5 display-role reset for older browsers */
+  article,
+  aside,
+  details,
+  figcaption,
+  figure,
+  footer,
+  header,
+  hgroup,
+  menu,
+  nav,
+  section {
+    display: block;
+  }
+  body {
+    line-height: 1;
+  }
+  ol,
+  ul {
+    list-style: none;
+  }
+  blockquote,
+  q {
+    quotes: none;
+  }
+  blockquote:before,
+  blockquote:after,
+  q:before,
+  q:after {
+    content: '';
+    content: none;
+  }
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  //****Reset CSS****//
+
+  .pointer {
+    cursor: pointer;
+  }
+
+  .floating-box {
+    position: absolute;
+    height: 200px;
+    width: 350px;
+    z-index: 9999999;
+    background-color: #fff;
+    border: 1px black solid;
+    border-radius: 0.375em;
+    box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
+      0 0 0 1px rgba(10, 10, 10, 0.02);
+    overflow: hidden;
+
+    .floating-box-header {
+      align-items: center;
+      background-color: #4a4a4a;
+      color: #fff;
+      display: flex;
+      font-weight: 700;
+      justify-content: space-between;
+      line-height: normal;
+      padding: 0.35em 0.5em;
+
+      p {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 90%;
+      }
+    }
+  }
+
+  .floating-box-body {
+    padding: 0.35em 0.5em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35em;
+
+    .add-collection-button {
+      display: inline-block;
+      color: black;
+      border: 1px black solid;
+      padding: 0.25em 0.8em;
+      cursor: pointer;
+      border-radius: 9999px;
+
+      &:hover {
+        color: wheat;
+      }
+    }
+  }
+
+  .icon {
+    display: inline;
+    height: 1.25rem;
+    width: 1.25rem;
+    vertical-align: middle;
+  }
+}
