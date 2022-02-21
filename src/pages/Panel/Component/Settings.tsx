@@ -12,9 +12,9 @@ class Settings extends React.Component<{}> {
             <li className="py-1">
               <Link to="export">Export</Link>
             </li>
-            {/* <li className="py-1">
+            <li className="py-1">
               <Link to="import">Import</Link>
-            </li> */}
+            </li>
           </ul>
         </div>
 

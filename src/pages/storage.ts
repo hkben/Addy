@@ -104,6 +104,46 @@ class Storage {
 
     Browser.storage.local.set(localStorage);
   }
+
+  static async importCollections(_collections: ICollection[]) {
+    try {
+      let localStorage = await this.getStorage();
+
+      _collections.forEach((collection) => {
+        //find if collection if exists
+        let collectionIndex = _.findIndex(
+          localStorage.collections,
+          (o) => o.id == collection.id
+        )!;
+
+        if (collectionIndex == -1) {
+          localStorage.collections.push(collection);
+          return;
+        }
+
+        collection.items.forEach((item) => {
+          //find if item if exists in collection
+          let itemIndex = _.findIndex(
+            localStorage.collections[collectionIndex].items,
+            (o) => o.id == item.id
+          )!;
+
+          if (itemIndex == -1) {
+            localStorage.collections[collectionIndex].items.push(item);
+            return;
+          }
+
+          //Replace item if exists
+          localStorage.collections[collectionIndex].items[itemIndex] = item;
+        });
+      });
+
+      Browser.storage.local.set(localStorage);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
 }
 
 export default Storage;
