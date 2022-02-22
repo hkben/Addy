@@ -65,7 +65,7 @@ function CollectionViewerTable({ data }: Prop) {
           <label key={column.id} className="inline text-base p-4">
             <input
               type="checkbox"
-              class="w-4 h-4 border border-gray-200 rounded-md"
+              className="w-4 h-4 border border-gray-200 rounded-md"
               {...column.getToggleHiddenProps()}
             />
             <span className="ml-3 font-medium">{column.id}</span>
