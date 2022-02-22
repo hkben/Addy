@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
-import { ICollection } from '../../interface';
+import React, { useEffect, useMemo } from 'react';
+import { ICollection, ICollectionItem } from '../../interface';
 import Storage from '../../storage';
+import { Column, useSortBy, useTable } from 'react-table';
+import CollectionViewerTable from './CollectionViewerTable';
 
 interface Prop {
   collection: string;
@@ -8,11 +10,13 @@ interface Prop {
 }
 
 function CollectionViewer(props: Prop) {
-  const [data, setData] = React.useState<ICollection>({} as ICollection);
+  const [collection, setCollection] = React.useState<ICollection>(
+    {} as ICollection
+  );
+
+  const data = React.useMemo(() => collection.items || [], [collection]);
 
   useEffect(() => {
-    console.log('componentDidMount');
-
     const getCollection = async () => {
       let collection = await Storage.getCollection(props.collection);
 
@@ -24,7 +28,7 @@ function CollectionViewer(props: Prop) {
         return;
       }
 
-      setData(collection);
+      setCollection(collection);
     };
 
     const collection = getCollection().catch(console.error);
@@ -33,7 +37,7 @@ function CollectionViewer(props: Prop) {
   const removeAllItems = async () => {
     console.log('removeAllItems');
 
-    await Storage.removeAllItems(data.id);
+    await Storage.removeAllItems(collection.id);
 
     await props.callback;
   };
@@ -41,7 +45,7 @@ function CollectionViewer(props: Prop) {
   const removeCollection = async () => {
     console.log('removeCollection');
 
-    await Storage.removeCollection(data.id);
+    await Storage.removeCollection(collection.id);
 
     await props.callback;
   };
@@ -49,7 +53,7 @@ function CollectionViewer(props: Prop) {
   return (
     <div>
       <div className="w-full py-5 flex gap-2.5">
-        <p className="text-3xl">{data.name}</p>
+        <p className="text-3xl">{collection.name}</p>
 
         {/* <button className="p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center">
             <svg
@@ -123,37 +127,8 @@ function CollectionViewer(props: Prop) {
         </button>
       </div>
 
-      <div className="w-full inline-flex items-center -space-x-px text-xs rounded-md">
-        <button
-          className="w-2/6 px-5 py-3 font-medium border rounded-l-md hover:z-10 focus:outline-none focus:border-indigo-600 focus:z-10 hover:bg-gray-50 active:opacity-75"
-          type="button"
-        >
-          Sort
-        </button>
-
-        <button
-          className="w-2/6 px-5 py-3 font-medium border hover:z-10 focus:outline-none focus:border-indigo-600 focus:z-10 hover:bg-gray-50 active:opacity-75"
-          type="button"
-        >
-          Sort
-        </button>
-
-        <button
-          className="w-2/6 px-5 py-3 font-medium border rounded-r-md hover:z-10 focus:outline-none focus:border-indigo-600 focus:z-10 hover:bg-gray-50 active:opacity-75"
-          type="button"
-        >
-          Sort
-        </button>
-      </div>
-
       <div className="py-8">
-        {data.items?.map((item, index) => {
-          return (
-            <p key={item.id} className="py-1">
-              {item.text}
-            </p>
-          );
-        })}
+        <CollectionViewerTable data={data} />
       </div>
     </div>
   );
