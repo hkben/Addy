@@ -8,6 +8,15 @@ interface Prop {
 }
 
 function CollectionViewerTable({ data }: Prop) {
+  const [spacing, setSpacing] = React.useState<string>('normal');
+
+  const handleSpacingSelection = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    let value = event.target.value;
+    setSpacing(value);
+  };
+
   const columns: Array<Column<ICollectionItem>> = useMemo(
     () => [
       {
@@ -60,17 +69,33 @@ function CollectionViewerTable({ data }: Prop) {
 
   return (
     <div className="">
-      <div className="inline-flex">
+      <div className="flex">
         {allColumns.map((column) => (
-          <label key={column.id} className="inline text-base p-4">
+          <div key={column.id} className="inline text-base p-4">
             <input
               type="checkbox"
               className="w-4 h-4 border border-gray-200 rounded-md"
               {...column.getToggleHiddenProps()}
             />
             <span className="ml-3 font-medium">{column.id}</span>
-          </label>
+          </div>
         ))}
+
+        <div className="inline text-base ml-auto my-auto">
+          <label className="px-4" htmlFor="spaceing">
+            Spacing
+          </label>
+
+          <select
+            className="h-10 px-4 pr-10 border-solid border-2 border-grey-600 rounded-lg "
+            id="spaceing"
+            value={spacing}
+            onChange={handleSpacingSelection}
+          >
+            <option value="normal">Normal</option>
+            <option value="compact">Compact</option>
+          </select>
+        </div>
       </div>
 
       <table
@@ -136,7 +161,9 @@ function CollectionViewerTable({ data }: Prop) {
                 {row.cells.map((cell) => {
                   return (
                     <td
-                      className="px-2 py-4"
+                      className={`px-2 ${
+                        spacing == 'normal' ? 'py-4' : 'py-1'
+                      }`}
                       {...cell.getCellProps([
                         {
                           className: cell.column.className,
