@@ -19,10 +19,15 @@ function Content(props: {}) {
     [] as ICollection[]
   );
 
+  const [filteredCollections, setFilteredCollections] = React.useState<
+    ICollection[]
+  >([] as ICollection[]);
+
   const getHighlightedText = async () => {
     let _collections = (await Storage.getCollections()) as ICollection[];
 
     setCollections(_collections);
+    setFilteredCollections(_collections);
 
     let highlighted_text = document.getSelection()!;
 
@@ -92,6 +97,21 @@ function Content(props: {}) {
     };
   }, []);
 
+  const searchCollection = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let value = event.target.value.toLocaleLowerCase();
+
+    if (value.length == 0) {
+      setFilteredCollections(collections);
+      return;
+    }
+
+    let result = _.filter(collections, (o) =>
+      o.name.toLowerCase().includes(value)
+    );
+
+    setFilteredCollections(result);
+  };
+
   return (
     <div>
       {isDisplay ? (
@@ -115,20 +135,34 @@ function Content(props: {}) {
           </div>
 
           <div className="floating-box-body">
-            {collections.map((collection, index) => {
-              let findExits = _.filter(collection.items, (i) => i.text == text);
+            <div className="search-box">
+              <input
+                id="search"
+                placeholder="Search Collection"
+                type="text"
+                onChange={searchCollection}
+              />
+            </div>
 
-              let isExists = findExits.length > 0 ? true : false;
+            <div className="collections-list">
+              {filteredCollections.map((collection, index) => {
+                let findExits = _.filter(
+                  collection.items,
+                  (i) => i.text == text
+                );
 
-              return (
-                <CollectionButton
-                  key={index}
-                  collectionName={collection.name}
-                  isExists={isExists}
-                  onClick={() => saveTextToCollection(collection.id)}
-                />
-              );
-            })}
+                let isExists = findExits.length > 0 ? true : false;
+
+                return (
+                  <CollectionButton
+                    key={index}
+                    collectionName={collection.name}
+                    isExists={isExists}
+                    onClick={() => saveTextToCollection(collection.id)}
+                  />
+                );
+              })}
+            </div>
           </div>
         </div>
       ) : null}

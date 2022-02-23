@@ -169,20 +169,31 @@
 
   .floating-box-body {
     padding: 0.35em 0.5em;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35em;
 
-    .add-collection-button {
-      display: inline-block;
-      color: black;
-      border: 1px black solid;
-      padding: 0.25em 0.8em;
-      cursor: pointer;
-      border-radius: 9999px;
+    .search-box {
+      input {
+        width: 100%;
+        padding: 4px;
+      }
+    }
 
-      &:hover {
-        color: wheat;
+    .collections-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35em;
+      margin-top: 5px;
+
+      .add-collection-button {
+        display: inline-block;
+        color: black;
+        border: 1px black solid;
+        padding: 0.25em 0.8em;
+        cursor: pointer;
+        border-radius: 9999px;
+
+        &:hover {
+          color: wheat;
+        }
       }
     }
   }
