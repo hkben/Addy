@@ -11,8 +11,6 @@ console.log('Must reload extension for modifications to take effect.');
 
 let init: Boolean;
 
-var renderedContent: Content;
-
 const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
   switch (packet.action) {
     case 'saveText':
@@ -26,7 +24,8 @@ const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
 
 let toggleSelectionTool = () => {
   if (init) {
-    renderedContent.getHighlightedText();
+    let event = new Event('onExtensionAction');
+    window.dispatchEvent(event);
     return;
   }
 
@@ -37,10 +36,7 @@ let toggleSelectionTool = () => {
 
   var reactElement = React.createElement(Content);
 
-  renderedContent = render(
-    reactElement,
-    window.document.querySelector('#webext_selection_tool')
-  );
+  render(reactElement, window.document.querySelector('#webext_selection_tool'));
 
   init = true;
 };

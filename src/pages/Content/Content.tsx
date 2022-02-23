@@ -1,39 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { ICollection } from '../interface';
 import Storage from '../storage';
 import CollectionButton from './modules/CollectionButton';
 import _ from 'lodash';
 
-interface QuickMenuState {
-  isDispaly: boolean;
-  text: string;
-  collections: ICollection[];
-  styles: {
-    top: number;
-    left: number;
-  };
-}
+function Content(props: {}) {
+  const [text, setText] = React.useState<string>('');
 
-class Content extends React.Component<{}, QuickMenuState> {
-  constructor(props: {}) {
-    super(props);
+  const [isDisplay, setIsDisplay] = React.useState<boolean>(false);
 
-    this.toggleBox = this.toggleBox.bind(this);
-  }
+  const [styles, setStyles] = React.useState<object>({
+    top: 0,
+    left: 0,
+  });
 
-  state = {
-    text: '',
-    isDispaly: false,
-    styles: {
-      top: 0,
-      left: 0,
-    },
-    collections: [] as ICollection[],
-  };
+  const [collections, setCollections] = React.useState<ICollection[]>(
+    [] as ICollection[]
+  );
 
-  async getHighlightedText() {
-    this.state.collections = (await Storage.getCollections()) as ICollection[];
+  const getHighlightedText = async () => {
+    let _collections = (await Storage.getCollections()) as ICollection[];
+
+    setCollections(_collections);
 
     let highlighted_text = document.getSelection()!;
 
@@ -45,10 +34,10 @@ class Content extends React.Component<{}, QuickMenuState> {
     let range = highlighted_text.getRangeAt(0);
     let rect = range.getBoundingClientRect();
 
-    this.showBox(selection, rect);
-  }
+    showBox(selection, rect);
+  };
 
-  showBox(_selection: string, _rect: DOMRect) {
+  const showBox = (_selection: string, _rect: DOMRect) => {
     let windowHeight = window.innerHeight;
 
     let { top, left, height, width } = _rect;
@@ -72,41 +61,44 @@ class Content extends React.Component<{}, QuickMenuState> {
       selectionTop = selectionTop + offset_height * 2;
     }
 
-    this.setState({
-      text: _selection,
-      isDispaly: true,
-      styles: {
-        top: selectionTop,
-        left: selectionLeft,
-      },
+    setText(_selection);
+    setStyles({
+      top: selectionTop,
+      left: selectionLeft,
     });
-  }
+    setIsDisplay(true);
+  };
 
-  toggleBox() {
-    let _isDisplay = this.state.isDispaly;
-    _isDisplay = _isDisplay ? false : true;
-    this.setState({ isDispaly: _isDisplay });
-  }
+  const toggleBox = () => {
+    let _isDisplay = isDisplay ? false : true;
+    setIsDisplay(_isDisplay);
+  };
 
-  async saveTextToCollection(name: string) {
-    await Storage.saveItemToCollection(name, this.state.text);
-    this.toggleBox();
-  }
+  const saveTextToCollection = async (name: string) => {
+    await Storage.saveItemToCollection(name, text);
+    toggleBox();
+  };
 
-  async componentDidMount() {
-    console.log('componentDidMount');
-    this.getHighlightedText();
-  }
+  const handleEvent = (event: Event) => {
+    getHighlightedText();
+  };
 
-  render() {
-    const _isDispaly = this.state.isDispaly;
+  useEffect(() => {
+    getHighlightedText();
 
-    if (_isDispaly) {
-      return (
-        <div className="floating-box" style={this.state.styles}>
+    window.addEventListener('onExtensionAction', handleEvent);
+    return () => {
+      window.removeEventListener('onExtensionAction', handleEvent);
+    };
+  }, []);
+
+  return (
+    <div>
+      {isDisplay ? (
+        <div className="floating-box" style={styles}>
           <div className="floating-box-header">
-            <p>{this.state.text}</p>
-            <div className="pointer" onClick={this.toggleBox}>
+            <p>{text}</p>
+            <div className="pointer" onClick={toggleBox}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="icon"
@@ -123,11 +115,8 @@ class Content extends React.Component<{}, QuickMenuState> {
           </div>
 
           <div className="floating-box-body">
-            {this.state.collections.map((collection, index) => {
-              let findExits = _.filter(
-                collection.items,
-                (i) => i.text == this.state.text
-              );
+            {collections.map((collection, index) => {
+              let findExits = _.filter(collection.items, (i) => i.text == text);
 
               let isExists = findExits.length > 0 ? true : false;
 
@@ -136,17 +125,15 @@ class Content extends React.Component<{}, QuickMenuState> {
                   key={index}
                   collectionName={collection.name}
                   isExists={isExists}
-                  onClick={() => this.saveTextToCollection(collection.id)}
+                  onClick={() => saveTextToCollection(collection.id)}
                 />
               );
             })}
           </div>
         </div>
-      );
-    } else {
-      return null;
-    }
-  }
+      ) : null}
+    </div>
+  );
 }
 
 export default Content;
