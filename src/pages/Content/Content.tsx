@@ -39,37 +39,55 @@ function Content(props: {}) {
     let range = highlighted_text.getRangeAt(0);
     let rect = range.getBoundingClientRect();
 
-    showBox(selection, rect);
+    setText(selection);
+    showBox(rect);
   };
 
-  const showBox = (_selection: string, _rect: DOMRect) => {
-    let windowHeight = window.innerHeight;
+  const showBox = (_rect: DOMRect) => {
+    let { innerHeight: window_height, innerWidth: window_width } = window;
 
-    let { top, left, height, width } = _rect;
+    let {
+      top: selection_top,
+      left: selection_left,
+      height: selection_height,
+      width: selection_width,
+    } = _rect;
 
-    let offset_height = 20;
+    let offset_height = 10;
 
-    let isDisplayOnTop = false;
+    let box_height = 200;
+    let box_width = 350;
 
-    if (top >= windowHeight / 2) {
+    let isDisplayOnTop,
+      isDisplayOnRight = false;
+
+    if (selection_top >= window_height / 2) {
       isDisplayOnTop = true;
     }
+    if (selection_left >= window_width / 2) {
+      isDisplayOnRight = true;
+    }
 
-    let selectionTop = top + window.scrollY;
-    let selectionLeft = left + window.scrollX;
+    //Add with Scroll position
+    let top = selection_top + window.scrollY;
+    let left = selection_left + window.scrollX;
 
     if (isDisplayOnTop) {
       //top
-      selectionTop = selectionTop - offset_height - 100;
+      top = top - box_height - offset_height;
     } else {
       //bottom
-      selectionTop = selectionTop + offset_height * 2;
+      top = top + selection_height + offset_height;
     }
 
-    setText(_selection);
+    if (isDisplayOnRight) {
+      //right
+      left = left + selection_width - box_width;
+    }
+
     setStyles({
-      top: selectionTop,
-      left: selectionLeft,
+      top: top,
+      left: left,
     });
     setIsDisplay(true);
   };
