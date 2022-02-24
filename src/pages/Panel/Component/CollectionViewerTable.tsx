@@ -161,7 +161,7 @@ function CollectionViewerTable({ data }: Prop) {
                 {row.cells.map((cell) => {
                   return (
                     <td
-                      className={`px-2 ${
+                      className={`whitespace-pre-line px-2 ${
                         spacing == 'normal' ? 'py-4' : 'py-1'
                       }`}
                       {...cell.getCellProps([
