@@ -115,13 +115,12 @@ function Content(props: {}) {
   return (
     <div>
       {isDisplay ? (
-        <div className="floating-box" style={styles}>
-          <div className="floating-box-header">
-            <p>{text}</p>
-            <div className="pointer" onClick={toggleBox}>
+        <div className="bookmark-popup" style={styles}>
+          <div className="bp-header">
+            <p className="bp-header-text">{text}</p>
+            <div className="bp-header-close-btn" onClick={toggleBox}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="icon"
                 viewBox="0 0 20 20"
                 fill="currentColor"
               >
@@ -134,17 +133,17 @@ function Content(props: {}) {
             </div>
           </div>
 
-          <div className="floating-box-body">
-            <div className="search-box">
+          <div className="bp-body">
+            <div className="bp-search-box">
               <input
-                id="search"
+                id="bp-search"
                 placeholder="Search Collection"
                 type="text"
                 onChange={searchCollection}
               />
             </div>
 
-            <div className="collections-list">
+            <div className="bp-collections-list">
               {filteredCollections.map((collection, index) => {
                 let findExits = _.filter(
                   collection.items,

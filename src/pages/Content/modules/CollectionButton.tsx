@@ -8,12 +8,11 @@ interface Prop {
 
 function CollectionButton(props: Prop) {
   return (
-    <div className="add-collection-button pointer" onClick={props.onClick}>
-      #<span>{props.collectionName}</span>
+    <div className="bp-collection-button" onClick={props.onClick}>
+      <span>{props.collectionName}</span>
       {props.isExists ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="icon"
           viewBox="0 0 20 20"
           fill="currentColor"
         >

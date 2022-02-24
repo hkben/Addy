@@ -31,12 +31,12 @@ let toggleSelectionTool = () => {
 
   let div: HTMLDivElement;
   div = document.createElement('div');
-  div.id = 'webext_selection_tool';
+  div.id = 'webextension_content';
   document.body.appendChild(div);
 
   var reactElement = React.createElement(Content);
 
-  render(reactElement, window.document.querySelector('#webext_selection_tool'));
+  render(reactElement, window.document.querySelector('#webextension_content'));
 
   init = true;
 };
