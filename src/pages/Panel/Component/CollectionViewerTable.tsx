@@ -5,9 +5,10 @@ import moment from 'moment';
 
 interface Prop {
   data: Array<ICollectionItem>;
+  onDeleteItem: (_itemId: string) => Promise<void>;
 }
 
-function CollectionViewerTable({ data }: Prop) {
+function CollectionViewerTable({ data, onDeleteItem }: Prop) {
   const [spacing, setSpacing] = React.useState<string>('normal');
 
   const handleSpacingSelection = (
@@ -54,8 +55,40 @@ function CollectionViewerTable({ data }: Prop) {
           </a>
         ),
       },
+      {
+        Header: 'Delete',
+        className: 'text-center',
+        accessor: (row) => (
+          <button
+            className="inline-block align-middle"
+            onClick={() => {
+              const confirmBox = window.confirm(
+                'Do you really want to delete this item?'
+              );
+              if (confirmBox === true) {
+                onDeleteItem(row.id);
+              }
+            }}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </button>
+        ),
+      },
     ],
-    []
+    [onDeleteItem]
   );
 
   const {

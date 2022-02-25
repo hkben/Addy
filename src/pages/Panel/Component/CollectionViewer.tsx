@@ -1,8 +1,9 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { ICollection, ICollectionItem } from '../../interface';
 import Storage from '../../storage';
 import { Column, useSortBy, useTable } from 'react-table';
 import CollectionViewerTable from './CollectionViewerTable';
+import _ from 'lodash';
 
 interface Prop {
   collection: string;
@@ -15,6 +16,27 @@ function CollectionViewer(props: Prop) {
   );
 
   const data = React.useMemo(() => collection.items || [], [collection]);
+
+  const removeCollectionItem = useCallback(
+    async (_itemId: string) => {
+      let result = await Storage.removeCollectionItem(
+        props.collection,
+        _itemId
+      );
+
+      if (result) {
+        let newCollecionArray = _.remove(
+          collection.items,
+          (o) => o.id == _itemId
+        );
+
+        collection.items = newCollecionArray;
+
+        setCollection(collection);
+      }
+    },
+    [props.collection]
+  );
 
   useEffect(() => {
     const getCollection = async () => {
@@ -128,7 +150,10 @@ function CollectionViewer(props: Prop) {
       </div>
 
       <div className="py-8">
-        <CollectionViewerTable data={data} />
+        <CollectionViewerTable
+          data={data}
+          onDeleteItem={removeCollectionItem}
+        />
       </div>
     </div>
   );
