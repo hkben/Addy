@@ -47,6 +47,28 @@ class Storage {
     Browser.storage.local.set(localStorage);
   }
 
+  static async newCollectionAndSave(_collectionName: string, _text: string) {
+    let localStorage = await this.getStorage();
+
+    let item: ICollectionItem = {
+      id: uuidv4(),
+      text: _text,
+      source: document.URL,
+      createTime: new Date(),
+      modifyTime: new Date(),
+    };
+
+    let collection: ICollection = {
+      id: uuidv4(),
+      name: _collectionName,
+      items: [item],
+    };
+
+    localStorage.collections.push(collection);
+
+    Browser.storage.local.set(localStorage);
+  }
+
   static async newCollection(_collectionName: string) {
     let localStorage = (await Browser.storage.local.get()) as IStorage;
 

@@ -8,6 +8,12 @@ import _ from 'lodash';
 function Content(props: {}) {
   const [text, setText] = React.useState<string>('');
 
+  const [searchKeyword, setSearchKeyword] = React.useState<string>('');
+
+  const [newCollectionButton, setNewCollectionButton] = React.useState<boolean>(
+    false
+  );
+
   const [isDisplay, setIsDisplay] = React.useState<boolean>(false);
 
   const [styles, setStyles] = React.useState<object>({
@@ -102,6 +108,11 @@ function Content(props: {}) {
     toggleBox();
   };
 
+  const newCollectionAndSave = async () => {
+    await Storage.newCollectionAndSave(searchKeyword, text);
+    toggleBox();
+  };
+
   const handleEvent = (event: Event) => {
     getHighlightedText();
   };
@@ -118,8 +129,11 @@ function Content(props: {}) {
   const searchCollection = (event: React.ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value.toLocaleLowerCase();
 
+    setSearchKeyword(value);
+
     if (value.length == 0) {
       setFilteredCollections(collections);
+      setNewCollectionButton(false);
       return;
     }
 
@@ -127,6 +141,7 @@ function Content(props: {}) {
       o.name.toLowerCase().includes(value)
     );
 
+    setNewCollectionButton(true);
     setFilteredCollections(result);
   };
 
@@ -180,6 +195,24 @@ function Content(props: {}) {
                 );
               })}
             </div>
+            {newCollectionButton ? (
+              <div className="add-btn" onClick={newCollectionAndSave}>
+                <span>New Collection</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+              </div>
+            ) : null}
           </div>
         </div>
       ) : null}
