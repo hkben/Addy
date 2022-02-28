@@ -34,6 +34,7 @@ function Content(props: {}) {
 
     setCollections(_collections);
     setFilteredCollections(_collections);
+    setNewCollectionButton(false);
 
     let highlighted_text = document.getSelection()!;
 
@@ -127,7 +128,7 @@ function Content(props: {}) {
   }, []);
 
   const searchCollection = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let value = event.target.value.toLocaleLowerCase();
+    let value = event.target.value;
 
     setSearchKeyword(value);
 
@@ -137,12 +138,22 @@ function Content(props: {}) {
       return;
     }
 
-    let result = _.filter(collections, (o) =>
-      o.name.toLowerCase().includes(value)
+    let filtered = _.filter(collections, (o) =>
+      o.name.toLowerCase().includes(value.toLocaleLowerCase())
     );
 
-    setNewCollectionButton(true);
-    setFilteredCollections(result);
+    let sameName = _.filter(
+      filtered,
+      (o) => o.name.toLowerCase() == value.toLocaleLowerCase()
+    );
+
+    if (sameName.length > 0) {
+      setNewCollectionButton(false);
+    } else {
+      setNewCollectionButton(true);
+    }
+
+    setFilteredCollections(filtered);
   };
 
   return (
