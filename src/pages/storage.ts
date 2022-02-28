@@ -105,6 +105,26 @@ class Storage {
     Browser.storage.local.set(localStorage);
   }
 
+  static async removeCollectionItem(_collectionId: string, _itemId: string) {
+    try {
+      let localStorage = await this.getStorage();
+      let collections = localStorage.collections as ICollection[];
+
+      let collectionIndex = _.findIndex(
+        collections,
+        (o) => o.id == _collectionId
+      )!;
+
+      _.remove(collections[collectionIndex].items, (o) => o.id == _itemId);
+
+      Browser.storage.local.set(localStorage);
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+    return true;
+  }
+
   static async importCollections(_collections: ICollection[]) {
     try {
       let localStorage = await this.getStorage();
