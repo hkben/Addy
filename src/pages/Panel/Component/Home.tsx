@@ -1,10 +1,10 @@
 import React from 'react';
-import { ICollection } from '../../interface';
+import { ICollectionSummary } from '../../interface';
 import Storage from '../../storage';
 import CollectionViewer from './CollectionViewer';
 
 interface State {
-  collections: ICollection[];
+  collections: ICollectionSummary[];
   activeCollection: string;
 }
 
@@ -21,7 +21,7 @@ class Home extends React.Component<{}, State> {
   }
 
   state = {
-    collections: [] as ICollection[],
+    collections: [] as ICollectionSummary[],
     activeCollection: '',
   };
 
@@ -35,12 +35,12 @@ class Home extends React.Component<{}, State> {
   }
 
   async loadCollections() {
-    let collections = await Storage.getCollections();
+    let summary = await Storage.getCollectionsSummary();
 
-    let firstCollection = collections[0].id;
+    let firstCollection = summary[0].id;
 
     this.setState({
-      collections: collections,
+      collections: summary,
       activeCollection: firstCollection,
     });
   }
