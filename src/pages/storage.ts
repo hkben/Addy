@@ -38,8 +38,8 @@ class Storage {
       id: uuidv4(),
       text: _text,
       source: document.URL,
-      createTime: new Date(),
-      modifyTime: new Date(),
+      createTime: new Date().toISOString(),
+      modifyTime: new Date().toISOString(),
     };
 
     collections[index].items.push(item);
@@ -54,8 +54,8 @@ class Storage {
       id: uuidv4(),
       text: _text,
       source: document.URL,
-      createTime: new Date(),
-      modifyTime: new Date(),
+      createTime: new Date().toISOString(),
+      modifyTime: new Date().toISOString(),
     };
 
     let collection: ICollection = {

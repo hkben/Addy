@@ -18,8 +18,8 @@ export interface ICollectionItem extends DataDateTime {
 }
 
 interface DataDateTime {
-  createTime: Date;
-  modifyTime: Date;
+  createTime: string; //ISOString
+  modifyTime: string; //ISOString
 }
 
 //Option
