@@ -67,4 +67,23 @@ export interface IOption {
 export interface IStorage {
   // isInstalled: boolean;
   collections: ICollection[];
+  setting: ISetting;
+}
+
+//Setting
+export interface ISetting {
+  collectionsOrdering: Ordering;
+}
+
+export interface Ordering {
+  type: SortElement;
+  descending: boolean;
+}
+
+export enum SortElement {
+  Default = 0,
+  Name = 1,
+  Items = 2,
+  CreateTime = 3,
+  ModifyTime = 4,
 }

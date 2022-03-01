@@ -5,6 +5,7 @@ import {
   ICollection,
   ICollectionItem,
   ICollectionSummary,
+  ISetting,
   IStorage,
 } from './interface';
 import { v4 as uuidv4 } from 'uuid';
@@ -25,6 +26,14 @@ class Storage {
     //Default Storage Data
     let storageObj: IStorage = {
       collections: [] as ICollection[],
+      setting: {} as ISetting,
+    };
+
+    storageObj.setting = {
+      collectionsOrdering: {
+        type: 0,
+        descending: false,
+      },
     };
 
     await Browser.storage.local.set(storageObj);
@@ -33,6 +42,30 @@ class Storage {
   static async getStorage(): Promise<IStorage> {
     let localStorage = (await Browser.storage.local.get()) as IStorage;
     return localStorage;
+  }
+
+  static async getSetting(): Promise<ISetting> {
+    let localStorage = await this.getStorage();
+    let setting = localStorage.setting;
+
+    if (setting == null) {
+      let defaultSetting: ISetting = {
+        collectionsOrdering: {
+          type: 0,
+          descending: false,
+        },
+      };
+
+      return defaultSetting;
+    }
+
+    return setting;
+  }
+
+  static async updateSetting(_setting: ISetting) {
+    let localStorage = await this.getStorage();
+    localStorage.setting = _setting;
+    Browser.storage.local.set(localStorage);
   }
 
   static async saveItemToCollection(_collectionId: string, _text: string) {
