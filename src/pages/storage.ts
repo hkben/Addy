@@ -1,6 +1,12 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
-import { ICollection, ICollectionItem, IStorage } from './interface';
+import {
+  CastSummary,
+  ICollection,
+  ICollectionItem,
+  ICollectionSummary,
+  IStorage,
+} from './interface';
 import { v4 as uuidv4 } from 'uuid';
 import moment, { ISO_8601 } from 'moment';
 
@@ -99,6 +105,15 @@ class Storage {
     let localStorage = await this.getStorage();
     let collections = localStorage.collections as ICollection[];
     return collections;
+  }
+
+  static async getCollectionsSummary(
+    _text: string = ''
+  ): Promise<ICollectionSummary[]> {
+    let localStorage = await this.getStorage();
+    let collections = localStorage.collections as ICollection[];
+    let summary = collections.map((o) => CastSummary(o, _text));
+    return summary;
   }
 
   static async getCollection(_collectionId: string): Promise<ICollection> {

@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 //BrowserMessage
 export interface IBrowserMessage {
   action: string;
@@ -11,6 +13,30 @@ export interface ICollection extends DataDateTime {
   items: ICollectionItem[];
 }
 
+export function CastSummary(
+  _collection: ICollection,
+  _text: string = ''
+): ICollectionSummary {
+  let summary: ICollectionSummary = {
+    id: _collection.id,
+    name: _collection.name,
+    items: _collection.items.length,
+    createTime: _collection.createTime,
+    modifyTime: _collection.modifyTime,
+  };
+
+  if (_text != '') {
+    let findExits = _.filter(
+      _collection.items,
+      (i) => i.text.toLowerCase() == _text.toLowerCase()
+    );
+
+    summary.isExists = findExits.length > 0 ? true : false;
+  }
+
+  return summary;
+}
+
 export interface ICollectionItem extends DataDateTime {
   id: string;
   text: string;
@@ -20,6 +46,13 @@ export interface ICollectionItem extends DataDateTime {
 interface DataDateTime {
   createTime: string; //ISOString
   modifyTime: string; //ISOString
+}
+
+export interface ICollectionSummary extends DataDateTime {
+  id: string;
+  name: string;
+  items: number;
+  isExists?: boolean;
 }
 
 //Option
