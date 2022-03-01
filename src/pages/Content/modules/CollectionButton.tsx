@@ -1,16 +1,16 @@
 import React from 'react';
+import { ICollectionSummary } from '../../interface';
 
 interface Prop {
-  collectionName: string;
-  isExists: boolean;
+  collection: ICollectionSummary;
   onClick: React.MouseEventHandler<HTMLDivElement>;
 }
 
 function CollectionButton(props: Prop) {
   return (
     <div className="bp-collection-button" onClick={props.onClick}>
-      <span>{props.collectionName}</span>
-      {props.isExists ? (
+      <span>{props.collection.name}</span>
+      {props.collection.isExists == true ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"

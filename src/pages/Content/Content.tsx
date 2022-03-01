@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { ICollection } from '../interface';
+import { ICollection, ICollectionSummary } from '../interface';
 import Storage from '../storage';
 import CollectionButton from './modules/CollectionButton';
 import _ from 'lodash';
@@ -21,21 +21,15 @@ function Content(props: {}) {
     left: 0,
   });
 
-  const [collections, setCollections] = React.useState<ICollection[]>(
-    [] as ICollection[]
+  const [collections, setCollections] = React.useState<ICollectionSummary[]>(
+    [] as ICollectionSummary[]
   );
 
   const [filteredCollections, setFilteredCollections] = React.useState<
-    ICollection[]
-  >([] as ICollection[]);
+    ICollectionSummary[]
+  >([] as ICollectionSummary[]);
 
   const getHighlightedText = async () => {
-    let _collections = (await Storage.getCollections()) as ICollection[];
-
-    setCollections(_collections);
-    setFilteredCollections(_collections);
-    setNewCollectionButton(false);
-
     let highlighted_text = document.getSelection()!;
 
     if (highlighted_text.type == 'None') {
@@ -46,6 +40,13 @@ function Content(props: {}) {
     let range = highlighted_text.getRangeAt(0);
     let rect = range.getBoundingClientRect();
 
+    let _collections = (await Storage.getCollectionsSummary(
+      selection
+    )) as ICollectionSummary[];
+
+    setCollections(_collections);
+    setFilteredCollections(_collections);
+    setNewCollectionButton(false);
     setText(selection);
     showBox(rect);
   };
@@ -189,18 +190,10 @@ function Content(props: {}) {
 
             <div className="bp-collections-list">
               {filteredCollections.map((collection, index) => {
-                let findExits = _.filter(
-                  collection.items,
-                  (i) => i.text == text
-                );
-
-                let isExists = findExits.length > 0 ? true : false;
-
                 return (
                   <CollectionButton
                     key={index}
-                    collectionName={collection.name}
-                    isExists={isExists}
+                    collection={collection}
                     onClick={() => saveTextToCollection(collection.id)}
                   />
                 );
