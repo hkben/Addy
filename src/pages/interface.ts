@@ -5,7 +5,7 @@ export interface IBrowserMessage {
 }
 
 //Collectiom
-export interface ICollection {
+export interface ICollection extends DataDateTime {
   id: string;
   name: string;
   items: ICollectionItem[];

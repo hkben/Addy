@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Browser from 'webextension-polyfill';
 import { ICollection, ICollectionItem, IStorage } from './interface';
 import { v4 as uuidv4 } from 'uuid';
+import moment, { ISO_8601 } from 'moment';
 
 class Storage {
   static async onInstallCheck() {
@@ -44,6 +45,8 @@ class Storage {
 
     collections[index].items.push(item);
 
+    collections[index].modifyTime = new Date().toISOString();
+
     Browser.storage.local.set(localStorage);
   }
 
@@ -62,6 +65,8 @@ class Storage {
       id: uuidv4(),
       name: _collectionName,
       items: [item],
+      createTime: new Date().toISOString(),
+      modifyTime: new Date().toISOString(),
     };
 
     localStorage.collections.push(collection);
@@ -76,6 +81,8 @@ class Storage {
       id: uuidv4(),
       name: _collectionName,
       items: [],
+      createTime: new Date().toISOString(),
+      modifyTime: new Date().toISOString(),
     };
 
     localStorage.collections.push(collection);
