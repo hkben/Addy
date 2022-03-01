@@ -42,7 +42,7 @@ function Content(props: {}) {
       return;
     }
 
-    let selection = highlighted_text?.toString() || '';
+    let selection = highlighted_text?.toString().trim() || '';
     let range = highlighted_text.getRangeAt(0);
     let rect = range.getBoundingClientRect();
 
