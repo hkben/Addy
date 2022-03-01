@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react';
 
-import { ICollection, ICollectionSummary } from '../interface';
+import {
+  ICollection,
+  ICollectionSummary,
+  ISetting,
+  SortElement,
+} from '../interface';
 import Storage from '../storage';
 import CollectionButton from './modules/CollectionButton';
 import _ from 'lodash';
 
-function Content(props: {}) {
+function Content(props: ISetting) {
   const [text, setText] = React.useState<string>('');
 
   const [searchKeyword, setSearchKeyword] = React.useState<string>('');
@@ -45,7 +50,7 @@ function Content(props: {}) {
     )) as ICollectionSummary[];
 
     setCollections(_collections);
-    setFilteredCollections(_collections);
+    sortAndSetFilteredCollections(_collections);
     setNewCollectionButton(false);
     setText(selection);
     showBox(rect);
@@ -134,7 +139,7 @@ function Content(props: {}) {
     setSearchKeyword(value);
 
     if (value.length == 0) {
-      setFilteredCollections(collections);
+      sortAndSetFilteredCollections(collections);
       setNewCollectionButton(false);
       return;
     }
@@ -154,7 +159,33 @@ function Content(props: {}) {
       setNewCollectionButton(true);
     }
 
-    setFilteredCollections(filtered);
+    sortAndSetFilteredCollections(filtered);
+  };
+
+  const sortAndSetFilteredCollections = (
+    _collections: ICollectionSummary[]
+  ) => {
+    if (props.collectionsOrdering.type == SortElement.Name) {
+      _collections = _.sortBy(_collections, (o) => o.name);
+    }
+
+    if (props.collectionsOrdering.type == SortElement.Items) {
+      _collections = _.sortBy(_collections, (o) => o.items);
+    }
+
+    if (props.collectionsOrdering.type == SortElement.CreateTime) {
+      _collections = _.sortBy(_collections, (o) => o.createTime);
+    }
+
+    if (props.collectionsOrdering.type == SortElement.ModifyTime) {
+      _collections = _.sortBy(_collections, (o) => o.modifyTime);
+    }
+
+    if (props.collectionsOrdering.descending) {
+      _collections = _.reverse(_collections);
+    }
+
+    setFilteredCollections(_collections);
   };
 
   return (

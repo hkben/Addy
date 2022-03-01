@@ -3,6 +3,7 @@ import { render } from 'react-dom';
 import Browser from 'webextension-polyfill';
 import { IBrowserMessage } from '../interface';
 import Content from './Content';
+import Storage from '../storage';
 
 import css from '!!css-loader!sass-loader!./index.scss';
 
@@ -22,7 +23,7 @@ const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
   }
 };
 
-let toggleSelectionTool = () => {
+let toggleSelectionTool = async () => {
   if (init) {
     let event = new Event('onExtensionAction');
     window.dispatchEvent(event);
@@ -42,7 +43,9 @@ let toggleSelectionTool = () => {
   contentDiv.id = 'webextension_content';
   shadowRoot.appendChild(contentDiv);
 
-  var reactElement = React.createElement(Content);
+  let _setting = await Storage.getSetting();
+
+  var reactElement = React.createElement(Content, _setting);
 
   render(reactElement, contentDiv);
 
