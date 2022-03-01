@@ -170,12 +170,34 @@ class Storage {
           return;
         }
 
+        //Add createTime and modifyTime to collection if not valid
+        if (moment(collection.createTime, ISO_8601).isValid() == false) {
+          localStorage.collections[
+            collectionIndex
+          ].createTime = new Date().toISOString();
+        }
+
+        if (moment(collection.modifyTime, ISO_8601).isValid() == false) {
+          localStorage.collections[
+            collectionIndex
+          ].modifyTime = new Date().toISOString();
+        }
+
         collection.items.forEach((item) => {
           //find if item if exists in collection
           let itemIndex = _.findIndex(
             localStorage.collections[collectionIndex].items,
             (o) => o.id == item.id
           )!;
+
+          //Add createTime and modifyTime to item if not valid
+          if (moment(item.createTime, ISO_8601).isValid() == false) {
+            item.createTime = new Date().toISOString();
+          }
+
+          if (moment(item.modifyTime, ISO_8601).isValid() == false) {
+            item.modifyTime = new Date().toISOString();
+          }
 
           if (itemIndex == -1) {
             localStorage.collections[collectionIndex].items.push(item);
