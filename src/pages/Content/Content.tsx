@@ -139,12 +139,12 @@ function Content(props: {}) {
     }
 
     let filtered = _.filter(collections, (o) =>
-      o.name.toLowerCase().includes(value.toLocaleLowerCase())
+      o.name.toLowerCase().includes(value.toLowerCase())
     );
 
     let sameName = _.filter(
       filtered,
-      (o) => o.name.toLowerCase() == value.toLocaleLowerCase()
+      (o) => o.name.toLowerCase() == value.toLowerCase()
     );
 
     if (sameName.length > 0) {
