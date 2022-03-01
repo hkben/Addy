@@ -73,6 +73,7 @@ export interface IStorage {
 //Setting
 export interface ISetting {
   collectionsOrdering: Ordering;
+  quickSearch: boolean;
 }
 
 export interface Ordering {

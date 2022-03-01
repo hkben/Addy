@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import {
   ICollection,
@@ -34,6 +34,8 @@ function Content(props: ISetting) {
     ICollectionSummary[]
   >([] as ICollectionSummary[]);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const getHighlightedText = async () => {
     let highlighted_text = document.getSelection()!;
 
@@ -54,6 +56,11 @@ function Content(props: ISetting) {
     setNewCollectionButton(false);
     setText(selection);
     showBox(rect);
+
+    //Auto Focus on Search Box when opening Bookmark Popup
+    if (inputRef.current && props.quickSearch) {
+      inputRef.current.focus();
+    }
   };
 
   const showBox = (_rect: DOMRect) => {
@@ -216,6 +223,7 @@ function Content(props: ISetting) {
                 placeholder="Search Collection"
                 type="text"
                 onChange={searchCollection}
+                ref={inputRef}
               />
             </div>
 

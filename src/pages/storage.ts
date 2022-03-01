@@ -34,6 +34,7 @@ class Storage {
         type: 0,
         descending: false,
       },
+      quickSearch: false,
     };
 
     await Browser.storage.local.set(storageObj);
@@ -54,6 +55,7 @@ class Storage {
           type: 0,
           descending: false,
         },
+        quickSearch: false,
       };
 
       return defaultSetting;

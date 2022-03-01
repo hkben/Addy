@@ -52,6 +52,22 @@ function General() {
     }));
   };
 
+  const handleQuickSearchCheckbox = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let value = event.currentTarget.checked;
+
+    let _setting = setting;
+    _setting.quickSearch = value;
+
+    await Storage.updateSetting(_setting);
+
+    setSetting((prevState) => ({
+      ...prevState,
+      quickSearch: value,
+    }));
+  };
+
   return (
     <div>
       <p className="text-3xl py-2">General</p>
@@ -93,6 +109,20 @@ function General() {
                   : false
               }
               onChange={handleDescendingCheckbox}
+            />
+          </div>
+        </div>
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">Quick Search</p>
+            Auto Focus on Search Box when opening Bookmark Popup
+          </div>
+          <div className="w-1/3 my-auto text-center">
+            <input
+              type="checkbox"
+              className="w-6 h-6 border border-gray-200 rounded-lg"
+              checked={setting.quickSearch}
+              onChange={handleQuickSearchCheckbox}
             />
           </div>
         </div>
