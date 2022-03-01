@@ -1,6 +1,7 @@
 import React from 'react';
 import { HashRouter, Link, Route, Routes } from 'react-router-dom';
 import Export from './Export';
+import General from './General';
 import Home from './Home';
 import Import from './Import';
 import Settings from './Settings';
@@ -46,6 +47,7 @@ class Panel extends React.Component<{}> {
             <Route path="/" element={<Home />} />
             <Route path="setting" element={<Settings />}>
               <Route index element={<Export />} />
+              <Route path="general" element={<General />} />
               <Route path="export" element={<Export />} />
               <Route path="import" element={<Import />} />
             </Route>
