@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { useEffect, useRef } from 'react';
 import { ICollectionSummary } from '../../interface';
 import Storage from '../../storage';
@@ -24,9 +25,20 @@ function Home() {
   const loadCollectionsList = async () => {
     let summary = await Storage.getCollectionsSummary();
 
-    let firstCollection = summary[0].id;
-
     setCollections(summary);
+
+    if (activeCollection != '') {
+      let isCollectionExists =
+        _.filter(summary, (o) => o.id == activeCollection).length > 0
+          ? true
+          : false;
+
+      if (isCollectionExists) {
+        return;
+      }
+    }
+
+    let firstCollection = summary[0].id;
     setActiveCollection(firstCollection);
   };
 
