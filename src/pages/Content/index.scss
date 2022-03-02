@@ -1,4 +1,20 @@
+#webextension_content[data-theme='dark'] {
+  --popupBg: rgb(31, 41, 55);
+  --popupBorder: rgb(148, 163, 184);
+  --headerBg: rgb(75, 85, 99);
+  --searchBoxBg: rgb(31, 41, 55);
+  --textColor: rgb(255, 255, 255);
+  --addBtnHover: rgb(100, 116, 139);
+}
+
 #webextension_content {
+  --popupBg: rgb(255, 255, 255);
+  --popupBorder: rgb(148, 163, 184);
+  --headerBg: rgb(74, 74, 74);
+  --searchBoxBg: rgb(255, 255, 255);
+  --textColor: rgb(0, 0, 0);
+  --addBtnHover: rgb(243, 243, 243);
+
   width: 0;
   height: 0;
   top: 0;
@@ -21,20 +37,20 @@
     width: 350px;
     min-height: 100px;
     min-width: 250px;
-    background-color: #fff;
+    background-color: var(--popupBg);
     border-style: solid;
     border-radius: 0.375em;
     border-width: 1px;
-    border-color: rgb(148 163 184);
+    border-color: var(--popupBorder);
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     overflow: hidden;
 
     .bp-header {
       align-items: center;
-      background-color: #4a4a4a;
+      background-color: var(--headerBg);
       color: #fff;
       display: flex;
-      font-weight: 700;
+      font-weight: 600;
       justify-content: space-between;
       line-height: normal;
       padding: 0.35em 0.5em;
@@ -69,15 +85,15 @@
       input {
         box-sizing: border-box;
         font-size: 1em;
-        color: black;
-        background-color: white;
+        color: var(--textColor);
+        background-color: var(--searchBoxBg);
         padding: 0.25em;
         padding-left: 0.5em;
         width: 100%;
         height: 2em;
         border-radius: 0.375em;
         border-width: 1px;
-        border-color: #9ca3af;
+        border-color: var(--popupBorder);
         border-style: solid;
       }
     }
@@ -126,18 +142,18 @@
       box-sizing: border-box;
       text-align: center;
       font-size: 1em;
-      color: black;
-      background-color: white;
+      color: var(--textColor);
+      background-color: var(--popupBg);
       padding: 0.5em;
       width: 100%;
       border-radius: 0.375em;
       border-width: 1px;
-      border-color: #9ca3af;
+      border-color: var(--popupBorder);
       border-style: solid;
       cursor: pointer;
 
       &:hover {
-        background-color: #f3f3f3;
+        background-color: var(--addBtnHover);
       }
 
       svg {
