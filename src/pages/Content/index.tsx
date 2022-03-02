@@ -39,11 +39,16 @@ let toggleSelectionTool = async () => {
   style.innerHTML = css.toString();
   shadowRoot.appendChild(style);
 
+  let _setting = await Storage.getSetting();
+
   let contentDiv = document.createElement('div');
   contentDiv.id = 'webextension_content';
-  shadowRoot.appendChild(contentDiv);
 
-  let _setting = await Storage.getSetting();
+  if (_setting.darkMode) {
+    contentDiv.setAttribute('data-theme', 'dark');
+  }
+
+  shadowRoot.appendChild(contentDiv);
 
   var reactElement = React.createElement(Content, _setting);
 
