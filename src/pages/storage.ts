@@ -265,6 +265,17 @@ class Storage {
     }
     return true;
   }
+
+  static async updateCollectionName(_collectionId: string, _name: string) {
+    let localStorage = await this.getStorage();
+    let collections = localStorage.collections as ICollection[];
+
+    let index = _.findIndex(collections, (o) => o.id == _collectionId)!;
+
+    collections[index].name = _name;
+
+    Browser.storage.local.set(localStorage);
+  }
 }
 
 export default Storage;

@@ -15,6 +15,10 @@ function CollectionViewer(props: Prop) {
     {} as ICollection
   );
 
+  const [editCollectionName, setEditCollectionName] = React.useState(false);
+
+  const [collectionName, setCollectionName] = React.useState('');
+
   const data = React.useMemo(() => collection.items || [], [collection]);
 
   const removeCollectionItem = useCallback(
@@ -51,6 +55,7 @@ function CollectionViewer(props: Prop) {
       }
 
       setCollection(collection);
+      setCollectionName(collection.name);
     };
 
     const collection = getCollection().catch(console.error);
@@ -72,27 +77,60 @@ function CollectionViewer(props: Prop) {
     await props.callback;
   };
 
+  const handleCollectionNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let value = event.currentTarget.value;
+    setCollectionName(value);
+  };
+
+  const handleCollectionNameSubmbit = async () => {
+    await Storage.updateCollectionName(props.collection, collectionName);
+    setEditCollectionName(false);
+    await props.callback;
+  };
+
   return (
     <div>
       <div className="w-full py-5 flex gap-2.5">
-        <p className="text-3xl">{collection.name}</p>
+        <p className="text-3xl my-auto">
+          {editCollectionName ? (
+            <input
+              className="px-2 border-solid border-2 border-grey-600 rounded-lg"
+              type="text"
+              value={collectionName}
+              onChange={handleCollectionNameChange}
+            />
+          ) : (
+            collectionName
+          )}
+        </p>
 
-        {/* <button className="p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-              />
-            </svg>
-          </button> */}
+        <button
+          className="h-10 w-10 p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+          onClick={() => {
+            if (editCollectionName == false) {
+              setEditCollectionName(true);
+            } else {
+              handleCollectionNameSubmbit();
+            }
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 m-auto"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+            />
+          </svg>
+        </button>
 
         <button
           className="p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
