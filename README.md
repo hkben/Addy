@@ -16,6 +16,7 @@ This browser extensions creates a quick method to categorize and save the keywor
 
 - Cross browsers Support ( Firefox / Chrome )
 - Works with Chrome Incognito Mode and Firefox Private Browsing
+- Dark Mode
 
 ## FAQ
 
@@ -29,4 +30,3 @@ Many web clipper required you to login to your Note-Taking app account. It means
 - Sync between Browsers using WebDAV
 - Save Image
 - Backup
-- Dark Mode
