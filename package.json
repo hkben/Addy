@@ -27,7 +27,6 @@
     "react-hot-loader": "^4.13.0",
     "react-router-dom": "^6.2.1",
     "react-table": "^7.7.0",
-    "sass": "^1.49.7",
     "webextension-polyfill": "^0.8.0"
   },
   "devDependencies": {
@@ -57,11 +56,11 @@
     "html-loader": "^2.1.0",
     "html-webpack-plugin": "^5.2.0",
     "mini-css-extract-plugin": "^2.3.0",
-    "node-sass": "^4.14.1",
     "postcss": "^8.4.7",
     "postcss-cli": "^9.0.1",
     "postcss-loader": "^6.1.1",
     "prettier": "^2.2.1",
+    "sass": "^1.49.9",
     "sass-loader": "^11.0.1",
     "source-map-loader": "^2.0.1",
     "style-loader": "^2.0.0",
