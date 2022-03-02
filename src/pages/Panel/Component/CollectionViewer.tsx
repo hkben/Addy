@@ -133,7 +133,7 @@ function CollectionViewer(props: Prop) {
         </button>
 
         <button
-          className="p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+          className="h-10 w-10 p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
           onClick={() => {
             const confirmBox = window.confirm(
               'Do you really want to delete all items in this collection?'
@@ -145,7 +145,7 @@ function CollectionViewer(props: Prop) {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="h-6 w-6 m-auto"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -160,7 +160,7 @@ function CollectionViewer(props: Prop) {
         </button>
 
         <button
-          className="p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+          className="h-10 w-10 p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
           onClick={() => {
             const confirmBox = window.confirm(
               'Do you really want to delete this collection?'
@@ -172,7 +172,7 @@ function CollectionViewer(props: Prop) {
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
+            className="h-6 w-6 m-auto"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
