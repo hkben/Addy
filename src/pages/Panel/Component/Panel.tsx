@@ -7,11 +7,20 @@ import Import from './Import';
 import Settings from './Settings';
 
 function Panel() {
-  // constructor(props: {}) {
-  //   super(props);
+  const [darkMode, setDarkMode] = React.useState(false);
 
-  //   // this.newCollection = this.newCollection.bind(this);
-  // }
+  const toggleDarkMode = (event: React.MouseEvent<HTMLDivElement>) => {
+    const root = window.document.documentElement;
+    let _darkMode = darkMode ? false : true;
+
+    if (_darkMode) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+
+    setDarkMode(_darkMode);
+  };
 
   return (
     <HashRouter>
@@ -38,6 +47,19 @@ function Panel() {
               >
                 Settings
               </Link>
+            </li>
+
+            <li>
+              <div className="cursor-pointer mx-auto" onClick={toggleDarkMode}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                </svg>
+              </div>
             </li>
           </ul>
         </nav>
