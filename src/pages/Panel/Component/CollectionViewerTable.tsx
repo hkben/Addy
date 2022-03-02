@@ -120,7 +120,7 @@ function CollectionViewerTable({ data, onDeleteItem }: Prop) {
           </label>
 
           <select
-            className="h-10 px-4 pr-10 border-solid border-2 border-grey-600 rounded-lg "
+            className="h-10 px-4 pr-10 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
             id="spaceing"
             value={spacing}
             onChange={handleSpacingSelection}
@@ -190,7 +190,10 @@ function CollectionViewerTable({ data, onDeleteItem }: Prop) {
           {rows.map((row, i) => {
             prepareRow(row);
             return (
-              <tr className="hover:bg-gray-200" {...row.getRowProps()}>
+              <tr
+                className="hover:bg-gray-200 dark:hover:bg-gray-700"
+                {...row.getRowProps()}
+              >
                 {row.cells.map((cell) => {
                   return (
                     <td

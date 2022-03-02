@@ -19,13 +19,13 @@ class Panel extends React.Component<{}> {
         <div>
           <nav className="flex items-center justify-between max-w-3xl p-4 mx-auto">
             <a
-              className="inline-flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg"
+              className="inline-flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg dark:bg-gray-700"
               href="/"
             >
               <img src="icon-34.png" />
             </a>
 
-            <ul className="flex items-center space-x-2 text-sm font-medium text-gray-500">
+            <ul className="flex items-center space-x-2 text-sm font-medium text-gray-500 dark:text-gray-50">
               <li>
                 <Link to="/" className="px-3 py-2 rounded-lg cursor-pointer">
                   Home

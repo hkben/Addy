@@ -66,10 +66,10 @@ function Home() {
 
   return (
     <div className="container w-full flex flex-wrap mx-auto px-2 m-16">
-      <div className="w-full lg:w-1/5 lg:px-6 text-xl text-gray-800 leading-normal">
+      <div className="w-full lg:w-1/5 lg:px-6 text-xl text-gray-800 leading-normal dark:text-gray-50">
         <form onSubmit={newCollectionSubmit} className="flex gap-2 py-5">
           <input
-            className="placeholder:italic placeholder:text-slate-400 block bg-white border border-slate-300 rounded-md p-2 pr-3 shadow-sm focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 sm:text-sm"
+            className="placeholder:italic block bg-white border border-slate-300 rounded-md p-2 pr-3 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 text-sm dark:bg-gray-900 dark:text-gray-50"
             placeholder="New Collection"
             ref={newCollectionInput}
           />
@@ -92,7 +92,7 @@ function Home() {
           </button>
         </form>
 
-        <p className="font-black underline underline-offset-8">Collections</p>
+        <p className="font-bold underline underline-offset-auto">Collections</p>
 
         <ul className="py-5">
           {collections.map((collection, index) => {
@@ -109,7 +109,7 @@ function Home() {
         </ul>
       </div>
 
-      <div className="w-4/5 p-8 text-gray-900 bg-white border border-gray-400">
+      <div className="w-4/5 p-8 text-gray-900 bg-white border border-gray-400 dark:text-gray-50 dark:bg-gray-800 dark:border-gray-400">
         <CollectionViewer
           collection={activeCollection}
           callback={loadCollectionsList}

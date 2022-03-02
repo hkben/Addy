@@ -43,7 +43,7 @@ function Import() {
       <p className="text-3xl py-2">Import</p>
       <div className="w-full py-2">
         <textarea
-          className="w-full h-auto p-2 border border-gray-500 rounded-md"
+          className="w-full h-64 p-2 border border-gray-500 rounded-md dark:bg-gray-800"
           value={json}
           onChange={handleChange}
         />

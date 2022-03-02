@@ -71,14 +71,14 @@ function General() {
   return (
     <div>
       <p className="text-3xl py-2">General</p>
-      <div className="w-full text-sm divide-y border-y">
+      <div className="w-full text-sm divide-y">
         <div className="w-2/3 flex h-28">
           <div className="w-2/3 my-auto">
             <p className="text-base font-bold">Collections Ordering</p>
           </div>
           <div className="w-1/3 my-auto">
             <select
-              className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg "
+              className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
               id="spaceing"
               value={
                 setting.collectionsOrdering

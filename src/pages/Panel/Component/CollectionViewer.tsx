@@ -96,7 +96,7 @@ function CollectionViewer(props: Prop) {
         <p className="text-3xl my-auto">
           {editCollectionName ? (
             <input
-              className="px-2 border-solid border-2 border-grey-600 rounded-lg"
+              className="px-2 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
               type="text"
               value={collectionName}
               onChange={handleCollectionNameChange}

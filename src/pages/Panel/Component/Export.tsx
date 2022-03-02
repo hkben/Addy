@@ -27,7 +27,7 @@ class Export extends React.Component<{}, State> {
         <p className="text-3xl py-2">Export</p>
         <div className="w-full py-2">
           <textarea
-            className="w-full h-auto p-2 border border-gray-500 rounded-md"
+            className="w-full h-64 p-2 border border-gray-500 rounded-md dark:bg-gray-800"
             value={this.state.json}
             readOnly
           />
