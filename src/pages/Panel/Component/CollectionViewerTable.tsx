@@ -133,7 +133,7 @@ function CollectionViewerTable({ data, onDeleteItem }: Prop) {
 
       <table
         {...getTableProps()}
-        className="table-auto min-w-full text-base divide-y-2 divide-gray-200"
+        className="table-auto min-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500"
       >
         <thead>
           {headerGroups.map((headerGroup) => (
@@ -186,7 +186,10 @@ function CollectionViewerTable({ data, onDeleteItem }: Prop) {
             </tr>
           ))}
         </thead>
-        <tbody {...getTableBodyProps()} className="divide-y divide-gray-200">
+        <tbody
+          {...getTableBodyProps()}
+          className="divide-y divide-gray-200 dark:divide-gray-500"
+        >
           {rows.map((row, i) => {
             prepareRow(row);
             return (

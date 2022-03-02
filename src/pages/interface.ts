@@ -74,6 +74,7 @@ export interface IStorage {
 export interface ISetting {
   collectionsOrdering: Ordering;
   quickSearch: boolean;
+  darkMode: boolean;
 }
 
 export interface Ordering {

@@ -1,25 +1,47 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HashRouter, Link, Route, Routes } from 'react-router-dom';
+import { ISetting } from '../../interface';
 import Export from './Export';
 import General from './General';
 import Home from './Home';
 import Import from './Import';
 import Settings from './Settings';
+import Storage from '../../storage';
 
 function Panel() {
   const [darkMode, setDarkMode] = React.useState(false);
 
-  const toggleDarkMode = (event: React.MouseEvent<HTMLDivElement>) => {
-    const root = window.document.documentElement;
-    let _darkMode = darkMode ? false : true;
+  useEffect(() => {
+    const getSetting = async () => {
+      let setting = await Storage.getSetting();
 
-    if (_darkMode) {
+      if (setting.darkMode) {
+        setDarkMode(true);
+      }
+    };
+
+    getSetting().catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+
+    if (darkMode) {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
+  }, [darkMode]);
+
+  const toggleDarkMode = async (event: React.MouseEvent<HTMLDivElement>) => {
+    let _darkMode = darkMode ? false : true;
 
     setDarkMode(_darkMode);
+
+    let setting = await Storage.getSetting();
+    setting.darkMode = _darkMode;
+
+    await Storage.updateSetting(setting);
   };
 
   return (
