@@ -7,7 +7,7 @@ import _ from 'lodash';
 
 interface Prop {
   collection: string;
-  callback: Promise<void>;
+  callback: () => Promise<void>;
 }
 
 function CollectionViewer(props: Prop) {
@@ -66,7 +66,7 @@ function CollectionViewer(props: Prop) {
 
     await Storage.removeAllItems(collection.id);
 
-    await props.callback;
+    await props.callback();
   };
 
   const removeCollection = async () => {
@@ -74,7 +74,7 @@ function CollectionViewer(props: Prop) {
 
     await Storage.removeCollection(collection.id);
 
-    await props.callback;
+    await props.callback();
   };
 
   const handleCollectionNameChange = (
@@ -87,7 +87,7 @@ function CollectionViewer(props: Prop) {
   const handleCollectionNameSubmbit = async () => {
     await Storage.updateCollectionName(props.collection, collectionName);
     setEditCollectionName(false);
-    await props.callback;
+    await props.callback();
   };
 
   return (
