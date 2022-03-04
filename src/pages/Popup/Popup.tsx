@@ -1,7 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Browser from 'webextension-polyfill';
+import CollectionButton from './CollectionButton';
+import { ICollectionSummary } from '../interface';
+import Storage from '../storage';
+import Common from '../common';
 
 function Popup() {
+  const [text, setText] = React.useState<string>('');
+
+  const [collections, setCollections] = React.useState<ICollectionSummary[]>(
+    [] as ICollectionSummary[]
+  );
+
+  const getCollectionsSummary = async () => {
+    let _collections = (await Storage.getCollectionsSummary()) as ICollectionSummary[];
+
+    setCollections(_collections);
+  };
+
+  useEffect(() => {
+    getCollectionsSummary().catch(console.error);
+  }, []);
+
+  const saveTextToCollection = async (name: string) => {
+    if (text == '') {
+      return;
+    }
+
+    await Storage.saveItemToCollection(name, text);
+    window.close();
+  };
+
   const openTab = () => {
     Browser.tabs.create({
       url: '/panel.html',
@@ -10,35 +39,108 @@ function Popup() {
     window.close();
   };
 
+  const handleContentChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    let value = event.target.value;
+
+    setText(value);
+  };
+
   return (
-    <div className="container overflow-hidden">
-      <div className="py-2 font-bold text-center bg-blue-500 text-white relative">
-        Addy
+    <div className="overflow-hidden">
+      <div className="flex justify-between py-2 text-base font-bold text-center bg-blue-500 text-white">
+        <div
+          className="inline-flex px-2 cursor-pointer hover:text-gray-300"
+          onClick={openTab}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+            />
+          </svg>
+        </div>
+        <div className="inline-flex my-auto">Addy</div>
+        <div className="inline-flex px-2 cursor-pointer hover:text-gray-300">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <div className="w-full">
+        <label className="sr-only" htmlFor="message">
+          Message
+        </label>
+        <textarea
+          className="w-full p-3 text-sm border border-gray-200 rounded-lg box-border dark:text-white dark:border-slate-400 dark:bg-gray-900"
+          placeholder="Content"
+          id="content"
+          value={text}
+          onChange={handleContentChange}
+        ></textarea>
       </div>
 
       {/* <div className="w-full">
-          <label className="sr-only" htmlFor="message">
-            Message
-          </label>
-          <textarea
-            className="w-full p-3 text-sm border border-gray-200 rounded-lg"
-            placeholder="Message"
-            id="message"
-          ></textarea>
-        </div> 
+        <input
+          className="w-full p-2 text-sm border border-gray-200 rounded-lg box-border dark:text-white dark:border-slate-400 dark:bg-gray-900"
+          id="search"
+          placeholder="Search Collection"
+          type="text"
+          // onChange={searchCollection}
+          // ref={inputRef}
+        />
+      </div> */}
 
-        <div className="grid grid-cols-1 divide-y divide-yellow-500 bg-yellow-50 ">
-          {this.state.collections.map((item, index) => {
-            return <Collection key={index} item={item} id={index} />;
-          })}
-        </div>*/}
-
-      <div
-        onClick={openTab}
-        className="m-1 p-2 text-center items-center text-md font-black text-white rounded-lg border border-black bg-blue-500 hover:bg-blue-600 cursor-pointer"
-      >
-        Open Panel
+      <div className="flex flex-wrap gap-0.5 m-1">
+        {collections.map((collection, index) => {
+          return (
+            <CollectionButton
+              key={index}
+              collection={collection}
+              onClick={() => saveTextToCollection(collection.id)}
+            />
+          );
+        })}
       </div>
+
+      {/* <div className="p-2 m-2 rounded-md text-black text-base text-center border cursor-pointer justify-center box-border hover:bg-gray-100 dark:text-white dark:border-slate-400 dark:bg-gray-900">
+        <span>New Collection</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="inline ml-2 h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+      </div> */}
     </div>
   );
 }
