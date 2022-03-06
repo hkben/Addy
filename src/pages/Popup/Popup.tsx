@@ -18,7 +18,29 @@ function Popup() {
     setCollections(_collections);
   };
 
+  const [darkMode, setDarkMode] = React.useState(false);
+
   useEffect(() => {
+    const root = window.document.documentElement;
+
+    if (darkMode) {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
+    }
+  }, [darkMode]);
+
+  useEffect(() => {
+    const getSetting = async () => {
+      let setting = await Storage.getSetting();
+
+      if (setting.darkMode) {
+        setDarkMode(true);
+      }
+    };
+
+    getSetting().catch(console.error);
+
     getCollectionsSummary().catch(console.error);
   }, []);
 
@@ -47,6 +69,17 @@ function Popup() {
     setText(value);
   };
 
+  const toggleDarkMode = async (event: React.MouseEvent<HTMLDivElement>) => {
+    let _darkMode = darkMode ? false : true;
+
+    setDarkMode(_darkMode);
+
+    let setting = await Storage.getSetting();
+    setting.darkMode = _darkMode;
+
+    await Storage.updateSetting(setting);
+  };
+
   return (
     <div className="overflow-hidden">
       <div className="flex justify-between py-2 text-base font-bold text-center bg-blue-500 text-white">
@@ -70,7 +103,10 @@ function Popup() {
           </svg>
         </div>
         <div className="inline-flex my-auto">Addy</div>
-        <div className="inline-flex px-2 cursor-pointer hover:text-gray-300">
+        <div
+          className="inline-flex px-2 cursor-pointer hover:text-gray-300"
+          onClick={toggleDarkMode}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
