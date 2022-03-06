@@ -68,7 +68,9 @@ function Popup() {
       return;
     }
 
-    await Storage.saveItemToCollection(name, text);
+    let url = await Common.getCurrentTab();
+
+    await Storage.saveItemToCollection(name, text, url);
     window.close();
   };
 

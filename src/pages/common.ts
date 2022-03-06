@@ -8,22 +8,17 @@ class Common {
     return supportedProtocols.indexOf(url.protocol) != -1;
   }
 
-  static async saveCurrentTabToCollection(
-    collectionId: number
-  ): Promise<boolean> {
-    let currentTab: Browser.Tabs.Tab;
-
+  static async getCurrentTab(): Promise<string> {
     var gettingActiveTab = await Browser.tabs.query({
       active: true,
       currentWindow: true,
     });
 
     if (gettingActiveTab.length <= 0) {
-      console.log('No Tabs');
-      return false;
+      return '';
     }
 
-    return true;
+    return gettingActiveTab[0].url!;
   }
 }
 
