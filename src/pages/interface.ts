@@ -85,7 +85,7 @@ export interface Ordering {
 export enum SortElement {
   Default = 0,
   Name = 1,
-  Items = 2,
-  CreateTime = 3,
-  ModifyTime = 4,
+  CreateTime = 2,
+  ModifyTime = 3,
+  Items = 4,
 }
