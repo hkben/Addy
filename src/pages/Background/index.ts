@@ -44,6 +44,17 @@ let contextMenusOnClick = async (
     Browser.tabs.sendMessage(tabId, message);
     return;
   }
+
+  //Image
+  if (info.mediaType == 'image') {
+    var message: IBrowserMessage = {
+      action: 'saveImage',
+      imageSrc: info.srcUrl!,
+    };
+
+    Browser.tabs.sendMessage(tabId, message);
+    return;
+  }
 };
 
 Browser.contextMenus.create(
@@ -51,6 +62,16 @@ Browser.contextMenus.create(
     title: 'Save Hightlighted Text',
     type: 'normal',
     contexts: ['selection'],
+    onclick: contextMenusOnClick,
+  },
+  onContextMenusCreated
+);
+
+Browser.contextMenus.create(
+  {
+    title: 'Save Image',
+    type: 'normal',
+    contexts: ['image'],
     onclick: contextMenusOnClick,
   },
   onContextMenusCreated
