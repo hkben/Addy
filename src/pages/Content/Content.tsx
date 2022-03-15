@@ -13,7 +13,10 @@ import _ from 'lodash';
 import Browser from 'webextension-polyfill';
 
 function Content(props: ISetting) {
-  const [text, setText] = React.useState<string>('');
+  const [selection, setSelection] = React.useState({
+    content: '',
+    type: '',
+  });
 
   const [searchKeyword, setSearchKeyword] = React.useState<string>('');
 
@@ -43,6 +46,25 @@ function Content(props: ISetting) {
     y: 0,
   });
 
+  const getImage = async (_url: string) => {
+    let domRect = new DOMRect(mousePos.current.x, mousePos.current.y, 0, 0);
+
+    let _collections = (await Storage.getCollectionsSummary(
+      selection.content
+    )) as ICollectionSummary[];
+
+    setCollections(_collections);
+    sortAndSetFilteredCollections(_collections);
+    setNewCollectionButton(false);
+    setSelection({ content: _url, type: 'image' });
+    showBox(domRect);
+
+    //Auto Focus on Search Box when opening Bookmark Popup
+    if (inputRef.current && props.quickSearch) {
+      inputRef.current.focus();
+    }
+  };
+
   const getHighlightedText = async () => {
     let highlighted_text = document.getSelection()!;
 
@@ -61,7 +83,7 @@ function Content(props: ISetting) {
     setCollections(_collections);
     sortAndSetFilteredCollections(_collections);
     setNewCollectionButton(false);
-    setText(selection);
+    setSelection({ content: selection, type: 'text' });
     showBox(rect);
 
     //Auto Focus on Search Box when opening Bookmark Popup
@@ -125,12 +147,16 @@ function Content(props: ISetting) {
   };
 
   const saveTextToCollection = async (name: string) => {
-    await Storage.saveItemToCollection(name, text);
+    await Storage.saveItemToCollection(name, selection.content, selection.type);
     toggleBox();
   };
 
   const newCollectionAndSave = async () => {
-    await Storage.newCollectionAndSave(searchKeyword, text);
+    await Storage.newCollectionAndSave(
+      searchKeyword,
+      selection.content,
+      selection.type
+    );
     toggleBox();
   };
 
@@ -142,6 +168,7 @@ function Content(props: ISetting) {
         getHighlightedText();
         return;
       case 'saveImage':
+        getImage(packet.imageSrc!);
         return;
     }
   };
@@ -220,7 +247,11 @@ function Content(props: ISetting) {
       {isDisplay ? (
         <div className="bookmark-popup" style={styles}>
           <div className="bp-header">
-            <p className="bp-header-text">{text}</p>
+            <p className="bp-header-text">
+              {selection.type == 'image'
+                ? `Image : ${selection.content}`
+                : selection.content}
+            </p>
             <div className="bp-header-close-btn" onClick={toggleBox}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
