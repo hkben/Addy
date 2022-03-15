@@ -40,6 +40,7 @@ export function CastSummary(
 export interface ICollectionItem extends DataDateTime {
   id: string;
   content: string;
+  type: string;
   source: string;
 }
 
