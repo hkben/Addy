@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 import {
+  IBrowserMessage,
   ICollection,
   ICollectionSummary,
   ISetting,
@@ -9,6 +10,7 @@ import {
 import Storage from '../storage';
 import CollectionButton from './modules/CollectionButton';
 import _ from 'lodash';
+import Browser from 'webextension-polyfill';
 
 function Content(props: ISetting) {
   const [text, setText] = React.useState<string>('');
@@ -127,16 +129,23 @@ function Content(props: ISetting) {
     toggleBox();
   };
 
-  const handleEvent = (event: Event) => {
-    getHighlightedText();
+  const handleOnMessageEvent = (packet: IBrowserMessage, sender: any) => {
+    console.log(packet);
+
+    switch (packet.action) {
+      case 'saveText':
+        getHighlightedText();
+        return;
+      case 'saveImage':
+        return;
+    }
   };
 
   useEffect(() => {
-    getHighlightedText();
+    Browser.runtime.onMessage.addListener(handleOnMessageEvent);
 
-    window.addEventListener('onExtensionAction', handleEvent);
     return () => {
-      window.removeEventListener('onExtensionAction', handleEvent);
+      Browser.runtime.onMessage.removeListener(handleOnMessageEvent);
     };
   }, []);
 

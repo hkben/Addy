@@ -10,26 +10,7 @@ import css from '!!css-loader!sass-loader!./index.scss';
 console.log('Content script works!');
 console.log('Must reload extension for modifications to take effect.');
 
-let init: Boolean;
-
-const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
-  switch (packet.action) {
-    case 'saveText':
-      toggleSelectionTool();
-      return;
-    case 'saveImage':
-      console.log(packet.imageSrc!);
-      return;
-  }
-};
-
-let toggleSelectionTool = async () => {
-  if (init) {
-    let event = new Event('onExtensionAction');
-    window.dispatchEvent(event);
-    return;
-  }
-
+let preload_popup = async () => {
   let shadowHost = document.createElement('section');
   document.body.appendChild(shadowHost);
 
@@ -53,8 +34,6 @@ let toggleSelectionTool = async () => {
   var reactElement = React.createElement(Content, _setting);
 
   render(reactElement, contentDiv);
-
-  init = true;
 };
 
-Browser.runtime.onMessage.addListener(onMessageListener);
+window.addEventListener('load', preload_popup);
