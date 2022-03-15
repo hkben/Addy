@@ -38,6 +38,11 @@ function Content(props: ISetting) {
 
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const mousePos = React.useRef({
+    x: 0,
+    y: 0,
+  });
+
   const getHighlightedText = async () => {
     let highlighted_text = document.getSelection()!;
 
@@ -141,10 +146,16 @@ function Content(props: ISetting) {
     }
   };
 
+  const handleOnContextmenu = (event: MouseEvent) => {
+    mousePos.current = { x: event.x, y: event.y };
+  };
+
   useEffect(() => {
+    document.addEventListener('contextmenu', handleOnContextmenu);
     Browser.runtime.onMessage.addListener(handleOnMessageEvent);
 
     return () => {
+      document.removeEventListener('contextmenu', handleOnContextmenu);
       Browser.runtime.onMessage.removeListener(handleOnMessageEvent);
     };
   }, []);
