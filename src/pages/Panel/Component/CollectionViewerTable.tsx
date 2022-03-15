@@ -22,7 +22,7 @@ function CollectionViewerTable({ data, onDeleteItem }: Prop) {
     () => [
       {
         Header: 'Content',
-        accessor: (row) => row.text,
+        accessor: (row) => row.content,
       },
       {
         Header: 'Created Time',

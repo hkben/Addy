@@ -74,7 +74,7 @@ class Storage {
 
   static async saveItemToCollection(
     _collectionId: string,
-    _text: string,
+    _content: string,
     _url: string = ''
   ) {
     let localStorage = await this.getStorage();
@@ -86,7 +86,7 @@ class Storage {
 
     let item: ICollectionItem = {
       id: uuidv4(),
-      text: _text,
+      content: _content,
       source: url,
       createTime: new Date().toISOString(),
       modifyTime: new Date().toISOString(),
@@ -99,12 +99,12 @@ class Storage {
     Browser.storage.local.set(localStorage);
   }
 
-  static async newCollectionAndSave(_collectionName: string, _text: string) {
+  static async newCollectionAndSave(_collectionName: string, _content: string) {
     let localStorage = await this.getStorage();
 
     let item: ICollectionItem = {
       id: uuidv4(),
-      text: _text,
+      content: _content,
       source: document.URL,
       createTime: new Date().toISOString(),
       modifyTime: new Date().toISOString(),

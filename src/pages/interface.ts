@@ -15,7 +15,7 @@ export interface ICollection extends DataDateTime {
 
 export function CastSummary(
   _collection: ICollection,
-  _text: string = ''
+  _content: string = ''
 ): ICollectionSummary {
   let summary: ICollectionSummary = {
     id: _collection.id,
@@ -25,10 +25,10 @@ export function CastSummary(
     modifyTime: _collection.modifyTime,
   };
 
-  if (_text != '') {
+  if (_content != '') {
     let findExits = _.filter(
       _collection.items,
-      (i) => i.text.toLowerCase() == _text.toLowerCase()
+      (i) => i.content.toLowerCase() == _content.toLowerCase()
     );
 
     summary.isExists = findExits.length > 0 ? true : false;
@@ -39,7 +39,7 @@ export function CastSummary(
 
 export interface ICollectionItem extends DataDateTime {
   id: string;
-  text: string;
+  content: string;
   source: string;
 }
 
