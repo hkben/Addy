@@ -25,6 +25,11 @@ function CollectionViewerTable({ data, onDeleteItem }: Prop) {
         accessor: (row) => row.content,
       },
       {
+        Header: 'Type',
+        className: 'text-center',
+        accessor: (row) => row.type,
+      },
+      {
         Header: 'Created Time',
         className: 'text-center',
         accessor: (row) => moment(row.createTime).format('YYYY-MM-DD hh:mm A'),
