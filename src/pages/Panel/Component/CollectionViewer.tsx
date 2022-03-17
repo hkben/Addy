@@ -29,6 +29,16 @@ function CollectionViewer(props: Prop) {
   });
 
   const data = React.useMemo(() => {
+    if (collection.items == null) {
+      return [];
+    }
+
+    setItemCount({
+      all: collection.items.length,
+      text: collection.items.filter((o) => o.type == 'text').length || 0,
+      image: collection.items.filter((o) => o.type == 'image').length || 0,
+    });
+
     if (collectionType == 1) {
       return collection.items.filter((o) => o.type == 'text') || [];
     }
@@ -40,26 +50,17 @@ function CollectionViewer(props: Prop) {
     return collection.items || [];
   }, [collection, collectionType]);
 
-  const removeCollectionItem = useCallback(
-    async (_itemId: string) => {
-      let result = await Storage.removeCollectionItem(
-        props.collection,
-        _itemId
-      );
+  const removeCollectionItem = async (_itemId: string) => {
+    let result = await Storage.removeCollectionItem(props.collection, _itemId);
 
-      if (result) {
-        let newCollecionArray = _.remove(
-          collection.items,
-          (o) => o.id == _itemId
-        );
-
-        collection.items = newCollecionArray;
-
-        setCollection(collection);
-      }
-    },
-    [props.collection]
-  );
+    if (result) {
+      setCollection((prevState) => ({
+        ...prevState,
+        //_.remove return new array of removed elements
+        items: _.remove(prevState.items, (o) => o.id != _itemId),
+      }));
+    }
+  };
 
   useEffect(() => {
     const getCollection = async () => {
@@ -75,12 +76,6 @@ function CollectionViewer(props: Prop) {
 
       setCollection(collection);
       setCollectionName(collection.name);
-
-      setItemCount({
-        all: collection.items.length,
-        text: collection.items.filter((o) => o.type == 'text').length || 0,
-        image: collection.items.filter((o) => o.type == 'image').length || 0,
-      });
     };
 
     const collection = getCollection().catch(console.error);
