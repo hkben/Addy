@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { useEffect, useRef } from 'react';
-import { ICollectionSummary } from '../../interface';
+import { ICollectionSummary, ISetting, SortElement } from '../../interface';
 import Storage from '../../storage';
 import CollectionViewer from './CollectionViewer';
 
@@ -18,8 +18,16 @@ function Home() {
 
   const [activeCollection, setActiveCollection] = React.useState('');
 
+  const [setting, setSetting] = React.useState<ISetting>({} as ISetting);
+
   useEffect(() => {
+    const getSetting = async () => {
+      let _setting = await Storage.getSetting();
+      setSetting(_setting);
+    };
+
     loadCollectionsList().catch(console.error);
+    getSetting().catch(console.error);
   }, []);
 
   const loadCollectionsList = async () => {
@@ -64,6 +72,66 @@ function Home() {
     await loadCollectionsList();
   };
 
+  const handleOrderingSelection = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    let value = parseInt(event.currentTarget.value);
+
+    setSetting((prevState) => ({
+      ...prevState,
+      collectionsOrdering: {
+        ...prevState.collectionsOrdering,
+        type: value,
+      },
+    }));
+  };
+
+  const handleDescendingOption = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    let value = setting.collectionsOrdering.descending ? false : true;
+
+    setSetting((prevState) => ({
+      ...prevState,
+      collectionsOrdering: {
+        ...prevState.collectionsOrdering,
+        descending: value,
+      },
+    }));
+  };
+
+  useEffect(() => {
+    if (setting.collectionsOrdering == null) {
+      return;
+    }
+
+    let _collections = collections;
+
+    if (setting.collectionsOrdering.type == SortElement.Name) {
+      _collections = _.sortBy(_collections, (o) => o.name);
+    }
+
+    if (setting.collectionsOrdering.type == SortElement.Items) {
+      _collections = _.sortBy(_collections, (o) => o.items);
+    }
+
+    if (setting.collectionsOrdering.type == SortElement.CreateTime) {
+      _collections = _.sortBy(_collections, (o) => o.createTime);
+    }
+
+    if (setting.collectionsOrdering.type == SortElement.ModifyTime) {
+      _collections = _.sortBy(_collections, (o) => o.modifyTime);
+    }
+
+    if (setting.collectionsOrdering.descending) {
+      _collections = _.reverse(_collections);
+    }
+
+    console.log(_collections);
+
+    setCollections(_collections);
+  }, [setting]);
+
   return (
     <div className="container w-full flex flex-wrap mx-auto px-2 m-16">
       <div className="w-full lg:w-1/5 lg:px-6 text-xl text-gray-800 leading-normal dark:text-gray-50">
@@ -94,7 +162,60 @@ function Home() {
 
         <p className="font-bold underline underline-offset-auto">Collections</p>
 
-        <ul className="py-5">
+        <div className="py-4 my-auto text-sm">
+          <select
+            className="h-10 px-4 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+            id="spaceing"
+            value={
+              setting.collectionsOrdering ? setting.collectionsOrdering.type : 0
+            }
+            onChange={handleOrderingSelection}
+          >
+            <option value="1">Alphabetic</option>
+            <option value="2">Created Time</option>
+            <option value="3">Last Modify Time</option>
+            <option value="4">Items Count</option>
+          </select>
+
+          <span>
+            <button onClick={handleDescendingOption}>
+              {setting.collectionsOrdering &&
+              setting.collectionsOrdering.descending ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 inline mx-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6 inline mx-2"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 15l7-7 7 7"
+                  />
+                </svg>
+              )}
+            </button>
+          </span>
+        </div>
+
+        <ul>
           {collections.map((collection, index) => {
             return (
               <li
