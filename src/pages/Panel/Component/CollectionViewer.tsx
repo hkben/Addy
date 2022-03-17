@@ -4,6 +4,7 @@ import Storage from '../../storage';
 import { Column, useSortBy, useTable } from 'react-table';
 import CollectionViewerTable from './CollectionViewerTable';
 import _ from 'lodash';
+import CollectionImageViewer from './CollectionViewerImage';
 
 interface Prop {
   collection: string;
@@ -254,10 +255,17 @@ function CollectionViewer(props: Prop) {
       </div>
 
       <div className="py-8">
-        <CollectionViewerTable
-          data={data}
-          onDeleteItem={removeCollectionItem}
-        />
+        {collectionType == 2 ? (
+          <CollectionImageViewer
+            data={data}
+            onDeleteItem={removeCollectionItem}
+          />
+        ) : (
+          <CollectionViewerTable
+            data={data}
+            onDeleteItem={removeCollectionItem}
+          />
+        )}
       </div>
     </div>
   );
