@@ -223,7 +223,10 @@ function Home() {
                 onClick={() => changeCollection(collection.id)}
                 className="py-1 cursor-pointer"
               >
-                <p>{collection.name}</p>
+                <p>
+                  {collection.name}
+                  <span className="text-sm"> ({collection.items})</span>
+                </p>
               </li>
             );
           })}
