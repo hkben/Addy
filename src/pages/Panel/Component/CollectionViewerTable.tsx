@@ -22,7 +22,14 @@ function CollectionViewerTable({ data, onDeleteItem }: Prop) {
     () => [
       {
         Header: 'Content',
-        accessor: (row) => row.content,
+        accessor: (row) => {
+          //Hide Base64 Image Text
+          if (row.content.startsWith('data:image')) {
+            return '<Base64 Image>';
+          }
+
+          return row.content;
+        },
       },
       {
         Header: 'Type',
