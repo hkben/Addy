@@ -21,6 +21,12 @@ function CollectionViewer(props: Prop) {
 
   const [collectionType, setCollectionType] = React.useState(0);
 
+  const [itemCount, setItemCount] = React.useState({
+    all: 0,
+    text: 0,
+    image: 0,
+  });
+
   const data = React.useMemo(() => {
     if (collectionType == 1) {
       return collection.items.filter((o) => o.type == 'text') || [];
@@ -68,6 +74,12 @@ function CollectionViewer(props: Prop) {
 
       setCollection(collection);
       setCollectionName(collection.name);
+
+      setItemCount({
+        all: collection.items.length,
+        text: collection.items.filter((o) => o.type == 'text').length || 0,
+        image: collection.items.filter((o) => o.type == 'image').length || 0,
+      });
     };
 
     const collection = getCollection().catch(console.error);
@@ -213,7 +225,7 @@ function CollectionViewer(props: Prop) {
           type="button"
           onClick={() => changeType(0)}
         >
-          All
+          All ({itemCount.all})
         </button>
 
         <button
@@ -225,7 +237,7 @@ function CollectionViewer(props: Prop) {
           type="button"
           onClick={() => changeType(1)}
         >
-          Text
+          Text ({itemCount.text})
         </button>
 
         <button
@@ -237,7 +249,7 @@ function CollectionViewer(props: Prop) {
           type="button"
           onClick={() => changeType(2)}
         >
-          Image
+          Image ({itemCount.image})
         </button>
       </div>
 
