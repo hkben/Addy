@@ -221,6 +221,7 @@ function Content(props: ISetting) {
   ) => {
     if (props.collectionsOrdering.type == SortElement.Name) {
       _collections = _.sortBy(_collections, (o) => o.name);
+      _collections = _.reverse(_collections);
     }
 
     if (props.collectionsOrdering.type == SortElement.Items) {

@@ -109,6 +109,7 @@ function Home() {
 
     if (setting.collectionsOrdering.type == SortElement.Name) {
       _collections = _.sortBy(_collections, (o) => o.name);
+      _collections = _.reverse(_collections);
     }
 
     if (setting.collectionsOrdering.type == SortElement.Items) {
