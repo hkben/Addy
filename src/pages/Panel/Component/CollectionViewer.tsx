@@ -19,7 +19,19 @@ function CollectionViewer(props: Prop) {
 
   const [collectionName, setCollectionName] = React.useState('');
 
-  const data = React.useMemo(() => collection.items || [], [collection]);
+  const [collectionType, setCollectionType] = React.useState(0);
+
+  const data = React.useMemo(() => {
+    if (collectionType == 1) {
+      return collection.items.filter((o) => o.type == 'text') || [];
+    }
+
+    if (collectionType == 2) {
+      return collection.items.filter((o) => o.type == 'image') || [];
+    }
+
+    return collection.items || [];
+  }, [collection, collectionType]);
 
   const removeCollectionItem = useCallback(
     async (_itemId: string) => {
@@ -88,6 +100,10 @@ function CollectionViewer(props: Prop) {
     await Storage.updateCollectionName(props.collection, collectionName);
     setEditCollectionName(false);
     await props.callback();
+  };
+
+  const changeType = (_type: number) => {
+    setCollectionType(_type);
   };
 
   return (
@@ -184,6 +200,44 @@ function CollectionViewer(props: Prop) {
               d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
             />
           </svg>
+        </button>
+      </div>
+
+      <div className="w-2/3 items-center text-xs rounded-md">
+        <button
+          className={`${
+            collectionType == 0
+              ? 'bg-gray-200 dark:bg-gray-600'
+              : 'bg-white dark:bg-gray-800'
+          } w-1/3 px-5 py-3 font-medium border rounded-l-lg border-gray-300`}
+          type="button"
+          onClick={() => changeType(0)}
+        >
+          All
+        </button>
+
+        <button
+          className={`${
+            collectionType == 1
+              ? 'bg-gray-200 dark:bg-gray-600'
+              : 'bg-white dark:bg-gray-800'
+          } w-1/3 px-5 py-3 font-medium border-y border-gray-300`}
+          type="button"
+          onClick={() => changeType(1)}
+        >
+          Text
+        </button>
+
+        <button
+          className={`${
+            collectionType == 2
+              ? 'bg-gray-200 dark:bg-gray-600'
+              : 'bg-white dark:bg-gray-800'
+          } w-1/3 px-5 py-3 font-medium border rounded-r-lg border-gray-300`}
+          type="button"
+          onClick={() => changeType(2)}
+        >
+          Image
         </button>
       </div>
 
