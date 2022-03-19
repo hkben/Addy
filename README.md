@@ -9,6 +9,7 @@ Using [Chrome Extension Boilerplate with React 17 and Webpack 5](https://github.
 Maybe sometime you just keep the tab for some keywords you want , but copy and paste these keywords to your Note-Taking app is slow and easy to losing focus after doing the process for serval times.
 
 ![Preview](./image/preview.gif)
+![Preview 2](./image/preview-2.gif)
 
 This browser extensions creates a quick method to categorize and save the keywords that you want to a temporary area for later use, and you can focus on killing your tabs.
 
@@ -16,6 +17,8 @@ This browser extensions creates a quick method to categorize and save the keywor
 
 - Cross browsers Support ( Firefox / Chrome )
 - Works with Chrome Incognito Mode and Firefox Private Browsing
+- Save Image
+- Import / Export Data
 - Dark Mode
 
 ## FAQ
@@ -26,7 +29,5 @@ Many web clipper required you to login to your Note-Taking app account. It means
 
 ## Planning
 
-- Import / Export Data
 - Sync between Browsers using WebDAV
-- Save Image
 - Backup
