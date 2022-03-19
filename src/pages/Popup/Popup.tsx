@@ -70,7 +70,7 @@ function Popup() {
 
     let url = await Common.getCurrentTab();
 
-    await Storage.saveItemToCollection(name, text, url);
+    await Storage.saveItemToCollection(name, text, 'text', url);
     window.close();
   };
 
