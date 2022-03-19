@@ -37,5 +37,6 @@
     "icon-34.png"
   ],
 
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'; connect-src * data:"
+  
 }

@@ -2,20 +2,77 @@ import React, { useEffect, useMemo } from 'react';
 import { ICollectionItem } from '../../interface';
 import { Column, useSortBy, useTable } from 'react-table';
 import moment from 'moment';
+import jsZip from 'jszip';
+import Common from '../../common';
 
 interface Prop {
   data: Array<ICollectionItem>;
   onDeleteItem: (_itemId: string) => Promise<void>;
+  collectionName: string;
 }
 
-function CollectionViewerImage({ data, onDeleteItem }: Prop) {
+function CollectionViewerImage({ data, onDeleteItem, collectionName }: Prop) {
   const [columns, setColumns] = React.useState(3);
+
+  const [isDownloading, setIsDownloading] = React.useState(false);
+
+  const [downloadingItem, setDownloadingItem] = React.useState(0);
 
   const handleColumnsSelection = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     let value = event.target.value;
     setColumns(parseInt(value));
+  };
+
+  const downloadAllImages = async () => {
+    if (isDownloading) {
+      return;
+    }
+
+    setIsDownloading(true);
+
+    let zip = new jsZip();
+
+    for (const item of data) {
+      let pathFileName = new URL(item.content).pathname
+        .split('/')
+        .pop()
+        ?.split('.');
+
+      let createTime = `${moment(item.createTime).format(
+        'YYYY-MM-DD-HH-mm-ss'
+      )}`;
+
+      let name = `${createTime}`;
+
+      if (pathFileName != null && pathFileName.length > 1) {
+        name = `${pathFileName[0]}-${createTime}`;
+      }
+
+      let res = await fetch(item.content);
+      let blob = await res.blob();
+      let extension = Common.getExtensionByContentType(blob.type);
+      zip.file(`${name}${extension}`, blob, { base64: true });
+
+      setDownloadingItem((prev) => prev++);
+    }
+
+    const content = await zip.generateAsync({ type: 'blob' });
+    const fileName = `${collectionName}-${moment().format(
+      'YYYY-MM-DD-HH-mm-ss'
+    )}`;
+
+    const href = await URL.createObjectURL(content);
+    const link = document.createElement('a');
+    link.href = href;
+    link.download = fileName + '.zip';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setIsDownloading(false);
+    setDownloadingItem(0);
   };
 
   return (
@@ -41,6 +98,21 @@ function CollectionViewerImage({ data, onDeleteItem }: Prop) {
             <option value="7">7</option>
             <option value="8">8</option>
           </select>
+        </div>
+
+        <div className="inline text-base ml-auto my-auto">
+          {data.length > 0 ? (
+            <button
+              className="my-2 p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+              onClick={downloadAllImages}
+            >
+              {isDownloading
+                ? `${downloadingItem} / ${data.length} Items`
+                : 'Download All'}
+            </button>
+          ) : (
+            ''
+          )}
         </div>
       </div>
 

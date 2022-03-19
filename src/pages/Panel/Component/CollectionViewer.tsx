@@ -254,6 +254,7 @@ function CollectionViewer(props: Prop) {
           <CollectionImageViewer
             data={data}
             onDeleteItem={removeCollectionItem}
+            collectionName={collection.name}
           />
         ) : (
           <CollectionViewerTable
