@@ -26,6 +26,7 @@ function CollectionViewer(props: Prop) {
     all: 0,
     text: 0,
     image: 0,
+    bookmark: 0,
   });
 
   const data = React.useMemo(() => {
@@ -37,6 +38,8 @@ function CollectionViewer(props: Prop) {
       all: collection.items.length,
       text: collection.items.filter((o) => o.type == 'text').length || 0,
       image: collection.items.filter((o) => o.type == 'image').length || 0,
+      bookmark:
+        collection.items.filter((o) => o.type == 'bookmark').length || 0,
     });
 
     if (collectionType == 1) {
@@ -45,6 +48,10 @@ function CollectionViewer(props: Prop) {
 
     if (collectionType == 2) {
       return collection.items.filter((o) => o.type == 'image') || [];
+    }
+
+    if (collectionType == 3) {
+      return collection.items.filter((o) => o.type == 'bookmark') || [];
     }
 
     return collection.items || [];
@@ -217,7 +224,7 @@ function CollectionViewer(props: Prop) {
             collectionType == 0
               ? 'bg-gray-200 dark:bg-gray-600'
               : 'bg-white dark:bg-gray-800'
-          } w-1/3 px-5 py-3 font-medium border rounded-l-lg border-gray-300`}
+          } w-1/4 px-5 py-3 font-medium border rounded-l-lg border-gray-300`}
           type="button"
           onClick={() => changeType(0)}
         >
@@ -229,7 +236,7 @@ function CollectionViewer(props: Prop) {
             collectionType == 1
               ? 'bg-gray-200 dark:bg-gray-600'
               : 'bg-white dark:bg-gray-800'
-          } w-1/3 px-5 py-3 font-medium border-y border-gray-300`}
+          } w-1/4 px-5 py-3 font-medium border-y border-r border-gray-300`}
           type="button"
           onClick={() => changeType(1)}
         >
@@ -241,11 +248,23 @@ function CollectionViewer(props: Prop) {
             collectionType == 2
               ? 'bg-gray-200 dark:bg-gray-600'
               : 'bg-white dark:bg-gray-800'
-          } w-1/3 px-5 py-3 font-medium border rounded-r-lg border-gray-300`}
+          } w-1/4 px-5 py-3 font-medium border-y border-r border-gray-300`}
           type="button"
           onClick={() => changeType(2)}
         >
           Image ({itemCount.image})
+        </button>
+
+        <button
+          className={`${
+            collectionType == 3
+              ? 'bg-gray-200 dark:bg-gray-600'
+              : 'bg-white dark:bg-gray-800'
+          } w-1/4 px-5 py-3 font-medium border-r border-y rounded-r-lg border-gray-300`}
+          type="button"
+          onClick={() => changeType(3)}
+        >
+          Bookmark ({itemCount.bookmark})
         </button>
       </div>
 
