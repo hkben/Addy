@@ -55,6 +55,13 @@ let contextMenusOnClick = async (
     Browser.tabs.sendMessage(tabId, message);
     return;
   }
+
+  //Bookmark
+  var message: IBrowserMessage = {
+    action: 'saveBookmark',
+  };
+
+  Browser.tabs.sendMessage(tabId, message);
 };
 
 Browser.contextMenus.create(
@@ -72,6 +79,16 @@ Browser.contextMenus.create(
     title: 'Save Image',
     type: 'normal',
     contexts: ['image'],
+    onclick: contextMenusOnClick,
+  },
+  onContextMenusCreated
+);
+
+Browser.contextMenus.create(
+  {
+    title: 'Save Bookmark',
+    type: 'normal',
+    contexts: ['page'],
     onclick: contextMenusOnClick,
   },
   onContextMenusCreated

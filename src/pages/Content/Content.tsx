@@ -46,6 +46,25 @@ function Content(props: ISetting) {
     y: 0,
   });
 
+  const getWebpageTitle = async () => {
+    let domRect = new DOMRect(mousePos.current.x, mousePos.current.y, 0, 0);
+
+    let _collections = (await Storage.getCollectionsSummary(
+      selection.content
+    )) as ICollectionSummary[];
+
+    setCollections(_collections);
+    sortAndSetFilteredCollections(_collections);
+    setNewCollectionButton(false);
+    setSelection({ content: document.title, type: 'bookmark' });
+    showBox(domRect);
+
+    //Auto Focus on Search Box when opening Bookmark Popup
+    if (inputRef.current && props.quickSearch) {
+      inputRef.current.focus();
+    }
+  };
+
   const getImage = async (_url: string) => {
     let domRect = new DOMRect(mousePos.current.x, mousePos.current.y, 0, 0);
 
@@ -169,6 +188,9 @@ function Content(props: ISetting) {
         return;
       case 'saveImage':
         getImage(packet.imageSrc!);
+        return;
+      case 'saveBookmark':
+        getWebpageTitle();
         return;
     }
   };
