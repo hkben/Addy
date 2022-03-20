@@ -83,6 +83,7 @@ function CollectionViewer(props: Prop) {
 
       setCollection(collection);
       setCollectionName(collection.name);
+      setCollectionType(0);
     };
 
     const collection = getCollection().catch(console.error);
