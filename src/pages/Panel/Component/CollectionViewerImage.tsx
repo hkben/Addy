@@ -55,7 +55,7 @@ function CollectionViewerImage({ data, onDeleteItem, collectionName }: Prop) {
       let extension = Common.getExtensionByContentType(blob.type);
       zip.file(`${name}${extension}`, blob, { base64: true });
 
-      setDownloadingItem((prev) => prev++);
+      setDownloadingItem((prev) => prev + 1);
     }
 
     const content = await zip.generateAsync({ type: 'blob' });
