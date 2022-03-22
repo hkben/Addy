@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ICollection, ISetting, IStorage, SortElement } from '../../interface';
+import { ICollection, ISetting, IStorage, SortElement } from '../../../common/interface';
 import Storage from '../../storage';
 
 function General() {

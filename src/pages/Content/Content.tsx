@@ -6,7 +6,7 @@ import {
   ICollectionSummary,
   ISetting,
   SortElement,
-} from '../interface';
+} from '../../common/interface';
 import Storage from '../storage';
 import CollectionButton from './modules/CollectionButton';
 import _ from 'lodash';

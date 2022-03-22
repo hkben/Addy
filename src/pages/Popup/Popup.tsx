@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import Browser from 'webextension-polyfill';
 import CollectionButton from './CollectionButton';
-import { ICollectionSummary, ISetting, SortElement } from '../interface';
+import { ICollectionSummary, ISetting, SortElement } from '../../common/interface';
 import Storage from '../storage';
 import Common from '../common';
 import Settings from '../Panel/Component/Settings';

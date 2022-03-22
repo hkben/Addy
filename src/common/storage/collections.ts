@@ -4,7 +4,7 @@ import {
   CastSummary,
   ICollection,
   ICollectionSummary,
-} from '../../pages/interface';
+} from '../interface';
 import moment, { ISO_8601 } from 'moment';
 import Storage from './storage';
 

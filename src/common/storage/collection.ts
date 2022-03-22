@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
-import { ICollection, ICollectionItem, IStorage } from '../../pages/interface';
+import { ICollection, ICollectionItem, IStorage } from '../interface';
 import { v4 as uuidv4 } from 'uuid';
 import Storage from './storage';
 

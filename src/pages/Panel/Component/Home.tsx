@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React, { useEffect, useRef } from 'react';
-import { ICollectionSummary, ISetting, SortElement } from '../../interface';
+import { ICollectionSummary, ISetting, SortElement } from '../../../common/interface';
 import Storage from '../../storage';
 import CollectionViewer from './CollectionViewer';
 

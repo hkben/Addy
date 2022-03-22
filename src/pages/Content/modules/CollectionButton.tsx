@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICollectionSummary } from '../../interface';
+import { ICollectionSummary } from '../../../common/interface';
 
 interface Prop {
   collection: ICollectionSummary;

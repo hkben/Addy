@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { HashRouter, Link, Route, Routes } from 'react-router-dom';
-import { ISetting } from '../../interface';
+import { ISetting } from '../../../common/interface';
 import Export from './Export';
 import General from './General';
 import Home from './Home';

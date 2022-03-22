@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import Browser from 'webextension-polyfill';
-import { IBrowserMessage } from '../interface';
+import { IBrowserMessage } from '../../common/interface';
 import Content from './Content';
 import Storage from '../storage';
 

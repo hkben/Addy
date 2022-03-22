@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
-import { ISetting } from '../../pages/interface';
+import { ISetting } from '../interface';
 import Storage from './storage';
 
 class Setting {

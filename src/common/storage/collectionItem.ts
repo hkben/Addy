@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
-import { ICollection } from '../../pages/interface';
+import { ICollection } from '../interface';
 import Storage from './storage';
 
 class CollectionItem {

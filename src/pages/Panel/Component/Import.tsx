@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICollection, IStorage } from '../../interface';
+import { ICollection, IStorage } from '../../../common/interface';
 import Storage from '../../storage';
 
 function Import() {

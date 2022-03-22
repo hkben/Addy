@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { ICollection, ICollectionItem } from '../../interface';
+import { ICollection, ICollectionItem } from '../../../common/interface';
 import Storage from '../../storage';
 import { Column, useSortBy, useTable } from 'react-table';
 import CollectionViewerTable from './CollectionViewerTable';

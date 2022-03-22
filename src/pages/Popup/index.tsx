@@ -6,7 +6,7 @@ import Popup from './Popup';
 import '../../style.scss';
 import './index.css';
 import Browser from 'webextension-polyfill';
-import { IBrowserMessage } from '../interface';
+import { IBrowserMessage } from '../../common/interface';
 
 render(<Popup />, window.document.querySelector('#app-container'));
 

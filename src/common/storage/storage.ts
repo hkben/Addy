@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
-import { ICollection, ISetting, IStorage } from '../../pages/interface';
+import { ICollection, ISetting, IStorage } from '../interface';
 
 class Storage {
   static async fetch(): Promise<IStorage> {

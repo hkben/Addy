@@ -1,7 +1,7 @@
 import Storage from '../storage';
 import Browser from 'webextension-polyfill';
 
-import { IBrowserMessage } from '../interface';
+import { IBrowserMessage } from '../../common/interface';
 
 const onInstalled = async () => {
   console.log('onInstalled');
