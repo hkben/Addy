@@ -12,6 +12,8 @@ console.log('Must reload extension for modifications to take effect.');
 
 let preload_popup = async () => {
   let shadowHost = document.createElement('section');
+  shadowHost.style.cssText = 'position:absolute;top:0;left:0;';
+
   document.body.appendChild(shadowHost);
 
   let shadowRoot = shadowHost.attachShadow({ mode: 'closed' });
