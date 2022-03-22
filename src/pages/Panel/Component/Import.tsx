@@ -1,6 +1,6 @@
 import React from 'react';
 import { ICollection, IStorage } from '../../../common/interface';
-import Storage from '../../storage';
+import { Collections, Storage } from '../../../common/storage';
 
 function Import() {
   const [json, setJson] = React.useState<string>('');
@@ -22,7 +22,7 @@ function Import() {
   };
 
   const updateCollections = async (_collections: ICollection[]) => {
-    let result = await Storage.importCollections(_collections);
+    let result = await Collections.import(_collections);
 
     if (result) {
       setJson('');

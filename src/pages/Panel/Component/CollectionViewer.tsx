@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { ICollection, ICollectionItem } from '../../../common/interface';
-import Storage from '../../storage';
+import { Collection, CollectionItem, Storage } from '../../../common/storage';
 import { Column, useSortBy, useTable } from 'react-table';
 import CollectionViewerTable from './CollectionViewerTable';
 import _ from 'lodash';
@@ -58,7 +58,7 @@ function CollectionViewer(props: Prop) {
   }, [collection, collectionType]);
 
   const removeCollectionItem = async (_itemId: string) => {
-    let result = await Storage.removeCollectionItem(props.collection, _itemId);
+    let result = await CollectionItem.delete(props.collection, _itemId);
 
     if (result) {
       setCollection((prevState) => ({
@@ -71,7 +71,7 @@ function CollectionViewer(props: Prop) {
 
   useEffect(() => {
     const getCollection = async () => {
-      let collection = await Storage.getCollection(props.collection);
+      let collection = await Collection.fetch(props.collection);
 
       console.log(props.collection);
 
@@ -92,7 +92,7 @@ function CollectionViewer(props: Prop) {
   const removeAllItems = async () => {
     console.log('removeAllItems');
 
-    await Storage.removeAllItems(collection.id);
+    await Collection.deleteAllItems(collection.id);
 
     await props.callback();
   };
@@ -100,7 +100,7 @@ function CollectionViewer(props: Prop) {
   const removeCollection = async () => {
     console.log('removeCollection');
 
-    await Storage.removeCollection(collection.id);
+    await Collection.delete(collection.id);
 
     await props.callback();
   };
@@ -113,7 +113,7 @@ function CollectionViewer(props: Prop) {
   };
 
   const handleCollectionNameSubmbit = async () => {
-    await Storage.updateCollectionName(props.collection, collectionName);
+    await Collection.updateName(props.collection, collectionName);
     setEditCollectionName(false);
     await props.callback();
   };

@@ -1,4 +1,4 @@
-import Storage from '../storage';
+import { Storage } from '../../common/storage';
 import Browser from 'webextension-polyfill';
 
 import { IBrowserMessage } from '../../common/interface';

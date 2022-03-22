@@ -1,13 +1,18 @@
 import React, { useEffect } from 'react';
-import { ICollection, ISetting, IStorage, SortElement } from '../../../common/interface';
-import Storage from '../../storage';
+import {
+  ICollection,
+  ISetting,
+  IStorage,
+  SortElement,
+} from '../../../common/interface';
+import { Setting, Storage } from '../../../common/storage';
 
 function General() {
   const [setting, setSetting] = React.useState<ISetting>({} as ISetting);
 
   useEffect(() => {
     const getSetting = async () => {
-      let _setting = await Storage.getSetting();
+      let _setting = await Setting.fetch();
       setSetting(_setting);
     };
 
@@ -22,7 +27,7 @@ function General() {
     let _setting = setting;
     _setting.collectionsOrdering.type = value;
 
-    await Storage.updateSetting(_setting);
+    await Setting.update(_setting);
 
     setSetting((prevState) => ({
       ...prevState,
@@ -41,7 +46,7 @@ function General() {
     let _setting = setting;
     _setting.collectionsOrdering.descending = value;
 
-    await Storage.updateSetting(_setting);
+    await Setting.update(_setting);
 
     setSetting((prevState) => ({
       ...prevState,
@@ -60,7 +65,7 @@ function General() {
     let _setting = setting;
     _setting.quickSearch = value;
 
-    await Storage.updateSetting(_setting);
+    await Setting.update(_setting);
 
     setSetting((prevState) => ({
       ...prevState,

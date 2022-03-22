@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import Browser from 'webextension-polyfill';
 import { IBrowserMessage } from '../../common/interface';
 import Content from './Content';
-import Storage from '../storage';
+import { Setting } from '../../common/storage';
 
 import css from '!!css-loader!sass-loader!./index.scss';
 
@@ -20,7 +20,7 @@ let preload_popup = async () => {
   style.innerHTML = css.toString();
   shadowRoot.appendChild(style);
 
-  let _setting = await Storage.getSetting();
+  let _setting = await Setting.fetch();
 
   let contentDiv = document.createElement('div');
   contentDiv.id = 'webextension_content';

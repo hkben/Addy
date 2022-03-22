@@ -1,7 +1,16 @@
 import _ from 'lodash';
 import React, { useEffect, useRef } from 'react';
-import { ICollectionSummary, ISetting, SortElement } from '../../../common/interface';
-import Storage from '../../storage';
+import {
+  ICollectionSummary,
+  ISetting,
+  SortElement,
+} from '../../../common/interface';
+import {
+  Collection,
+  Collections,
+  Setting,
+  Storage,
+} from '../../../common/storage';
 import CollectionViewer from './CollectionViewer';
 
 interface State {
@@ -22,7 +31,7 @@ function Home() {
 
   useEffect(() => {
     const getSetting = async () => {
-      let _setting = await Storage.getSetting();
+      let _setting = await Setting.fetch();
       setSetting(_setting);
     };
 
@@ -31,7 +40,7 @@ function Home() {
   }, []);
 
   const loadCollectionsList = async () => {
-    let summary = await Storage.getCollectionsSummary();
+    let summary = await Collections.fetchSummary();
 
     setCollections(summary);
 
@@ -66,7 +75,7 @@ function Home() {
       return;
     }
 
-    await Storage.newCollection(inputValue);
+    await Collection.create(inputValue);
     inputValue = '';
 
     await loadCollectionsList();

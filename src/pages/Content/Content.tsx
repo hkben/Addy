@@ -7,7 +7,7 @@ import {
   ISetting,
   SortElement,
 } from '../../common/interface';
-import Storage from '../storage';
+import { Collection, Collections, Storage } from '../../common/storage';
 import CollectionButton from './modules/CollectionButton';
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
@@ -49,7 +49,7 @@ function Content(props: ISetting) {
   const getWebpageTitle = async () => {
     let domRect = new DOMRect(mousePos.current.x, mousePos.current.y, 0, 0);
 
-    let _collections = (await Storage.getCollectionsSummary(
+    let _collections = (await Collections.fetchSummary(
       selection.content
     )) as ICollectionSummary[];
 
@@ -68,7 +68,7 @@ function Content(props: ISetting) {
   const getImage = async (_url: string) => {
     let domRect = new DOMRect(mousePos.current.x, mousePos.current.y, 0, 0);
 
-    let _collections = (await Storage.getCollectionsSummary(
+    let _collections = (await Collections.fetchSummary(
       selection.content
     )) as ICollectionSummary[];
 
@@ -95,7 +95,7 @@ function Content(props: ISetting) {
     let range = highlighted_text.getRangeAt(0);
     let rect = range.getBoundingClientRect();
 
-    let _collections = (await Storage.getCollectionsSummary(
+    let _collections = (await Collections.fetchSummary(
       selection
     )) as ICollectionSummary[];
 
@@ -166,12 +166,12 @@ function Content(props: ISetting) {
   };
 
   const saveTextToCollection = async (name: string) => {
-    await Storage.saveItemToCollection(name, selection.content, selection.type);
+    await Collection.add(name, selection.content, selection.type);
     toggleBox();
   };
 
   const newCollectionAndSave = async () => {
-    await Storage.newCollectionAndSave(
+    await Collection.createAndAdd(
       searchKeyword,
       selection.content,
       selection.type

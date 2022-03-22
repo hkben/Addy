@@ -1,8 +1,17 @@
 import React, { useEffect, useRef } from 'react';
 import Browser from 'webextension-polyfill';
 import CollectionButton from './CollectionButton';
-import { ICollectionSummary, ISetting, SortElement } from '../../common/interface';
-import Storage from '../storage';
+import {
+  ICollectionSummary,
+  ISetting,
+  SortElement,
+} from '../../common/interface';
+import {
+  Collection,
+  Collections,
+  Setting,
+  Storage,
+} from '../../common/storage';
 import Common from '../common';
 import Settings from '../Panel/Component/Settings';
 import _ from 'lodash';
@@ -29,7 +38,7 @@ function Popup() {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const getCollectionsSummary = async () => {
-    let _collections = (await Storage.getCollectionsSummary()) as ICollectionSummary[];
+    let _collections = (await Collections.fetchSummary()) as ICollectionSummary[];
 
     setCollections(_collections);
     setFilteredCollections(_collections);
@@ -49,7 +58,7 @@ function Popup() {
 
   useEffect(() => {
     const getSetting = async () => {
-      let _setting = await Storage.getSetting();
+      let _setting = await Setting.fetch();
 
       setSetting(_setting);
 
@@ -70,7 +79,7 @@ function Popup() {
 
     let url = await Common.getCurrentTab();
 
-    await Storage.saveItemToCollection(name, text, 'text', url);
+    await Collection.add(name, text, 'text', url);
     window.close();
   };
 
@@ -150,10 +159,10 @@ function Popup() {
 
     setDarkMode(_darkMode);
 
-    let setting = await Storage.getSetting();
+    let setting = await Setting.fetch();
     setting.darkMode = _darkMode;
 
-    await Storage.updateSetting(setting);
+    await Setting.update(setting);
   };
 
   return (

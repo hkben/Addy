@@ -6,14 +6,14 @@ import General from './General';
 import Home from './Home';
 import Import from './Import';
 import Settings from './Settings';
-import Storage from '../../storage';
+import { Setting, Storage } from '../../../common/storage';
 
 function Panel() {
   const [darkMode, setDarkMode] = React.useState(false);
 
   useEffect(() => {
     const getSetting = async () => {
-      let setting = await Storage.getSetting();
+      let setting = await Setting.fetch();
 
       if (setting.darkMode) {
         setDarkMode(true);
@@ -38,10 +38,10 @@ function Panel() {
 
     setDarkMode(_darkMode);
 
-    let setting = await Storage.getSetting();
+    let setting = await Setting.fetch();
     setting.darkMode = _darkMode;
 
-    await Storage.updateSetting(setting);
+    await Setting.update(setting);
   };
 
   return (
