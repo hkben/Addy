@@ -73,12 +73,12 @@ export interface IStorage {
 
 //Setting
 export interface ISetting {
-  collectionsOrdering: Ordering;
+  collectionsOrdering: IOrdering;
   quickSearch: boolean;
   darkMode: boolean;
 }
 
-export interface Ordering {
+export interface IOrdering {
   type: SortElement;
   descending: boolean;
 }
