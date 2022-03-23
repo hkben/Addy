@@ -119,6 +119,7 @@ class Collection {
     let index = _.findIndex(collections, (o) => o.id == _collectionId)!;
 
     collections[index].name = _name;
+    collections[index].modifyTime = new Date().toISOString();
 
     Browser.storage.local.set(localStorage);
   }
