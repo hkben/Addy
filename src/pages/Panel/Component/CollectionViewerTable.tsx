@@ -1,14 +1,17 @@
-import React, { useMemo } from 'react';
-import { ICollectionItem } from '../../../common/interface';
+import React, { useEffect, useMemo } from 'react';
+import { ICollectionItem, IViewingOption } from '../../../common/interface';
 import { Column, useSortBy, useTable } from 'react-table';
 import moment from 'moment';
+import { Setting } from '../../../common/storage';
+import _ from 'lodash';
 
 interface Prop {
   data: Array<ICollectionItem>;
   onDeleteItem: (_itemId: string) => Promise<void>;
+  hiddenColumns: string[];
 }
 
-function CollectionViewerTable({ data, onDeleteItem }: Prop) {
+function CollectionViewerTable({ data, onDeleteItem, hiddenColumns }: Prop) {
   const [spacing, setSpacing] = React.useState<string>('normal');
 
   const handleSpacingSelection = (
@@ -110,7 +113,23 @@ function CollectionViewerTable({ data, onDeleteItem }: Prop) {
     rows,
     prepareRow,
     allColumns,
-  } = useTable({ columns, data }, useSortBy);
+    visibleColumns,
+    state,
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { hiddenColumns: hiddenColumns || [] },
+    },
+    useSortBy
+  );
+
+  const handleHiddenToggle = (_columnId: string) => {
+    //this state.hiddenColumns is memoized, so using xor to get updated hiddenColumns
+    let _hiddenColumns = state.hiddenColumns || [];
+    let newHiddenColumns = _.xor(_hiddenColumns, [_columnId]);
+    Setting.updateViewingHiddenColumns(newHiddenColumns);
+  };
 
   return (
     <div className="">
@@ -121,6 +140,11 @@ function CollectionViewerTable({ data, onDeleteItem }: Prop) {
               type="checkbox"
               className="w-4 h-4 border border-gray-200 rounded-md"
               {...column.getToggleHiddenProps()}
+              //this onChange overwrite the onChange prop from getToggleHiddenProps()
+              onChange={(e) => {
+                column.toggleHidden(!e.target.checked);
+                handleHiddenToggle(column.id);
+              }}
             />
             <span className="ml-3 font-medium">{column.id}</span>
           </div>

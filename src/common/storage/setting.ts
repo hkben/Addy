@@ -88,6 +88,20 @@ class Setting {
     }
     return true;
   }
+
+  static async updateViewingHiddenColumns(
+    _hiddenColumns: string[]
+  ): Promise<boolean> {
+    try {
+      let setting = await this.fetch();
+      setting.viewingOption.hiddenColumns = _hiddenColumns;
+      this.update(setting);
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+    return true;
+  }
 }
 
 export default Setting;
