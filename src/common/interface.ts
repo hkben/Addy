@@ -76,6 +76,7 @@ export interface ISetting {
   collectionsOrdering: IOrdering;
   quickSearch: boolean;
   darkMode: boolean;
+  viewingOption: IViewingOption;
 }
 
 export interface IOrdering {
@@ -89,4 +90,10 @@ export enum SortElement {
   CreateTime = 2,
   ModifyTime = 3,
   Items = 4,
+}
+
+export interface IViewingOption {
+  hiddenColumns: string[];
+  spacing: string;
+  imageGrid: number;
 }

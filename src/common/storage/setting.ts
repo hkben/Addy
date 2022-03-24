@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
-import { IOrdering, ISetting, IStorage } from '../interface';
+import { IOrdering, ISetting, IStorage, IViewingOption } from '../interface';
 
 class Setting {
   static init() {
@@ -11,6 +11,11 @@ class Setting {
       },
       quickSearch: false,
       darkMode: false,
+      viewingOption: {
+        hiddenColumns: [],
+        spacing: 'normal',
+        imageGrid: 3,
+      },
     };
     return defaultSetting;
   }
