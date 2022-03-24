@@ -96,8 +96,11 @@ function Popup() {
 
     let url = await Common.getCurrentTab();
 
-    await Collection.add(name, text, 'text', url);
-    window.close();
+    let result = await Collection.add(name, text, 'text', url);
+
+    if (result) {
+      window.close();
+    }
   };
 
   const openTab = () => {

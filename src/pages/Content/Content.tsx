@@ -183,17 +183,22 @@ function Content(props: ISetting) {
   };
 
   const saveTextToCollection = async (name: string) => {
-    await Collection.add(name, selection.content, selection.type);
-    toggleBox();
+    let result = await Collection.add(name, selection.content, selection.type);
+    if (result) {
+      toggleBox();
+    }
   };
 
   const newCollectionAndSave = async () => {
-    await Collection.createAndAdd(
+    let result = await Collection.createAndAdd(
       searchKeyword,
       selection.content,
       selection.type
     );
-    toggleBox();
+
+    if (result) {
+      toggleBox();
+    }
   };
 
   const handleOnMessageEvent = (packet: IBrowserMessage, sender: any) => {
