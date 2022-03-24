@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
 import { ICollection, ISetting, IStorage } from '../interface';
+import Setting from './setting';
 
 class Storage {
   static async fetch(): Promise<IStorage> {
@@ -25,14 +26,7 @@ class Storage {
       setting: {} as ISetting,
     };
 
-    storageObj.setting = {
-      collectionsOrdering: {
-        type: 0,
-        descending: false,
-      },
-      quickSearch: false,
-      darkMode: false,
-    };
+    storageObj.setting = Setting.init();
 
     await Browser.storage.local.set(storageObj);
   }
