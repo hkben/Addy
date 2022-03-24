@@ -5,7 +5,8 @@ import { ICollectionSummary, IOrdering, SortElement } from '../interface';
 
 export const useSortCollections = (
   collections: ICollectionSummary[],
-  ordering: IOrdering
+  ordering: IOrdering,
+  searchKeyword: string = ''
 ) => {
   const [sortedCollections, setSortedCollections] = React.useState(
     [] as ICollectionSummary[]
@@ -19,6 +20,16 @@ export const useSortCollections = (
 
     let _collections = collections;
 
+    //Filtering
+    if (searchKeyword.length > 0) {
+      let filteredCollections = _.filter(_collections, (o) =>
+        o.name.toLowerCase().includes(searchKeyword.toLowerCase())
+      );
+
+      _collections = filteredCollections;
+    }
+
+    //Sorting
     if (ordering.type == SortElement.Name) {
       _collections = _.sortBy(_collections, (o) => o.name);
       _collections = _.reverse(_collections);
@@ -40,7 +51,7 @@ export const useSortCollections = (
       _collections = _.reverse(_collections);
     }
     setSortedCollections(_collections);
-  }, [collections, ordering]);
+  }, [collections, ordering, searchKeyword]);
 
   return sortedCollections;
 };
