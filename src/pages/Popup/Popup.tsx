@@ -3,6 +3,7 @@ import Browser from 'webextension-polyfill';
 import CollectionButton from './CollectionButton';
 import {
   ICollectionSummary,
+  IOrdering,
   ISetting,
   SortElement,
 } from '../../common/interface';
@@ -15,6 +16,7 @@ import {
 import Common from '../common';
 import Settings from '../Panel/Component/Settings';
 import _ from 'lodash';
+import { useSortCollections } from '../../common/hook/useSortCollections';
 
 function Popup() {
   const [text, setText] = React.useState<string>('');
@@ -23,28 +25,28 @@ function Popup() {
     [] as ICollectionSummary[]
   );
 
-  const [filteredCollections, setFilteredCollections] = React.useState<
-    ICollectionSummary[]
-  >([] as ICollectionSummary[]);
-
   const [searchKeyword, setSearchKeyword] = React.useState<string>('');
 
   const [newCollectionButton, setNewCollectionButton] = React.useState<boolean>(
     false
   );
 
-  const [setting, setSetting] = React.useState<ISetting>();
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   const getCollectionsSummary = async () => {
     let _collections = (await Collections.fetchSummary()) as ICollectionSummary[];
-
     setCollections(_collections);
-    setFilteredCollections(_collections);
   };
 
   const [darkMode, setDarkMode] = React.useState(false);
+
+  const [ordering, setOrdering] = React.useState<IOrdering>({} as IOrdering);
+
+  const sortedCollections = useSortCollections(
+    collections,
+    ordering,
+    searchKeyword
+  );
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -57,20 +59,35 @@ function Popup() {
   }, [darkMode]);
 
   useEffect(() => {
-    const getSetting = async () => {
-      let _setting = await Setting.fetch();
-
-      setSetting(_setting);
-
-      if (_setting.darkMode) {
-        setDarkMode(true);
-      }
-    };
-
     getSetting().catch(console.error);
-
     getCollectionsSummary().catch(console.error);
   }, []);
+
+  useEffect(() => {
+    if (searchKeyword.length == 0) {
+      return;
+    }
+
+    let sameName = _.filter(
+      sortedCollections,
+      (o) => o.name.toLowerCase() == searchKeyword.toLowerCase()
+    );
+
+    if (sameName.length == 0) {
+      setNewCollectionButton(true);
+    } else {
+      setNewCollectionButton(false);
+    }
+  }, [sortedCollections]);
+
+  const getSetting = async () => {
+    let _setting = await Setting.fetch();
+    setOrdering(_setting.collectionsOrdering);
+
+    if (_setting.darkMode) {
+      setDarkMode(true);
+    }
+  };
 
   const saveTextToCollection = async (name: string) => {
     if (text == '') {
@@ -103,55 +120,6 @@ function Popup() {
     let value = event.target.value;
 
     setSearchKeyword(value);
-
-    if (value.length == 0) {
-      sortAndSetFilteredCollections(collections);
-      setNewCollectionButton(false);
-      return;
-    }
-
-    let filtered = _.filter(collections, (o) =>
-      o.name.toLowerCase().includes(value.toLowerCase())
-    );
-
-    let sameName = _.filter(
-      filtered,
-      (o) => o.name.toLowerCase() == value.toLowerCase()
-    );
-
-    if (sameName.length > 0) {
-      setNewCollectionButton(false);
-    } else {
-      setNewCollectionButton(true);
-    }
-
-    sortAndSetFilteredCollections(filtered);
-  };
-
-  const sortAndSetFilteredCollections = (
-    _collections: ICollectionSummary[]
-  ) => {
-    if (setting!.collectionsOrdering.type == SortElement.Name) {
-      _collections = _.sortBy(_collections, (o) => o.name);
-    }
-
-    if (setting!.collectionsOrdering.type == SortElement.Items) {
-      _collections = _.sortBy(_collections, (o) => o.items);
-    }
-
-    if (setting!.collectionsOrdering.type == SortElement.CreateTime) {
-      _collections = _.sortBy(_collections, (o) => o.createTime);
-    }
-
-    if (setting!.collectionsOrdering.type == SortElement.ModifyTime) {
-      _collections = _.sortBy(_collections, (o) => o.modifyTime);
-    }
-
-    if (setting!.collectionsOrdering.descending) {
-      _collections = _.reverse(_collections);
-    }
-
-    setFilteredCollections(_collections);
   };
 
   const toggleDarkMode = async (event: React.MouseEvent<HTMLDivElement>) => {
@@ -234,7 +202,7 @@ function Popup() {
       </div>
 
       <div className="flex flex-wrap gap-0.5 m-1">
-        {filteredCollections.map((collection, index) => {
+        {sortedCollections.map((collection, index) => {
           return (
             <CollectionButton
               key={index}
