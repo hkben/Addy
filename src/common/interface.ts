@@ -95,5 +95,5 @@ export enum SortElement {
 export interface IViewingOption {
   hiddenColumns: string[];
   spacing: string;
-  imageGrid: number;
+  imageColumns: number;
 }

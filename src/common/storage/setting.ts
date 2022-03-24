@@ -14,7 +14,7 @@ class Setting {
       viewingOption: {
         hiddenColumns: [],
         spacing: 'normal',
-        imageGrid: 3,
+        imageColumns: 3,
       },
     };
     return defaultSetting;
@@ -107,6 +107,18 @@ class Setting {
     try {
       let setting = await this.fetch();
       setting.viewingOption.spacing = _spacing;
+      this.update(setting);
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+    return true;
+  }
+
+  static async updateViewingImageGrid(_columns: number): Promise<boolean> {
+    try {
+      let setting = await this.fetch();
+      setting.viewingOption.imageColumns = _columns;
       this.update(setting);
     } catch (e) {
       console.error(e);

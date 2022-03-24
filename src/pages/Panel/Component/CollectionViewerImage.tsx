@@ -4,14 +4,21 @@ import { Column, useSortBy, useTable } from 'react-table';
 import moment from 'moment';
 import jsZip from 'jszip';
 import Common from '../../common';
+import { Setting } from '../../../common/storage';
 
 interface Prop {
   data: Array<ICollectionItem>;
   onDeleteItem: (_itemId: string) => Promise<void>;
   collectionName: string;
+  imageColumns: number;
 }
 
-function CollectionViewerImage({ data, onDeleteItem, collectionName }: Prop) {
+function CollectionViewerImage({
+  data,
+  onDeleteItem,
+  collectionName,
+  imageColumns,
+}: Prop) {
   const [columns, setColumns] = React.useState(3);
 
   const [isDownloading, setIsDownloading] = React.useState(false);
@@ -23,7 +30,13 @@ function CollectionViewerImage({ data, onDeleteItem, collectionName }: Prop) {
   ) => {
     let value = event.target.value;
     setColumns(parseInt(value));
+
+    Setting.updateViewingImageGrid(parseInt(value));
   };
+
+  useEffect(() => {
+    setColumns(imageColumns);
+  }, [imageColumns]);
 
   const downloadAllImages = async () => {
     if (isDownloading) {
