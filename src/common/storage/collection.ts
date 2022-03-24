@@ -1,21 +1,19 @@
-import _ from 'lodash';
+import _, { result } from 'lodash';
 import Browser from 'webextension-polyfill';
 import { ICollection, ICollectionItem, IStorage } from '../interface';
 import { v4 as uuidv4 } from 'uuid';
 import Storage from './storage';
+import Collections from './collections';
 
 class Collection {
   static async fetch(_collectionId: string): Promise<ICollection> {
-    let localStorage = await Storage.fetch();
-    let collections = localStorage.collections as ICollection[];
-
+    const collections = await Collections.fetch();
     let collection = _.find(collections, (o) => o.id == _collectionId)!;
-
     return collection;
   }
 
-  static async create(_collectionName: string) {
-    let localStorage = (await Browser.storage.local.get()) as IStorage;
+  static async create(_collectionName: string): Promise<string> {
+    const collections = await Collections.fetch();
 
     let collection: ICollection = {
       id: uuidv4(),
@@ -25,9 +23,15 @@ class Collection {
       modifyTime: new Date().toISOString(),
     };
 
-    localStorage.collections.push(collection);
+    collections.push(collection);
 
-    Browser.storage.local.set(localStorage);
+    let result = await Collections.update(collections);
+
+    if (result) {
+      return collection.id;
+    } else {
+      return '';
+    }
   }
 
   static async add(
@@ -35,9 +39,8 @@ class Collection {
     _content: string,
     _type: string,
     _url: string = ''
-  ) {
-    let localStorage = await Storage.fetch();
-    let collections = localStorage.collections as ICollection[];
+  ): Promise<Boolean> {
+    const collections = await Collections.fetch();
 
     let index = _.findIndex(collections, (i) => i.id == _collectionId);
 
@@ -53,21 +56,19 @@ class Collection {
     };
 
     collections[index].items.push(item);
-
     collections[index].modifyTime = new Date().toISOString();
 
-    Browser.storage.local.set(localStorage);
+    let result = await Collections.update(collections);
+    return result;
   }
 
-  static async delete(_collectionId: string) {
-    let localStorage = await Storage.fetch();
-    let collections = localStorage.collections as ICollection[];
+  static async delete(_collectionId: string): Promise<Boolean> {
+    const collections = await Collections.fetch();
 
     _.remove(collections, (o) => o.id == _collectionId)!;
 
-    console.log(collections);
-
-    Browser.storage.local.set(localStorage);
+    let result = await Collections.update(collections);
+    return result;
   }
 
   static async createAndAdd(
@@ -75,53 +76,37 @@ class Collection {
     _content: string,
     _type: string
   ) {
-    let localStorage = await Storage.fetch();
+    let collectionId = await this.create(_collectionName);
 
-    let item: ICollectionItem = {
-      id: uuidv4(),
-      content: _content,
-      type: _type,
-      source: document.URL,
-      createTime: new Date().toISOString(),
-      modifyTime: new Date().toISOString(),
-    };
+    if (collectionId == '') {
+      return false;
+    }
 
-    let collection: ICollection = {
-      id: uuidv4(),
-      name: _collectionName,
-      items: [item],
-      createTime: new Date().toISOString(),
-      modifyTime: new Date().toISOString(),
-    };
+    let result = await this.add(collectionId, _content, _type);
 
-    localStorage.collections.push(collection);
-
-    Browser.storage.local.set(localStorage);
+    return result;
   }
 
   static async deleteAllItems(_collectionId: string) {
-    let localStorage = await Storage.fetch();
-    let collections = localStorage.collections as ICollection[];
+    const collections = await Collections.fetch();
 
     let index = _.findIndex(collections, (o) => o.id == _collectionId)!;
-
     collections[index].items = [];
 
-    console.log(collections);
-
-    Browser.storage.local.set(localStorage);
+    let result = await Collections.update(collections);
+    return result;
   }
 
   static async updateName(_collectionId: string, _name: string) {
-    let localStorage = await Storage.fetch();
-    let collections = localStorage.collections as ICollection[];
+    const collections = await Collections.fetch();
 
     let index = _.findIndex(collections, (o) => o.id == _collectionId)!;
 
     collections[index].name = _name;
     collections[index].modifyTime = new Date().toISOString();
 
-    Browser.storage.local.set(localStorage);
+    let result = await Collections.update(collections);
+    return result;
   }
 }
 
