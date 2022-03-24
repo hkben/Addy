@@ -4,22 +4,44 @@ import {
   CastSummary,
   ICollection,
   ICollectionSummary,
+  IStorage,
 } from '../interface';
 import moment, { ISO_8601 } from 'moment';
 import Storage from './storage';
 
 class Collections {
   static async fetch(): Promise<ICollection[]> {
-    let localStorage = await Storage.fetch();
-    let collections = localStorage.collections as ICollection[];
+    let collections: ICollection[] = [];
+
+    try {
+      //It returns {collections}, so IStorage is better choice, not ICollection[]
+      let localStorage = (await Browser.storage.local.get(
+        'collections'
+      )) as IStorage;
+
+      collections = localStorage.collections;
+    } catch (e) {
+      console.error(e);
+    }
     return collections;
   }
 
   static async fetchSummary(_text: string = ''): Promise<ICollectionSummary[]> {
-    let localStorage = await Storage.fetch();
-    let collections = localStorage.collections as ICollection[];
+    let collections = await this.fetch();
     let summary = collections.map((o) => CastSummary(o, _text));
     return summary;
+  }
+
+  static async update(_collections: ICollection[]): Promise<Boolean> {
+    const collections = _collections;
+    try {
+      await Browser.storage.local.set({ collections });
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+
+    return true;
   }
 
   static async import(_collections: ICollection[]) {
