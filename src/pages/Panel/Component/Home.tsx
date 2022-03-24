@@ -1,7 +1,9 @@
 import _ from 'lodash';
 import React, { useEffect, useRef } from 'react';
+import { useSortCollections } from '../../../common/hook/useSortCollections';
 import {
   ICollectionSummary,
+  IOrdering,
   ISetting,
   SortElement,
 } from '../../../common/interface';
@@ -27,26 +29,20 @@ function Home() {
 
   const [activeCollection, setActiveCollection] = React.useState('');
 
-  const [setting, setSetting] = React.useState<ISetting>({} as ISetting);
+  const [ordering, setOrdering] = React.useState<IOrdering>({} as IOrdering);
+
+  const sortedCollections = useSortCollections(collections, ordering);
 
   useEffect(() => {
-    const getSetting = async () => {
-      let _setting = await Setting.fetch();
-      setSetting(_setting);
-    };
-
+    getOrdering().catch(console.error);
     loadCollectionsList().catch(console.error);
-    getSetting().catch(console.error);
   }, []);
 
-  const loadCollectionsList = async () => {
-    let summary = await Collections.fetchSummary();
-
-    setCollections(summary);
-
+  useEffect(() => {
+    //Avoid activeCollection changing when reloading CollectionsList
     if (activeCollection != '') {
       let isCollectionExists =
-        _.filter(summary, (o) => o.id == activeCollection).length > 0
+        _.filter(sortedCollections, (o) => o.id == activeCollection).length > 0
           ? true
           : false;
 
@@ -55,8 +51,20 @@ function Home() {
       }
     }
 
-    let firstCollection = summary[0].id;
-    setActiveCollection(firstCollection);
+    if (sortedCollections.length > 0) {
+      let firstCollection = sortedCollections[0].id;
+      setActiveCollection(firstCollection);
+    }
+  }, [sortedCollections]);
+
+  const getOrdering = async () => {
+    let _ordering = await Setting.fetchOrdering();
+    setOrdering(_ordering);
+  };
+
+  const loadCollectionsList = async () => {
+    let summary = await Collections.fetchSummary();
+    setCollections(summary);
   };
 
   const changeCollection = (_collectionId: string) => {
@@ -86,61 +94,22 @@ function Home() {
   ) => {
     let value = parseInt(event.currentTarget.value);
 
-    setSetting((prevState) => ({
+    setOrdering((prevState) => ({
       ...prevState,
-      collectionsOrdering: {
-        ...prevState.collectionsOrdering,
-        type: value,
-      },
+      type: value,
     }));
   };
 
   const handleDescendingOption = async (
     event: React.MouseEvent<HTMLButtonElement>
   ) => {
-    let value = setting.collectionsOrdering.descending ? false : true;
+    let value = ordering.descending ? false : true;
 
-    setSetting((prevState) => ({
+    setOrdering((prevState) => ({
       ...prevState,
-      collectionsOrdering: {
-        ...prevState.collectionsOrdering,
-        descending: value,
-      },
+      descending: value,
     }));
   };
-
-  useEffect(() => {
-    if (setting.collectionsOrdering == null) {
-      return;
-    }
-
-    let _collections = collections;
-
-    if (setting.collectionsOrdering.type == SortElement.Name) {
-      _collections = _.sortBy(_collections, (o) => o.name);
-      _collections = _.reverse(_collections);
-    }
-
-    if (setting.collectionsOrdering.type == SortElement.Items) {
-      _collections = _.sortBy(_collections, (o) => o.items);
-    }
-
-    if (setting.collectionsOrdering.type == SortElement.CreateTime) {
-      _collections = _.sortBy(_collections, (o) => o.createTime);
-    }
-
-    if (setting.collectionsOrdering.type == SortElement.ModifyTime) {
-      _collections = _.sortBy(_collections, (o) => o.modifyTime);
-    }
-
-    if (setting.collectionsOrdering.descending) {
-      _collections = _.reverse(_collections);
-    }
-
-    console.log(_collections);
-
-    setCollections(_collections);
-  }, [setting]);
 
   return (
     <div className="container w-full flex flex-wrap mx-auto px-2 m-16">
@@ -176,9 +145,7 @@ function Home() {
           <select
             className="h-10 px-4 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
             id="spaceing"
-            value={
-              setting.collectionsOrdering ? setting.collectionsOrdering.type : 0
-            }
+            value={ordering ? ordering.type : 0}
             onChange={handleOrderingSelection}
           >
             <option value="1">Alphabetic</option>
@@ -189,8 +156,7 @@ function Home() {
 
           <span>
             <button onClick={handleDescendingOption}>
-              {setting.collectionsOrdering &&
-              setting.collectionsOrdering.descending ? (
+              {ordering && ordering.descending ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 inline mx-2"
@@ -226,7 +192,7 @@ function Home() {
         </div>
 
         <ul>
-          {collections.map((collection, index) => {
+          {sortedCollections.map((collection, index) => {
             return (
               <li
                 key={index}
@@ -244,10 +210,14 @@ function Home() {
       </div>
 
       <div className="w-4/5 p-8 text-gray-900 bg-white border border-gray-400 dark:text-gray-50 dark:bg-gray-800 dark:border-gray-400">
-        <CollectionViewer
-          collection={activeCollection}
-          callback={loadCollectionsList}
-        />
+        {activeCollection ? (
+          <CollectionViewer
+            collection={activeCollection}
+            callback={loadCollectionsList}
+          />
+        ) : (
+          ''
+        )}
       </div>
     </div>
   );
