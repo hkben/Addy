@@ -102,6 +102,18 @@ class Setting {
     }
     return true;
   }
+
+  static async updateViewingSpacing(_spacing: string): Promise<boolean> {
+    try {
+      let setting = await this.fetch();
+      setting.viewingOption.spacing = _spacing;
+      this.update(setting);
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+    return true;
+  }
 }
 
 export default Setting;

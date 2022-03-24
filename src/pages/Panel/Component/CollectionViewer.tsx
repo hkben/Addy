@@ -303,6 +303,7 @@ function CollectionViewer(props: Prop) {
             data={data}
             onDeleteItem={removeCollectionItem}
             hiddenColumns={viewingOption.hiddenColumns}
+            spacingProp={viewingOption.spacing}
           />
         )}
       </div>

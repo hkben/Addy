@@ -9,9 +9,15 @@ interface Prop {
   data: Array<ICollectionItem>;
   onDeleteItem: (_itemId: string) => Promise<void>;
   hiddenColumns: string[];
+  spacingProp: string;
 }
 
-function CollectionViewerTable({ data, onDeleteItem, hiddenColumns }: Prop) {
+function CollectionViewerTable({
+  data,
+  onDeleteItem,
+  hiddenColumns,
+  spacingProp,
+}: Prop) {
   const [spacing, setSpacing] = React.useState<string>('normal');
 
   const handleSpacingSelection = (
@@ -19,6 +25,8 @@ function CollectionViewerTable({ data, onDeleteItem, hiddenColumns }: Prop) {
   ) => {
     let value = event.target.value;
     setSpacing(value);
+
+    Setting.updateViewingSpacing(value);
   };
 
   const columns: Array<Column<ICollectionItem>> = useMemo(
@@ -130,6 +138,10 @@ function CollectionViewerTable({ data, onDeleteItem, hiddenColumns }: Prop) {
     let newHiddenColumns = _.xor(_hiddenColumns, [_columnId]);
     Setting.updateViewingHiddenColumns(newHiddenColumns);
   };
+
+  useEffect(() => {
+    setSpacing(spacingProp);
+  }, [spacingProp]);
 
   return (
     <div className="">
