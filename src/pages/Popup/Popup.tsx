@@ -133,6 +133,14 @@ function Popup() {
     await Setting.update(setting);
   };
 
+  const newCollectionAndSave = async () => {
+    let result = await Collection.createAndAdd(searchKeyword, text, 'text');
+
+    if (result) {
+      window.close();
+    }
+  };
+
   return (
     <div className="overflow-hidden">
       <div className="flex justify-between py-2 text-base font-bold text-center bg-blue-500 text-white">
@@ -214,7 +222,10 @@ function Popup() {
       </div>
 
       {newCollectionButton ? (
-        <div className="p-2 m-2 rounded-md text-black text-base text-center border cursor-pointer justify-center box-border hover:bg-gray-100 dark:text-white dark:border-slate-400 dark:bg-gray-900">
+        <div
+          className="p-2 m-2 rounded-md text-black text-base text-center border cursor-pointer justify-center box-border hover:bg-gray-100 dark:text-white dark:border-slate-400 dark:bg-gray-900"
+          onClick={newCollectionAndSave}
+        >
           <span>New Collection</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
