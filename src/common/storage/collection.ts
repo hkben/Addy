@@ -39,7 +39,7 @@ class Collection {
     _content: string,
     _type: string,
     _url: string = ''
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     const collections = await Collections.fetch();
 
     let index = _.findIndex(collections, (i) => i.id == _collectionId);
@@ -62,7 +62,7 @@ class Collection {
     return result;
   }
 
-  static async delete(_collectionId: string): Promise<Boolean> {
+  static async delete(_collectionId: string): Promise<boolean> {
     const collections = await Collections.fetch();
 
     _.remove(collections, (o) => o.id == _collectionId)!;

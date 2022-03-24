@@ -39,12 +39,12 @@ class Setting {
     return setting.collectionsOrdering;
   }
 
-  static async fetchDarkMode(): Promise<Boolean> {
+  static async fetchDarkMode(): Promise<boolean> {
     let setting = await this.fetch();
     return setting.darkMode;
   }
 
-  static async update(_setting: ISetting): Promise<Boolean> {
+  static async update(_setting: ISetting): Promise<boolean> {
     const setting = _setting;
     try {
       await Browser.storage.local.set({ setting });
@@ -55,7 +55,7 @@ class Setting {
     return true;
   }
 
-  static async updateOrdering(_ordering: IOrdering): Promise<Boolean> {
+  static async updateOrdering(_ordering: IOrdering): Promise<boolean> {
     try {
       let setting = await this.init();
       setting.collectionsOrdering = _ordering;
@@ -67,7 +67,7 @@ class Setting {
     return true;
   }
 
-  static async updateDarkMode(_darkMode: boolean): Promise<Boolean> {
+  static async updateDarkMode(_darkMode: boolean): Promise<boolean> {
     try {
       let setting = await this.init();
       setting.darkMode = _darkMode;

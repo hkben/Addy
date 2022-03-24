@@ -32,7 +32,7 @@ class Collections {
     return summary;
   }
 
-  static async update(_collections: ICollection[]): Promise<Boolean> {
+  static async update(_collections: ICollection[]): Promise<boolean> {
     const collections = _collections;
     try {
       await Browser.storage.local.set({ collections });
