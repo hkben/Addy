@@ -6,6 +6,8 @@ import Setting from '../storage/setting';
 export const useDarkMode = () => {
   const [darkMode, setDarkMode] = React.useState(false);
 
+  const [loaded, setLoaded] = React.useState(false);
+
   useEffect(() => {
     getDarkMode().catch(console.error);
   }, []);
@@ -19,12 +21,15 @@ export const useDarkMode = () => {
       root.classList.remove('dark');
     }
 
-    updateDarkMode();
+    if (loaded) {
+      updateDarkMode();
+    }
   }, [darkMode]);
 
   const getDarkMode = async () => {
     let _darkMode = await Setting.fetchDarkMode();
     setDarkMode(_darkMode);
+    setLoaded(true);
   };
 
   const updateDarkMode = async () => {
