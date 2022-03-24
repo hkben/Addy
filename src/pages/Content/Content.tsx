@@ -11,6 +11,7 @@ import { Collection, Collections, Storage } from '../../common/storage';
 import CollectionButton from './modules/CollectionButton';
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
+import { useSortCollections } from '../../common/hook/useSortCollections';
 
 function Content(props: ISetting) {
   const [selection, setSelection] = React.useState({
@@ -35,9 +36,11 @@ function Content(props: ISetting) {
     [] as ICollectionSummary[]
   );
 
-  const [filteredCollections, setFilteredCollections] = React.useState<
-    ICollectionSummary[]
-  >([] as ICollectionSummary[]);
+  const sortedCollections = useSortCollections(
+    collections,
+    props.collectionsOrdering,
+    searchKeyword
+  );
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -45,6 +48,23 @@ function Content(props: ISetting) {
     x: 0,
     y: 0,
   });
+
+  useEffect(() => {
+    if (searchKeyword.length == 0) {
+      return;
+    }
+
+    let sameName = _.filter(
+      sortedCollections,
+      (o) => o.name.toLowerCase() == searchKeyword.toLowerCase()
+    );
+
+    if (sameName.length == 0) {
+      setNewCollectionButton(true);
+    } else {
+      setNewCollectionButton(false);
+    }
+  }, [sortedCollections]);
 
   const getWebpageTitle = async () => {
     let domRect = new DOMRect(mousePos.current.x, mousePos.current.y, 0, 0);
@@ -54,7 +74,6 @@ function Content(props: ISetting) {
     )) as ICollectionSummary[];
 
     setCollections(_collections);
-    sortAndSetFilteredCollections(_collections);
     setNewCollectionButton(false);
     setSelection({ content: document.title, type: 'bookmark' });
     showBox(domRect);
@@ -73,7 +92,6 @@ function Content(props: ISetting) {
     )) as ICollectionSummary[];
 
     setCollections(_collections);
-    sortAndSetFilteredCollections(_collections);
     setNewCollectionButton(false);
     setSelection({ content: _url, type: 'image' });
     showBox(domRect);
@@ -100,7 +118,6 @@ function Content(props: ISetting) {
     )) as ICollectionSummary[];
 
     setCollections(_collections);
-    sortAndSetFilteredCollections(_collections);
     setNewCollectionButton(false);
     setSelection({ content: selection, type: 'text' });
     showBox(rect);
@@ -213,56 +230,6 @@ function Content(props: ISetting) {
     let value = event.target.value;
 
     setSearchKeyword(value);
-
-    if (value.length == 0) {
-      sortAndSetFilteredCollections(collections);
-      setNewCollectionButton(false);
-      return;
-    }
-
-    let filtered = _.filter(collections, (o) =>
-      o.name.toLowerCase().includes(value.toLowerCase())
-    );
-
-    let sameName = _.filter(
-      filtered,
-      (o) => o.name.toLowerCase() == value.toLowerCase()
-    );
-
-    if (sameName.length > 0) {
-      setNewCollectionButton(false);
-    } else {
-      setNewCollectionButton(true);
-    }
-
-    sortAndSetFilteredCollections(filtered);
-  };
-
-  const sortAndSetFilteredCollections = (
-    _collections: ICollectionSummary[]
-  ) => {
-    if (props.collectionsOrdering.type == SortElement.Name) {
-      _collections = _.sortBy(_collections, (o) => o.name);
-      _collections = _.reverse(_collections);
-    }
-
-    if (props.collectionsOrdering.type == SortElement.Items) {
-      _collections = _.sortBy(_collections, (o) => o.items);
-    }
-
-    if (props.collectionsOrdering.type == SortElement.CreateTime) {
-      _collections = _.sortBy(_collections, (o) => o.createTime);
-    }
-
-    if (props.collectionsOrdering.type == SortElement.ModifyTime) {
-      _collections = _.sortBy(_collections, (o) => o.modifyTime);
-    }
-
-    if (props.collectionsOrdering.descending) {
-      _collections = _.reverse(_collections);
-    }
-
-    setFilteredCollections(_collections);
   };
 
   return (
@@ -302,7 +269,7 @@ function Content(props: ISetting) {
             </div>
 
             <div className="bp-collections-list">
-              {filteredCollections.map((collection, index) => {
+              {sortedCollections.map((collection, index) => {
                 return (
                   <CollectionButton
                     key={index}
