@@ -1,27 +1,26 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
 import { ICollection } from '../interface';
+import Collections from './collections';
 import Storage from './storage';
 
 class CollectionItem {
-  static async delete(_collectionId: string, _itemId: string) {
-    try {
-      let localStorage = await Storage.fetch();
-      let collections = localStorage.collections as ICollection[];
+  static async delete(
+    _collectionId: string,
+    _itemId: string
+  ): Promise<Boolean> {
+    const collections = await Collections.fetch();
 
-      let collectionIndex = _.findIndex(
-        collections,
-        (o) => o.id == _collectionId
-      )!;
+    let collectionIndex = _.findIndex(
+      collections,
+      (o) => o.id == _collectionId
+    )!;
 
-      _.remove(collections[collectionIndex].items, (o) => o.id == _itemId);
+    _.remove(collections[collectionIndex].items, (o) => o.id == _itemId);
 
-      Browser.storage.local.set(localStorage);
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
-    return true;
+    let result = await Collections.update(collections);
+
+    return result;
   }
 }
 
