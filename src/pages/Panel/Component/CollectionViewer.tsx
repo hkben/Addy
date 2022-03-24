@@ -1,6 +1,15 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
-import { ICollection, ICollectionItem } from '../../../common/interface';
-import { Collection, CollectionItem, Storage } from '../../../common/storage';
+import {
+  ICollection,
+  ICollectionItem,
+  IViewingOption,
+} from '../../../common/interface';
+import {
+  Collection,
+  CollectionItem,
+  Setting,
+  Storage,
+} from '../../../common/storage';
 import { Column, useSortBy, useTable } from 'react-table';
 import CollectionViewerTable from './CollectionViewerTable';
 import _ from 'lodash';
@@ -28,6 +37,19 @@ function CollectionViewer(props: Prop) {
     image: 0,
     bookmark: 0,
   });
+
+  const [viewingOption, setViewingOption] = React.useState<IViewingOption>(
+    {} as IViewingOption
+  );
+
+  useEffect(() => {
+    const getViewingOption = async () => {
+      let _viewingOption = await Setting.fetchViewingOption();
+      setViewingOption(_viewingOption);
+    };
+
+    getViewingOption().catch(console.error);
+  }, []);
 
   const data = React.useMemo(() => {
     if (collection.items == null) {
