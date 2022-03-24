@@ -57,7 +57,7 @@ class Setting {
 
   static async updateOrdering(_ordering: IOrdering): Promise<boolean> {
     try {
-      let setting = await this.init();
+      let setting = await this.fetch();
       setting.collectionsOrdering = _ordering;
       this.update(setting);
     } catch (e) {
@@ -69,7 +69,7 @@ class Setting {
 
   static async updateDarkMode(_darkMode: boolean): Promise<boolean> {
     try {
-      let setting = await this.init();
+      let setting = await this.fetch();
       setting.darkMode = _darkMode;
       this.update(setting);
     } catch (e) {
