@@ -7,41 +7,15 @@ import Home from './Home';
 import Import from './Import';
 import Settings from './Settings';
 import { Setting, Storage } from '../../../common/storage';
+import { useDarkMode } from '../../../common/hook/useDarkMode';
 
 function Panel() {
-  const [darkMode, setDarkMode] = React.useState(false);
-
-  useEffect(() => {
-    const getSetting = async () => {
-      let setting = await Setting.fetch();
-
-      if (setting.darkMode) {
-        setDarkMode(true);
-      }
-    };
-
-    getSetting().catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-
-    if (darkMode) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [darkMode]);
+  const [darkMode, setDarkMode] = useDarkMode();
 
   const toggleDarkMode = async (event: React.MouseEvent<HTMLDivElement>) => {
     let _darkMode = darkMode ? false : true;
 
     setDarkMode(_darkMode);
-
-    let setting = await Setting.fetch();
-    setting.darkMode = _darkMode;
-
-    await Setting.update(setting);
   };
 
   return (
