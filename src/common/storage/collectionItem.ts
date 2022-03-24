@@ -17,6 +17,7 @@ class CollectionItem {
     )!;
 
     _.remove(collections[collectionIndex].items, (o) => o.id == _itemId);
+    collections[collectionIndex].modifyTime = new Date().toISOString();
 
     let result = await Collections.update(collections);
 
