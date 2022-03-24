@@ -17,6 +17,7 @@ import Common from '../common';
 import Settings from '../Panel/Component/Settings';
 import _ from 'lodash';
 import { useSortCollections } from '../../common/hook/useSortCollections';
+import { useDarkMode } from '../../common/hook/useDarkMode';
 
 function Popup() {
   const [text, setText] = React.useState<string>('');
@@ -38,7 +39,7 @@ function Popup() {
     setCollections(_collections);
   };
 
-  const [darkMode, setDarkMode] = React.useState(false);
+  const [darkMode, setDarkMode] = useDarkMode();
 
   const [ordering, setOrdering] = React.useState<IOrdering>({} as IOrdering);
 
@@ -49,17 +50,7 @@ function Popup() {
   );
 
   useEffect(() => {
-    const root = window.document.documentElement;
-
-    if (darkMode) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [darkMode]);
-
-  useEffect(() => {
-    getSetting().catch(console.error);
+    getOrdering().catch(console.error);
     getCollectionsSummary().catch(console.error);
   }, []);
 
@@ -80,13 +71,9 @@ function Popup() {
     }
   }, [sortedCollections]);
 
-  const getSetting = async () => {
-    let _setting = await Setting.fetch();
-    setOrdering(_setting.collectionsOrdering);
-
-    if (_setting.darkMode) {
-      setDarkMode(true);
-    }
+  const getOrdering = async () => {
+    let _ordering = await Setting.fetchOrdering();
+    setOrdering(_ordering);
   };
 
   const saveTextToCollection = async (name: string) => {
@@ -129,11 +116,6 @@ function Popup() {
     let _darkMode = darkMode ? false : true;
 
     setDarkMode(_darkMode);
-
-    let setting = await Setting.fetch();
-    setting.darkMode = _darkMode;
-
-    await Setting.update(setting);
   };
 
   const newCollectionAndSave = async () => {
