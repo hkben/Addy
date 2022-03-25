@@ -5,6 +5,8 @@ import { Collections, Storage } from '../../../common/storage';
 function Import() {
   const [json, setJson] = React.useState<string>('');
 
+  const [isReplace, setIsReplace] = React.useState<boolean>(false);
+
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     let value = event.target.value;
     setJson(value);
@@ -21,11 +23,24 @@ function Import() {
     updateCollections(storage.collections);
   };
 
+  const handleReplaceChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setIsReplace(event.target.checked);
+  };
+
   const updateCollections = async (_collections: ICollection[]) => {
-    let result = await Collections.import(_collections);
+    let result: boolean = false;
+
+    if (isReplace) {
+      result = await Collections.update(_collections);
+    } else {
+      result = await Collections.import(_collections);
+    }
 
     if (result) {
       setJson('');
+      setIsReplace(false);
     }
   };
 
@@ -54,6 +69,16 @@ function Import() {
         >
           Import
         </button>
+
+        <div className="inline text-base p-4">
+          <input
+            type="checkbox"
+            className="w-4 h-4 border border-gray-200 rounded-md"
+            checked={isReplace}
+            onChange={handleReplaceChange}
+          />
+          <span className="ml-3 font-medium">Replace</span>
+        </div>
       </div>
     </div>
   );
