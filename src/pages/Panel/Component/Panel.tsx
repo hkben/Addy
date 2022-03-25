@@ -63,7 +63,7 @@ function Panel() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="setting" element={<Settings />}>
-            <Route index element={<Export />} />
+            <Route index element={<General />} />
             <Route path="general" element={<General />} />
             <Route path="export" element={<Export />} />
             <Route path="import" element={<Import />} />
