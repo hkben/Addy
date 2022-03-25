@@ -49,7 +49,7 @@ function Import() {
         />
 
         <button
-          className="p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+          className="my-2 p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
           onClick={handleImport}
         >
           Import
