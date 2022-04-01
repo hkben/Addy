@@ -73,6 +73,14 @@ function General() {
     }));
   };
 
+  const clearData = async () => {
+    let result = await Storage.clear();
+
+    if (result) {
+      document.location.reload();
+    }
+  };
+
   return (
     <div>
       <p className="text-3xl py-2">General</p>
@@ -129,6 +137,27 @@ function General() {
               checked={setting.quickSearch}
               onChange={handleQuickSearchCheckbox}
             />
+          </div>
+        </div>
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">Clear Data</p>
+            Remove the data and reset it to a clean install
+          </div>
+          <div className="w-1/3 my-auto text-center">
+            <button
+              className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+              onClick={() => {
+                const confirmBox = window.confirm(
+                  'Do you really want to clear all data?'
+                );
+                if (confirmBox === true) {
+                  clearData();
+                }
+              }}
+            >
+              Clear
+            </button>
           </div>
         </div>
       </div>

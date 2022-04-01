@@ -30,6 +30,13 @@ class Storage {
 
     await Browser.storage.local.set(storageObj);
   }
+
+  static async clear() {
+    await Browser.storage.local.clear();
+    await this.onInstallCheck();
+
+    return true;
+  }
 }
 
 export default Storage;
