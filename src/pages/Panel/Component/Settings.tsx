@@ -18,6 +18,12 @@ class Settings extends React.Component<{}> {
             <li className="py-1">
               <Link to="import">Import</Link>
             </li>
+            <li className="py-1">
+              <Link to="welcome">Welcome Page</Link>
+            </li>
+            <li className="py-1">
+              <Link to="information">Information</Link>
+            </li>
           </ul>
         </div>
 

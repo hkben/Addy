@@ -8,6 +8,9 @@ import Import from './Import';
 import Settings from './Settings';
 import { Setting, Storage } from '../../../common/storage';
 import { useDarkMode } from '../../../common/hook/useDarkMode';
+import Info from './Information';
+import Information from './Information';
+import Welcome from './Welcome';
 
 function Panel() {
   const [darkMode, setDarkMode] = useDarkMode();
@@ -67,6 +70,8 @@ function Panel() {
             <Route path="general" element={<General />} />
             <Route path="export" element={<Export />} />
             <Route path="import" element={<Import />} />
+            <Route path="welcome" element={<Welcome />} />
+            <Route path="information" element={<Information />} />
           </Route>
         </Routes>
       </div>
