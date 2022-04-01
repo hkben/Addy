@@ -44,62 +44,69 @@ class Collections {
     return true;
   }
 
-  static async import(_collections: ICollection[]) {
+  static async import(_importCollections: ICollection[]) {
     try {
-      let localStorage = await Storage.fetch();
+      let collections = await this.fetch();
 
-      _collections.forEach((collection) => {
+      _importCollections.forEach((importCollection) => {
         //find if collection if exists
         let collectionIndex = _.findIndex(
-          localStorage.collections,
-          (o) => o.id == collection.id
+          collections,
+          (o) => o.id == importCollection.id
         )!;
 
         if (collectionIndex == -1) {
-          localStorage.collections.push(collection);
+          collections.push(importCollection);
           return;
         }
 
+        let collection = collections[collectionIndex];
+
         //Add createTime and modifyTime to collection if not valid
-        if (moment(collection.createTime, ISO_8601).isValid() == false) {
-          localStorage.collections[
-            collectionIndex
-          ].createTime = new Date().toISOString();
+        if (moment(importCollection.createTime, ISO_8601).isValid() == false) {
+          collection.createTime = new Date().toISOString();
         }
 
-        if (moment(collection.modifyTime, ISO_8601).isValid() == false) {
-          localStorage.collections[
-            collectionIndex
-          ].modifyTime = new Date().toISOString();
+        if (moment(importCollection.modifyTime, ISO_8601).isValid() == false) {
+          collection.modifyTime = new Date().toISOString();
         }
 
-        collection.items.forEach((item) => {
+        if (importCollection.modifyTime > collection.modifyTime) {
+          //if import one is newer
+          collection.modifyTime = importCollection.modifyTime;
+          collection.name = importCollection.name;
+        }
+
+        importCollection.items.forEach((importItem) => {
           //find if item if exists in collection
           let itemIndex = _.findIndex(
-            localStorage.collections[collectionIndex].items,
-            (o) => o.id == item.id
+            collection.items,
+            (o) => o.id == importItem.id
           )!;
 
           //Add createTime and modifyTime to item if not valid
-          if (moment(item.createTime, ISO_8601).isValid() == false) {
-            item.createTime = new Date().toISOString();
+          if (moment(importItem.createTime, ISO_8601).isValid() == false) {
+            importItem.createTime = new Date().toISOString();
           }
 
-          if (moment(item.modifyTime, ISO_8601).isValid() == false) {
-            item.modifyTime = new Date().toISOString();
+          if (moment(importItem.modifyTime, ISO_8601).isValid() == false) {
+            importItem.modifyTime = new Date().toISOString();
           }
 
           if (itemIndex == -1) {
-            localStorage.collections[collectionIndex].items.push(item);
+            collection.items.push(importItem);
             return;
           }
 
-          //Replace item if exists
-          localStorage.collections[collectionIndex].items[itemIndex] = item;
+          if (importItem.modifyTime > collection.items[itemIndex].modifyTime) {
+            //if import one is newer
+            //Replace item if exists
+            collection.items[itemIndex] = importItem;
+          }
         });
       });
 
-      Browser.storage.local.set(localStorage);
+      await this.update(collections);
     } catch (e) {
       return false;
     }
