@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { useEffect } from 'react';
-import { Storage } from '../../../common/storage';
+import { Collections } from '../../../common/storage';
 
 interface State {
   json: string;
@@ -14,8 +14,8 @@ function Export() {
   }, []);
 
   const updateCollections = async () => {
-    let storage = await Storage.fetch();
-    let _json = JSON.stringify(storage);
+    let collections = await Collections.fetch();
+    let _json = JSON.stringify(collections);
     setJson(_json);
   };
 
