@@ -14,6 +14,7 @@ import {
   Storage,
 } from '../../../common/storage';
 import CollectionViewer from './CollectionViewer';
+import Welcome from './Welcome';
 
 interface State {
   collections: ICollectionSummary[];
@@ -216,7 +217,7 @@ function Home() {
             callback={loadCollectionsList}
           />
         ) : (
-          ''
+          <Welcome />
         )}
       </div>
     </div>
