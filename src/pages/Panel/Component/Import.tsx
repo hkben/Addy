@@ -19,8 +19,8 @@ function Import() {
       return;
     }
 
-    const storage: IStorage = JSON.parse(json);
-    updateCollections(storage.collections);
+    const collections: ICollection[] = JSON.parse(json);
+    updateCollections(collections);
   };
 
   const handleReplaceChange = async (
