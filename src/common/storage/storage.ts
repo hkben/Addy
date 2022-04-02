@@ -4,22 +4,7 @@ import { ICollection, ISetting, IStorage } from '../interface';
 import Setting from './setting';
 
 class Storage {
-  static async fetch(): Promise<IStorage> {
-    let localStorage = (await Browser.storage.local.get()) as IStorage;
-    return localStorage;
-  }
-
-  static async onInstallCheck() {
-    console.log('onInstallCheck');
-
-    let localStorage = (await Browser.storage.local.get()) as IStorage;
-
-    console.log(localStorage);
-
-    if (localStorage.collections != null) {
-      return;
-    }
-
+  static async init() {
     //Default Storage Data
     let storageObj: IStorage = {
       collections: [] as ICollection[],
@@ -28,7 +13,35 @@ class Storage {
 
     storageObj.setting = Setting.init();
 
-    await Browser.storage.local.set(storageObj);
+    await this.update(storageObj);
+  }
+
+  static async fetch(): Promise<IStorage> {
+    let localStorage = (await Browser.storage.local.get()) as IStorage;
+    return localStorage;
+  }
+
+  static async onInstallCheck() {
+    console.log('onInstallCheck');
+
+    let localStorage = await this.fetch();
+
+    if (localStorage.collections == null) {
+      //first installed
+      await this.init();
+      return;
+    }
+  }
+
+  static async update(_storage: IStorage): Promise<boolean> {
+    const storage = _storage;
+    try {
+      await Browser.storage.local.set(storage);
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+    return true;
   }
 
   static async clear() {
