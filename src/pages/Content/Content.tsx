@@ -180,6 +180,11 @@ function Content(props: ISetting) {
   const toggleBox = () => {
     let _isDisplay = isDisplay ? false : true;
     setIsDisplay(_isDisplay);
+
+    //Reset Search Keyword
+    if (_isDisplay == false) {
+      setSearchKeyword('');
+    }
   };
 
   const saveTextToCollection = async (name: string) => {
