@@ -3,9 +3,9 @@ import Browser from 'webextension-polyfill';
 
 import { IBrowserMessage } from '../../common/interface';
 
-const onInstalled = async () => {
-  console.log('onInstalled');
-
+const onInstalledListener = async () => {
+  //fired whem first installed, updated to a new version, and the browser updated to a new version
+  console.log('onInstalledListener');
   await Storage.onInstallCheck();
 };
 
@@ -86,7 +86,7 @@ Browser.contextMenus.create(
 
 Browser.contextMenus.create(
   {
-    title: 'Save Bookmark',
+    title: 'Save as Bookmark',
     type: 'normal',
     contexts: ['page'],
     onclick: contextMenusOnClick,
@@ -94,6 +94,6 @@ Browser.contextMenus.create(
   onContextMenusCreated
 );
 
-Browser.runtime.onInstalled.addListener(onInstalled);
+Browser.runtime.onInstalled.addListener(onInstalledListener);
 Browser.runtime.onStartup.addListener(onStartupListener);
 Browser.runtime.onMessage.addListener(onMessageListener);
