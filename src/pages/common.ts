@@ -55,6 +55,19 @@ class Common {
         return '.tiff';
     }
   }
+
+  static versionCompare(_versionA: string, _versionB: string): boolean {
+    let versionA = _versionA.split('.');
+    let versionB = _versionB.split('.');
+
+    for (let i = 0; i < versionA.length; i++) {
+      if (versionA[i] < versionB[i]) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 }
 
 export default Common;

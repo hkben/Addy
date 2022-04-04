@@ -38,6 +38,17 @@ class Storage {
       await this.init();
       return;
     }
+
+    const isInstallingNewVersion = Common.versionCompare(
+      installedVersion,
+      version
+    );
+
+    if (isInstallingNewVersion == false) {
+      return;
+    }
+
+    //Version Migration
   }
 
   static async update(_storage: IStorage): Promise<boolean> {
