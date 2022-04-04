@@ -7,6 +7,7 @@ const onInstalledListener = async () => {
   //fired whem first installed, updated to a new version, and the browser updated to a new version
   console.log('onInstalledListener');
   await Storage.onInstallCheck();
+  createContextMenus();
 };
 
 const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
@@ -64,35 +65,37 @@ let contextMenusOnClick = async (
   Browser.tabs.sendMessage(tabId, message);
 };
 
-Browser.contextMenus.create(
-  {
-    title: 'Save Hightlighted Text',
-    type: 'normal',
-    contexts: ['selection'],
-    onclick: contextMenusOnClick,
-  },
-  onContextMenusCreated
-);
+let createContextMenus = () => {
+  Browser.contextMenus.create(
+    {
+      title: 'Save Hightlighted Text',
+      type: 'normal',
+      contexts: ['selection'],
+      onclick: contextMenusOnClick,
+    },
+    onContextMenusCreated
+  );
 
-Browser.contextMenus.create(
-  {
-    title: 'Save Image',
-    type: 'normal',
-    contexts: ['image'],
-    onclick: contextMenusOnClick,
-  },
-  onContextMenusCreated
-);
+  Browser.contextMenus.create(
+    {
+      title: 'Save Image',
+      type: 'normal',
+      contexts: ['image'],
+      onclick: contextMenusOnClick,
+    },
+    onContextMenusCreated
+  );
 
-Browser.contextMenus.create(
-  {
-    title: 'Save as Bookmark',
-    type: 'normal',
-    contexts: ['page'],
-    onclick: contextMenusOnClick,
-  },
-  onContextMenusCreated
-);
+  Browser.contextMenus.create(
+    {
+      title: 'Save as Bookmark',
+      type: 'normal',
+      contexts: ['page'],
+      onclick: contextMenusOnClick,
+    },
+    onContextMenusCreated
+  );
+};
 
 Browser.runtime.onInstalled.addListener(onInstalledListener);
 Browser.runtime.onStartup.addListener(onStartupListener);
