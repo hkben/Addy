@@ -66,7 +66,7 @@ export interface IOption {
 
 //Storage
 export interface IStorage {
-  // isInstalled: boolean;
+  installedVersion: string;
   collections: ICollection[];
   setting: ISetting;
 }

@@ -1,12 +1,16 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
+import Common from '../../pages/common';
 import { ICollection, ISetting, IStorage } from '../interface';
 import Setting from './setting';
 
 class Storage {
   static async init() {
+    const version = Browser.runtime.getManifest().version;
+
     //Default Storage Data
     let storageObj: IStorage = {
+      installedVersion: version,
       collections: [] as ICollection[],
       setting: {} as ISetting,
     };
@@ -26,7 +30,10 @@ class Storage {
 
     let localStorage = await this.fetch();
 
-    if (localStorage.collections == null) {
+    let version = Browser.runtime.getManifest().version;
+    let installedVersion = localStorage.installedVersion;
+
+    if (installedVersion == null) {
       //first installed
       await this.init();
       return;
