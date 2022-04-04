@@ -156,7 +156,7 @@ function General() {
                 }
               }}
             >
-              Clear
+              Clear Data
             </button>
           </div>
         </div>

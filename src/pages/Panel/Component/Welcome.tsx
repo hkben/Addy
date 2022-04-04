@@ -4,7 +4,7 @@ function Welcome() {
   return (
     <div className="container">
       <div className="text-center">
-        <div className="my-auto text-3xl font-extrabold py-40">
+        <div className="my-auto text-3xl font-extrabold py-40 rounded-md bg-gray-100 dark:bg-transparent">
           Welcome to <span className="text-blue-600">Addy</span>!
           <p className="py-4 font-bold text-lg dark:text-gray-300 text-gray-600">
             A web extension to saving content quickly for later use, and you can
@@ -12,7 +12,7 @@ function Welcome() {
           </p>
         </div>
       </div>
-      <div className="flex my-10">
+      <div className="flex my-5 py-5 rounded-md bg-gray-100 dark:bg-transparent">
         <div className="w-1/2 px-5">
           <img
             className="w-full h-full rounded-md"
@@ -30,7 +30,7 @@ function Welcome() {
           </p>
         </div>
       </div>
-      <div className="flex my-10">
+      <div className="flex my-5 py-5 rounded-md bg-gray-100 dark:bg-transparent">
         <div className="w-1/2 p-5 inline-block text-right">
           <p className="py-7 text-3xl font-extrabold">Quick Image Saving</p>
           <p className="text-xl font-bold dark:text-gray-300 text-gray-600 leading-loose">

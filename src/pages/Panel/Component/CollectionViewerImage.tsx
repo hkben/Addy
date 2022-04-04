@@ -133,7 +133,7 @@ function CollectionViewerImage({
         {data.map((item) => (
           <div
             key={item.id}
-            className="flex flex-col p-4 bg-gray-200 dark:bg-gray-700 rounded-md box-content"
+            className="flex flex-col p-2 bg-gray-200 dark:bg-gray-700 rounded-md box-content"
           >
             <div className="flex py-2 justify-start text-base font-bold">
               {moment(item.createTime).format('YYYY-MM-DD hh:mm A')}
