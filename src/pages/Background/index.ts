@@ -28,7 +28,7 @@ const onContextMenusCreated = async () => {
   console.log('onContextMenusCreated');
 };
 
-let contextMenusOnClick = async (
+let onContextMenusClicked = async (
   info: Browser.Menus.OnClickData,
   tab?: Browser.Tabs.Tab
 ) => {
@@ -68,30 +68,30 @@ let contextMenusOnClick = async (
 let createContextMenus = () => {
   Browser.contextMenus.create(
     {
+      id: 'save-text',
       title: 'Save Hightlighted Text',
       type: 'normal',
       contexts: ['selection'],
-      onclick: contextMenusOnClick,
     },
     onContextMenusCreated
   );
 
   Browser.contextMenus.create(
     {
+      id: 'save-image',
       title: 'Save Image',
       type: 'normal',
       contexts: ['image'],
-      onclick: contextMenusOnClick,
     },
     onContextMenusCreated
   );
 
   Browser.contextMenus.create(
     {
+      id: 'save-bookmark',
       title: 'Save as Bookmark',
       type: 'normal',
       contexts: ['page'],
-      onclick: contextMenusOnClick,
     },
     onContextMenusCreated
   );
@@ -100,3 +100,4 @@ let createContextMenus = () => {
 Browser.runtime.onInstalled.addListener(onInstalledListener);
 Browser.runtime.onStartup.addListener(onStartupListener);
 Browser.runtime.onMessage.addListener(onMessageListener);
+Browser.contextMenus.onClicked.addListener(onContextMenusClicked);
