@@ -8,7 +8,9 @@ import {
 import { Setting, Storage } from '../../../common/storage';
 
 function General() {
-  const [setting, setSetting] = React.useState<ISetting>({} as ISetting);
+  const [setting, setSetting] = React.useState<ISetting>(
+    Setting.init() as ISetting
+  );
 
   useEffect(() => {
     const getSetting = async () => {
