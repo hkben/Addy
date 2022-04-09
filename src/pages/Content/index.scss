@@ -97,6 +97,17 @@
       }
     }
 
+    .bp-no-collections {
+      color: var(--textColor);
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+      padding: 0.5rem 0;
+
+      p{
+        margin: 0;
+      }
+    }
+
     .bp-collections-list {
       display: flex;
       margin-top: 0.3em;

@@ -188,12 +188,19 @@ function Popup() {
         <input
           className="w-full p-2 text-sm border border-gray-200 rounded-lg box-border dark:text-white dark:border-slate-400 dark:bg-gray-900"
           id="search"
-          placeholder="Search Collection"
+          placeholder="Search or Add Collection"
           type="text"
           onChange={searchCollection}
           ref={inputRef}
         />
       </div>
+
+      {collections.length == 0 && searchKeyword == '' ? (
+        <div className="p-2 text-black text-sm dark:text-white dark:border-slate-400 dark:bg-gray-900">
+          <p>Collections not found !</p>
+          <p>Use the input box above to add to a new collection</p>
+        </div>
+      ) : null}
 
       <div className="flex flex-wrap gap-0.5 m-1">
         {sortedCollections.map((collection, index) => {

@@ -272,12 +272,19 @@ function Content(props: ISetting) {
             <div className="bp-search-box">
               <input
                 id="bp-search"
-                placeholder="Search Collection"
+                placeholder="Search or Add Collection"
                 type="text"
                 onChange={searchCollection}
                 ref={inputRef}
               />
             </div>
+
+            {collections.length == 0 && searchKeyword == '' ? (
+              <div className="bp-no-collections">
+                <p>Collections not found !</p>
+                <p>Use the input box above to add to a new collection</p>
+              </div>
+            ) : null}
 
             <div className="bp-collections-list">
               {sortedCollections.map((collection, index) => {
