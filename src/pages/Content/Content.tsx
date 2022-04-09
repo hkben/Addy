@@ -51,6 +51,7 @@ function Content(props: ISetting) {
 
   useEffect(() => {
     if (searchKeyword.length == 0) {
+      setNewCollectionButton(false);
       return;
     }
 
