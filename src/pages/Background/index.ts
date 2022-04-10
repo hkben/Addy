@@ -72,6 +72,7 @@ let createContextMenus = () => {
       title: 'Save Hightlighted Text',
       type: 'normal',
       contexts: ['selection'],
+      documentUrlPatterns: ['http://*/*', 'https://*/*'],
     },
     onContextMenusCreated
   );
@@ -82,6 +83,7 @@ let createContextMenus = () => {
       title: 'Save Image',
       type: 'normal',
       contexts: ['image'],
+      documentUrlPatterns: ['http://*/*', 'https://*/*'],
     },
     onContextMenusCreated
   );
@@ -92,6 +94,7 @@ let createContextMenus = () => {
       title: 'Save as Bookmark',
       type: 'normal',
       contexts: ['page'],
+      documentUrlPatterns: ['http://*/*', 'https://*/*'],
     },
     onContextMenusCreated
   );
