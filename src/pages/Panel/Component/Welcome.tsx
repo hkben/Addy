@@ -16,32 +16,84 @@ function Welcome() {
         <div className="w-1/2 px-5">
           <img
             className="w-full h-full rounded-md"
-            src="img/welcome/preview.gif"
+            src="img/welcome/text.gif"
           />
         </div>
         <div className="w-1/2 p-5 inline-block">
           <p className="py-7 text-3xl font-extrabold">Quick Text Saving</p>
-          <p className="text-xl font-bold dark:text-gray-300 text-gray-600 leading-loose">
+          <p className="text-xl font-bold dark:text-gray-300 text-gray-600">
             <span className="bg-blue-500 font-white font-semibold text-white">
               Highlight
             </span>{' '}
             Text you want to save, Open Context Menu and "Save Hightlighted
             Text"
           </p>
+          <p className="py-10 font-bold dark:text-gray-300 text-gray-600">
+            * This menu item only appears outside of this panel
+          </p>
         </div>
       </div>
       <div className="flex my-5 py-5 rounded-md bg-gray-100 dark:bg-transparent">
         <div className="w-1/2 p-5 inline-block text-right">
           <p className="py-7 text-3xl font-extrabold">Quick Image Saving</p>
-          <p className="text-xl font-bold dark:text-gray-300 text-gray-600 leading-loose">
+          <p className="text-xl font-bold dark:text-gray-300 text-gray-600">
             Hover on a image, Open Context Menu and "Save Image".
+          </p>
+          <p className="py-10 font-bold dark:text-gray-300 text-gray-600">
+            * This menu item only appears outside of this panel
           </p>
         </div>
         <div className="w-1/2 px-5">
           <img
             className="w-full h-full rounded-md"
-            src="img/welcome/preview-2.gif"
+            src="img/welcome/image.gif"
           />
+        </div>
+      </div>
+      <div className="flex my-5 py-5 rounded-md bg-gray-100 dark:bg-transparent">
+        <div className="w-1/2 px-5">
+          <img
+            className="w-full h-full rounded-md"
+            src="img/welcome/bookmark.gif"
+          />
+        </div>
+        <div className="w-1/2 p-5 inline-block">
+          <p className="py-7 text-3xl font-extrabold">Quick Bookmark</p>
+          <p className="text-xl font-bold dark:text-gray-300 text-gray-600">
+            Open Context Menu everywhere in the page and "Save as Bookmark".
+          </p>
+          <p className="py-10 font-bold dark:text-gray-300 text-gray-600">
+            * This menu item only appears outside of this panel
+          </p>
+        </div>
+      </div>
+      <div className="flex my-5 py-5 rounded-md bg-gray-100 dark:bg-transparent">
+        <div className="w-1/2 p-5 inline-block text-right">
+          <p className="py-7 text-3xl font-extrabold">Custom Text Saving</p>
+          <p className="text-xl font-bold dark:text-gray-300 text-gray-600">
+            Saving any text with a click quickly.
+          </p>
+        </div>
+        <div className="w-1/2 px-5">
+          <img
+            className="w-full h-full rounded-md"
+            src="img/welcome/popup.gif"
+          />
+        </div>
+      </div>
+
+      <div className="flex my-5 py-5 rounded-md bg-gray-100 dark:bg-transparent">
+        <div className="w-1/2 px-5">
+          <img
+            className="w-full h-full rounded-md"
+            src="img/welcome/darkmode.gif"
+          />
+        </div>
+        <div className="w-1/2 p-5 inline-block">
+          <p className="py-7 text-3xl font-extrabold">Dark Mode</p>
+          <p className="text-xl font-bold dark:text-gray-300 text-gray-600">
+            Switching between light and dark modes with a single click.
+          </p>
         </div>
       </div>
     </div>
