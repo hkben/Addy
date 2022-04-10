@@ -26,6 +26,16 @@ function Information() {
               <li>
                 <a href="https://github.com/hkben/Addy">Github</a>
               </li>
+              <li>
+                <a href="https://addons.mozilla.org/zh-TW/firefox/addon/addy/">
+                  Firefox Add-ons
+                </a>
+              </li>
+              <li>
+                <a href="https://chrome.google.com/webstore/detail/addy/aeopkajhbaodnaelhbblokdngiapbglk">
+                  Chrome Web Store
+                </a>
+              </li>
             </ul>
           </div>
         </div>
