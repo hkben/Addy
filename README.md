@@ -10,6 +10,7 @@ Maybe sometime you just keep the tab for some keywords you want , but copy and p
 
 ![Preview](./image/preview.gif)
 ![Preview 2](./image/preview-2.gif)
+![Panel](./image/panel.jpg)
 
 This browser extensions creates a quick method to categorize and save the keywords that you want to a temporary area for later use, and you can focus on killing your tabs.
 
@@ -21,13 +22,17 @@ This browser extensions creates a quick method to categorize and save the keywor
 - Import / Export Data
 - Dark Mode
 
+## Download
+
+[<img src="./image/chrome.png">](https://chrome.google.com/webstore/detail/addy/aeopkajhbaodnaelhbblokdngiapbglk)
+[<img src="./image/firefox.png">](https://addons.mozilla.org/zh-TW/firefox/addon/addy/)
+
 ## FAQ
 
 _Why not just use the web clipper that come with Note-Taking Apps?_
 
 Many web clipper required you to login to your Note-Taking app account. It means you cannot use them in Incognito Mode / Private Browsing or other profiles / browsers that you don't want to login to your account. We hope this tool can works without login.
 
-## Planning
+## Support
 
-- Sync between Browsers using WebDAV
-- Backup
+[<img src="./image/bmac.png">](https://www.buymeacoffee.com/hkben)
