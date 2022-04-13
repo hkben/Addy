@@ -32,7 +32,13 @@ function Home() {
 
   const [ordering, setOrdering] = React.useState<IOrdering>({} as IOrdering);
 
-  const sortedCollections = useSortCollections(collections, ordering);
+  const [searchKeyword, setSearchKeyword] = React.useState<string>('');
+
+  const sortedCollections = useSortCollections(
+    collections,
+    ordering,
+    searchKeyword
+  );
 
   useEffect(() => {
     getOrdering().catch(console.error);
@@ -112,13 +118,21 @@ function Home() {
     }));
   };
 
+  const searchCollection = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let value = event.target.value;
+    setSearchKeyword(value);
+  };
+
   return (
     <div className="container w-full flex flex-wrap mx-auto px-2 m-16">
       <div className="w-full lg:w-1/5 lg:px-6 text-xl text-gray-800 leading-normal dark:text-gray-50">
-        <form onSubmit={newCollectionSubmit} className="flex gap-2 py-5">
+        <p className="font-bold underline underline-offset-auto">Collections</p>
+
+        <form onSubmit={newCollectionSubmit} className="pt-3 pb-1 flex">
           <input
             className="placeholder:italic block bg-white border border-slate-300 rounded-md p-2 pr-3 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 text-sm dark:bg-gray-900 dark:text-gray-50"
-            placeholder="New Collection"
+            placeholder="Search or Add Collection"
+            onChange={searchCollection}
             ref={newCollectionInput}
           />
 
@@ -140,9 +154,7 @@ function Home() {
           </button>
         </form>
 
-        <p className="font-bold underline underline-offset-auto">Collections</p>
-
-        <div className="py-4 my-auto text-sm">
+        <div className="pt-1 pb-3 my-auto text-sm">
           <select
             className="h-10 px-4 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
             id="spaceing"
