@@ -7,8 +7,13 @@ interface Prop {
 }
 
 function CollectionButton(props: Prop) {
+  let _color = props.collection.color || 0;
+
   return (
-    <div className="bp-collection-button" onClick={props.onClick}>
+    <div
+      className={`bp-collection-button color-${_color}`}
+      onClick={props.onClick}
+    >
       <span>{props.collection.name}</span>
       {props.collection.isExists == true ? (
         <svg

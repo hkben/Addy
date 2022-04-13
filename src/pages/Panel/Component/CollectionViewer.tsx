@@ -144,6 +144,18 @@ function CollectionViewer(props: Prop) {
     setCollectionType(_type);
   };
 
+  const handleColorClick = async (_color: number) => {
+    let result = await Collection.updateColor(props.collection, _color);
+
+    if (result) {
+      await props.callback();
+      setCollection({
+        ...collection,
+        color: _color,
+      });
+    }
+  };
+
   return (
     <div>
       <div className="w-full py-5 flex gap-2.5">
@@ -242,6 +254,51 @@ function CollectionViewer(props: Prop) {
             />
           </svg>
         </button>
+
+        <div
+          className={`${
+            collection.color == 0 || collection.color == null
+              ? ''
+              : 'border-dotted '
+          } rounded-full my-auto h-6 w-6 cursor-pointer bg-transparent border-2 border-gray-700 dark:border-white`}
+          onClick={() => handleColorClick(0)}
+        ></div>
+        <div
+          className={`${
+            collection.color == 1 ? 'active-color' : ''
+          } rounded-full my-auto h-6 w-6 cursor-pointer color-1`}
+          onClick={() => handleColorClick(1)}
+        ></div>
+        <div
+          className={`${
+            collection.color == 2 ? 'active-color' : ''
+          } rounded-full my-auto h-6 w-6 cursor-pointer color-2`}
+          onClick={() => handleColorClick(2)}
+        ></div>
+        <div
+          className={`${
+            collection.color == 3 ? 'active-color' : ''
+          } rounded-full my-auto h-6 w-6 cursor-pointer color-3`}
+          onClick={() => handleColorClick(3)}
+        ></div>
+        <div
+          className={`${
+            collection.color == 4 ? 'active-color' : ''
+          } rounded-full my-auto h-6 w-6 cursor-pointer color-4`}
+          onClick={() => handleColorClick(4)}
+        ></div>
+        <div
+          className={`${
+            collection.color == 5 ? 'active-color' : ''
+          } rounded-full my-auto h-6 w-6 cursor-pointer color-5`}
+          onClick={() => handleColorClick(5)}
+        ></div>
+        <div
+          className={`${
+            collection.color == 6 ? 'active-color' : ''
+          } rounded-full my-auto h-6 w-6 cursor-pointer color-6`}
+          onClick={() => handleColorClick(6)}
+        ></div>
       </div>
 
       <div className="w-2/3 items-center text-xs rounded-md">

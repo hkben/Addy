@@ -108,6 +108,18 @@ class Collection {
     let result = await Collections.update(collections);
     return result;
   }
+
+  static async updateColor(_collectionId: string, _color: number) {
+    const collections = await Collections.fetch();
+
+    let index = _.findIndex(collections, (o) => o.id == _collectionId)!;
+
+    collections[index].color = _color;
+    collections[index].modifyTime = new Date().toISOString();
+
+    let result = await Collections.update(collections);
+    return result;
+  }
 }
 
 export default Collection;

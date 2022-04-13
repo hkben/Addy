@@ -20,4 +20,37 @@
   .btn-block {
     @apply btn w-1/2 mx-auto my-2;
   }
+
+  .color-0{
+    @apply bg-blue-500 hover:bg-blue-600
+  }
+
+  .color-1{
+    @apply bg-rose-500 hover:bg-rose-600
+  }
+
+  .color-2{
+    @apply bg-orange-500 hover:bg-orange-600
+  }
+
+  .color-3{
+    @apply bg-yellow-500 hover:bg-yellow-600
+  }
+
+  .color-4{
+    @apply bg-green-500 hover:bg-green-600
+  }
+
+  .color-5{
+    @apply bg-indigo-500 hover:bg-indigo-600
+  }
+
+  .color-6{
+    @apply bg-purple-500 hover:bg-purple-600
+  }
+
+  .active-color{
+    @apply border-2 border-gray-700 dark:border-white
+  }
+
 }

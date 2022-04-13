@@ -11,6 +11,7 @@ export interface ICollection extends DataDateTime {
   id: string;
   name: string;
   items: ICollectionItem[];
+  color?: number;
 }
 
 export function CastSummary(
@@ -21,6 +22,7 @@ export function CastSummary(
     id: _collection.id,
     name: _collection.name,
     items: _collection.items.length,
+    color: _collection.color,
     createTime: _collection.createTime,
     modifyTime: _collection.modifyTime,
   };
@@ -53,6 +55,7 @@ export interface ICollectionSummary extends DataDateTime {
   id: string;
   name: string;
   items: number;
+  color?: number;
   isExists?: boolean;
 }
 

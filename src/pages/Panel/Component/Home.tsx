@@ -203,6 +203,13 @@ function Home() {
                 <p>
                   {collection.name}
                   <span className="text-sm"> ({collection.items})</span>
+                  {collection.color != null && collection.color != 0 ? (
+                    <span
+                      className={`mx-1 rounded-full inline-block h-3 w-3 color-${collection.color}`}
+                    ></span>
+                  ) : (
+                    ''
+                  )}
                 </p>
               </li>
             );

@@ -7,9 +7,11 @@ interface Prop {
 }
 
 function CollectionButton(props: Prop) {
+  let _color = props.collection.color || 0;
+
   return (
     <div
-      className="inline-flex text-sm font-medium pt-1 pb-1 pl-3 pr-3 bg-blue-500 text-white items-center rounded-full border border-blue-600 border-solid cursor-pointer hover:bg-blue-600"
+      className={`color-${_color} inline-flex text-sm font-medium pt-1 pb-1 pl-3 pr-3 text-white items-center rounded-full cursor-pointer`}
       onClick={props.onClick}
     >
       <span>{props.collection.name}</span>
