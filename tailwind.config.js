@@ -2,6 +2,9 @@ module.exports = {
   content: ['./src/pages/**/*.{ts,tsx,html}'],
   safelist: [
     {
+      pattern: /color-*/,
+    },
+    {
       pattern: /grid-cols-*/,
     },
   ],
