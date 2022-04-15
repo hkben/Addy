@@ -39,6 +39,17 @@ function CollectionViewerTable({
             return '<Base64 Image>';
           }
 
+          if (row.type == 'image') {
+            let extension = row.content.match(/\.(jpeg|jpg|gif|png)$/);
+            let type = 'Unknown';
+
+            if (extension != null) {
+              type = extension[1].toUpperCase();
+            }
+            const { hostname } = new URL(row.content);
+            return `<${type} Image from ${hostname} >`;
+          }
+
           return row.content;
         },
       },
