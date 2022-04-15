@@ -16,8 +16,16 @@ class CollectionItem {
       (o) => o.id == _collectionId
     )!;
 
-    _.remove(collections[collectionIndex].items, (o) => o.id == _itemId);
-    collections[collectionIndex].modifyTime = new Date().toISOString();
+    let itemIndex = _.findIndex(
+      collections[collectionIndex].items,
+      (o) => o.id == _itemId
+    )!;
+
+    let datetime = new Date().toISOString();
+
+    collections[collectionIndex].items[itemIndex].deleted = true;
+    collections[collectionIndex].items[itemIndex].modifyTime = datetime;
+    collections[collectionIndex].modifyTime = datetime;
 
     let result = await Collections.update(collections);
 

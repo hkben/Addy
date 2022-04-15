@@ -65,7 +65,13 @@ class Collection {
   static async delete(_collectionId: string): Promise<boolean> {
     const collections = await Collections.fetch();
 
-    _.remove(collections, (o) => o.id == _collectionId)!;
+    let collectionIndex = _.findIndex(
+      collections,
+      (o) => o.id == _collectionId
+    )!;
+
+    collections[collectionIndex].deleted = true;
+    collections[collectionIndex].modifyTime = new Date().toISOString();
 
     let result = await Collections.update(collections);
     return result;
@@ -90,8 +96,19 @@ class Collection {
   static async deleteAllItems(_collectionId: string) {
     const collections = await Collections.fetch();
 
-    let index = _.findIndex(collections, (o) => o.id == _collectionId)!;
-    collections[index].items = [];
+    let collectionIndex = _.findIndex(
+      collections,
+      (o) => o.id == _collectionId
+    )!;
+
+    let datetime = new Date().toISOString();
+
+    collections[collectionIndex].items.forEach((element) => {
+      element.deleted = true;
+      element.modifyTime = datetime;
+    });
+
+    collections[collectionIndex].modifyTime = datetime;
 
     let result = await Collections.update(collections);
     return result;

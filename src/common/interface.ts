@@ -12,6 +12,7 @@ export interface ICollection extends DataDateTime {
   name: string;
   items: ICollectionItem[];
   color?: number;
+  deleted?: boolean;
 }
 
 export function CastSummary(
@@ -25,6 +26,7 @@ export function CastSummary(
     color: _collection.color,
     createTime: _collection.createTime,
     modifyTime: _collection.modifyTime,
+    deleted: _collection.deleted,
   };
 
   if (_content != '') {
@@ -44,6 +46,7 @@ export interface ICollectionItem extends DataDateTime {
   content: string;
   type: string;
   source: string;
+  deleted?: boolean;
 }
 
 interface DataDateTime {
@@ -57,6 +60,7 @@ export interface ICollectionSummary extends DataDateTime {
   items: number;
   color?: number;
   isExists?: boolean;
+  deleted?: boolean;
 }
 
 //Option
