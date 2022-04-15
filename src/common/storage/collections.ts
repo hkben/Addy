@@ -10,7 +10,7 @@ import moment, { ISO_8601 } from 'moment';
 import Storage from './storage';
 
 class Collections {
-  static async fetch(): Promise<ICollection[]> {
+  static async fetch(_includeDeleted: boolean = false): Promise<ICollection[]> {
     let collections: ICollection[] = [];
 
     try {
@@ -26,9 +26,17 @@ class Collections {
     return collections;
   }
 
-  static async fetchSummary(_text: string = ''): Promise<ICollectionSummary[]> {
+  static async fetchSummary(
+    _text: string = '',
+    _includeDeleted: boolean = false
+  ): Promise<ICollectionSummary[]> {
     let collections = await this.fetch();
     let summary = collections.map((o) => CastSummary(o, _text));
+
+    if (_includeDeleted == false) {
+      summary = _.filter(summary, (o) => o.deleted != true);
+    }
+
     return summary;
   }
 

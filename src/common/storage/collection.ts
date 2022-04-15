@@ -6,9 +6,17 @@ import Storage from './storage';
 import Collections from './collections';
 
 class Collection {
-  static async fetch(_collectionId: string): Promise<ICollection> {
+  static async fetch(
+    _collectionId: string,
+    _includeDeletedItem: boolean = false
+  ): Promise<ICollection> {
     const collections = await Collections.fetch();
     let collection = _.find(collections, (o) => o.id == _collectionId)!;
+
+    if (_includeDeletedItem == false) {
+      collection.items = _.filter(collection.items, (o) => o.deleted != true);
+    }
+
     return collection;
   }
 
