@@ -114,9 +114,14 @@ function CollectionViewer(props: Prop) {
   const removeAllItems = async () => {
     console.log('removeAllItems');
 
-    await Collection.deleteAllItems(collection.id);
+    let result = await Collection.deleteAllItems(collection.id);
 
-    await props.callback();
+    if (result) {
+      setCollection((prevState) => ({
+        ...prevState,
+        items: [],
+      }));
+    }
   };
 
   const removeCollection = async () => {
