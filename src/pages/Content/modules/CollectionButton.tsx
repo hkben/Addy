@@ -14,7 +14,7 @@ function CollectionButton(props: Prop) {
       className={`bp-collection-button color-${_color}`}
       onClick={props.onClick}
     >
-      <span>{props.collection.name}</span>
+      <span className="drop-shadow-lg">{props.collection.name}</span>
       {props.collection.isExists == true ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -134,6 +134,11 @@
         background-color: rgb(37 99 235);
       }
 
+      .drop-shadow-lg {
+        filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04))
+          drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+      }
+
       svg {
         display: inline;
         height: 1.25em;
