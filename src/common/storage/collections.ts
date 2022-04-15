@@ -120,6 +120,33 @@ class Collections {
     }
     return true;
   }
+
+  static async restore() {
+    let collections = await this.fetch();
+
+    let datetime = new Date().toISOString();
+
+    collections.forEach((collection) => {
+      let restored = false;
+
+      collection.items.forEach((item) => {
+        if (item.deleted) {
+          item.deleted = undefined;
+          item.modifyTime = datetime;
+          restored = true;
+        }
+      });
+
+      if (collection.deleted || restored) {
+        collection.deleted = undefined;
+        collection.modifyTime = datetime;
+      }
+    });
+
+    let result = await this.update(collections);
+
+    return result;
+  }
 }
 
 export default Collections;

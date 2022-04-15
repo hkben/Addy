@@ -5,7 +5,12 @@ import {
   IStorage,
   SortElement,
 } from '../../../common/interface';
-import { Setting, Storage } from '../../../common/storage';
+import {
+  Collection,
+  Collections,
+  Setting,
+  Storage,
+} from '../../../common/storage';
 
 function General() {
   const [setting, setSetting] = React.useState<ISetting>(
@@ -83,6 +88,14 @@ function General() {
     }
   };
 
+  const restoreDeleted = async () => {
+    let result = await Collections.restore();
+
+    if (result) {
+      document.location.reload();
+    }
+  };
+
   return (
     <div>
       <p className="text-3xl py-2">General</p>
@@ -139,6 +152,27 @@ function General() {
               checked={setting.quickSearch}
               onChange={handleQuickSearchCheckbox}
             />
+          </div>
+        </div>
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">Restore Deleted</p>
+            Restore All Deleted Collections and Items
+          </div>
+          <div className="w-1/3 my-auto text-center">
+            <button
+              className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+              onClick={() => {
+                const confirmBox = window.confirm(
+                  'Do you really want to restore all deleted collections and items?'
+                );
+                if (confirmBox === true) {
+                  restoreDeleted();
+                }
+              }}
+            >
+              Restore Deleted
+            </button>
           </div>
         </div>
         <div className="w-2/3 flex h-28">
