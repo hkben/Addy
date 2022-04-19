@@ -130,13 +130,13 @@ function Home() {
 
         <form onSubmit={newCollectionSubmit} className="pt-3 pb-1 flex">
           <input
-            className="placeholder:italic block bg-white border border-slate-300 rounded-md p-2 pr-3 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 text-sm dark:bg-gray-900 dark:text-gray-50"
+            className="w-full placeholder:italic block bg-white border border-slate-300 rounded-md p-2 pr-3 focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1 text-sm dark:bg-gray-900 dark:text-gray-50"
             placeholder="Search or Add Collection"
             onChange={searchCollection}
             ref={newCollectionInput}
           />
 
-          <button className="inline">
+          <button className="inline px-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
