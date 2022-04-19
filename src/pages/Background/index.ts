@@ -3,6 +3,8 @@ import Browser from 'webextension-polyfill';
 
 import { IBrowserMessage } from '../../common/interface';
 
+const manifest_version = Browser.runtime.getManifest().manifest_version;
+
 const onInstalledListener = async () => {
   //fired whem first installed, updated to a new version, and the browser updated to a new version
   console.log('onInstalledListener');
@@ -99,6 +101,11 @@ let createContextMenus = () => {
     onContextMenusCreated
   );
 };
+
+if (manifest_version == 2) {
+  //Version 2 would not call onInstalled on enabling extension,
+  createContextMenus();
+}
 
 Browser.runtime.onInstalled.addListener(onInstalledListener);
 Browser.runtime.onStartup.addListener(onStartupListener);
