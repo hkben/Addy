@@ -3,6 +3,9 @@ import Browser from 'webextension-polyfill';
 
 import { IBrowserMessage } from '../../common/interface';
 
+const isFirefox = Browser.runtime.getURL('').startsWith('moz-extension://');
+const isChrome = Browser.runtime.getURL('').startsWith('chrome-extension://');
+
 const manifest_version = Browser.runtime.getManifest().manifest_version;
 
 const onInstalledListener = async () => {
