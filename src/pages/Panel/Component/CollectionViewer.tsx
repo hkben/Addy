@@ -88,6 +88,8 @@ function CollectionViewer(props: Prop) {
         //_.remove return new array of removed elements
         items: _.remove(prevState.items, (o) => o.id != _itemId),
       }));
+
+      await props.callback();
     }
   };
 
