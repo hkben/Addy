@@ -19,10 +19,12 @@ export function CastSummary(
   _collection: ICollection,
   _content: string = ''
 ): ICollectionSummary {
+  let _items = _.filter(_collection.items, (o) => o.deleted == undefined);
+
   let summary: ICollectionSummary = {
     id: _collection.id,
     name: _collection.name,
-    items: _collection.items.length,
+    items: _items.length,
     color: _collection.color,
     createTime: _collection.createTime,
     modifyTime: _collection.modifyTime,
