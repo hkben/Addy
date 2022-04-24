@@ -147,6 +147,42 @@ class Collections {
 
     return result;
   }
+
+  //for Migration only
+  static async updateDeletedToDateTime() {
+    let collections = await this.fetch();
+
+    if (collections.length <= 0) {
+      return;
+    }
+
+    let datetime = new Date().toISOString();
+
+    collections.forEach((collection) => {
+      let restored = false;
+
+      collection.items.forEach((item) => {
+        if (item.deleted != undefined) {
+          item.deleted = datetime;
+          item.modifyTime = datetime;
+          restored = true;
+        }
+      });
+
+      if (restored) {
+        collection.modifyTime = datetime;
+      }
+
+      if (collection.deleted != undefined) {
+        collection.deleted = datetime;
+        collection.modifyTime = datetime;
+      }
+    });
+
+    let result = await this.update(collections);
+
+    return result;
+  }
 }
 
 export default Collections;

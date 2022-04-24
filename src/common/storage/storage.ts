@@ -39,6 +39,8 @@ class Storage {
       return;
     }
 
+    console.log(`[Migration] Instaling from ${installedVersion} to ${version}`);
+
     const isInstallingNewVersion = Common.versionCompare(
       installedVersion,
       version
@@ -49,6 +51,13 @@ class Storage {
     }
 
     //Version Migration
+    if (version == '0.0.4' && installedVersion <= '0.0.3') {
+      console.log('[Migration] Update to 0.0.4');
+      await Collections.updateDeletedToDateTime();
+    }
+
+    localStorage.installedVersion = version;
+    await this.update(localStorage);
   }
 
   static async update(_storage: IStorage): Promise<boolean> {
