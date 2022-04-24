@@ -83,6 +83,8 @@ class Collections {
           //if import one is newer
           collection.modifyTime = importCollection.modifyTime;
           collection.name = importCollection.name;
+          collection.deleted = importCollection.deleted;
+          collection.color = importCollection.color;
         }
 
         importCollection.items.forEach((importItem) => {
