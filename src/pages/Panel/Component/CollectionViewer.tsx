@@ -314,7 +314,7 @@ function CollectionViewer(props: Prop) {
             collectionType == 0
               ? 'bg-gray-200 dark:bg-gray-600'
               : 'bg-white dark:bg-gray-800'
-          } w-1/4 px-5 py-3 font-medium border rounded-l-lg border-gray-300`}
+          } w-1/4 px-5 py-3 font-semibold border rounded-l-lg border-gray-300`}
           type="button"
           onClick={() => changeType(0)}
         >
@@ -326,7 +326,7 @@ function CollectionViewer(props: Prop) {
             collectionType == 1
               ? 'bg-gray-200 dark:bg-gray-600'
               : 'bg-white dark:bg-gray-800'
-          } w-1/4 px-5 py-3 font-medium border-y border-r border-gray-300`}
+          } w-1/4 px-5 py-3 font-semibold border-y border-r border-gray-300`}
           type="button"
           onClick={() => changeType(1)}
         >
@@ -338,7 +338,7 @@ function CollectionViewer(props: Prop) {
             collectionType == 2
               ? 'bg-gray-200 dark:bg-gray-600'
               : 'bg-white dark:bg-gray-800'
-          } w-1/4 px-5 py-3 font-medium border-y border-r border-gray-300`}
+          } w-1/4 px-5 py-3 font-semibold border-y border-r border-gray-300`}
           type="button"
           onClick={() => changeType(2)}
         >
@@ -350,7 +350,7 @@ function CollectionViewer(props: Prop) {
             collectionType == 3
               ? 'bg-gray-200 dark:bg-gray-600'
               : 'bg-white dark:bg-gray-800'
-          } w-1/4 px-5 py-3 font-medium border-r border-y rounded-r-lg border-gray-300`}
+          } w-1/4 px-5 py-3 font-semibold border-r border-y rounded-r-lg border-gray-300`}
           type="button"
           onClick={() => changeType(3)}
         >

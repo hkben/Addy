@@ -77,7 +77,7 @@ function Import() {
             checked={isReplace}
             onChange={handleReplaceChange}
           />
-          <span className="ml-3 font-medium">Replace</span>
+          <span className="ml-3 font-semibold">Replace</span>
         </div>
       </div>
     </div>

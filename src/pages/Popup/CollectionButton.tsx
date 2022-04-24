@@ -11,7 +11,7 @@ function CollectionButton(props: Prop) {
 
   return (
     <div
-      className={`color-${_color} inline-flex text-sm font-medium pt-1 pb-1 pl-3 pr-3 text-white items-center rounded-full cursor-pointer`}
+      className={`color-${_color} inline-flex text-sm font-semibold pt-1 pb-1 pl-3 pr-3 text-white items-center rounded-full cursor-pointer`}
       onClick={props.onClick}
     >
       <span className="drop-shadow-lg">{props.collection.name}</span>

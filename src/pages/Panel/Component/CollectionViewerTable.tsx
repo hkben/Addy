@@ -169,7 +169,7 @@ function CollectionViewerTable({
                 handleHiddenToggle(column.id);
               }}
             />
-            <span className="ml-3 font-medium">{column.id}</span>
+            <span className="ml-3 font-semibold">{column.id}</span>
           </div>
         ))}
 

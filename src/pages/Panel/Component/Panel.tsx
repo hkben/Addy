@@ -32,7 +32,7 @@ function Panel() {
             <img src="icon-34.png" />
           </a>
 
-          <ul className="flex items-center space-x-2 text-sm font-medium text-gray-500 dark:text-gray-50">
+          <ul className="flex items-center space-x-2 text-sm font-semibold text-gray-500 dark:text-gray-50">
             <li>
               <Link to="/" className="px-3 py-2 rounded-lg cursor-pointer">
                 Home
