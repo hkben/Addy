@@ -14,7 +14,10 @@ class Collection {
     let collection = _.find(collections, (o) => o.id == _collectionId)!;
 
     if (_includeDeletedItem == false) {
-      collection.items = _.filter(collection.items, (o) => o.deleted != true);
+      collection.items = _.filter(
+        collection.items,
+        (o) => o.deleted == undefined
+      );
     }
 
     return collection;
@@ -78,8 +81,10 @@ class Collection {
       (o) => o.id == _collectionId
     )!;
 
-    collections[collectionIndex].deleted = true;
-    collections[collectionIndex].modifyTime = new Date().toISOString();
+    let datetime = new Date().toISOString();
+
+    collections[collectionIndex].deleted = datetime;
+    collections[collectionIndex].modifyTime = datetime;
 
     let result = await Collections.update(collections);
     return result;
@@ -112,7 +117,7 @@ class Collection {
     let datetime = new Date().toISOString();
 
     collections[collectionIndex].items.forEach((element) => {
-      element.deleted = true;
+      element.deleted = datetime;
       element.modifyTime = datetime;
     });
 

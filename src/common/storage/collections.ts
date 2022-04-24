@@ -34,7 +34,7 @@ class Collections {
     let summary = collections.map((o) => CastSummary(o, _text));
 
     if (_includeDeleted == false) {
-      summary = _.filter(summary, (o) => o.deleted != true);
+      summary = _.filter(summary, (o) => o.deleted == undefined);
     }
 
     return summary;

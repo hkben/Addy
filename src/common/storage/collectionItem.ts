@@ -23,7 +23,7 @@ class CollectionItem {
 
     let datetime = new Date().toISOString();
 
-    collections[collectionIndex].items[itemIndex].deleted = true;
+    collections[collectionIndex].items[itemIndex].deleted = datetime;
     collections[collectionIndex].items[itemIndex].modifyTime = datetime;
     collections[collectionIndex].modifyTime = datetime;
 
