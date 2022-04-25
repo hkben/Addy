@@ -44,7 +44,10 @@ export const syncBackgroundRun = async () => {
   }
 
   //If file on server is older than local, upload local data
-  if (moment(_syncSetting.lastSyncTime).isSameOrAfter(fileInfo.modifyTime!)) {
+  if (
+    _syncSetting.lastSyncTime != undefined &&
+    moment(_syncSetting.lastSyncTime).isSameOrAfter(fileInfo.modifyTime!)
+  ) {
     console.log('[Sync] Local Data is newer, uploading...');
     await syncProvider.createSyncFile();
   } else {
