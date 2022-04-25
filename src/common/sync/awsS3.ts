@@ -19,69 +19,36 @@ class awsS3 implements ISyncProvider {
   identityPoolId!: string;
 
   fileName: string = 'addy-sync.json';
-  syncFileInfo?: IFileInfo;
 
-  constructor() {
-    this.init().catch(console.error);
-  }
+  async init(): Promise<boolean> {
+    try {
+      let _syncSetting = await SyncSetting.fetch();
 
-  async init(): Promise<void> {
-    let _syncSetting = await SyncSetting.fetch();
+      this.bucketName = _syncSetting.awsS3_BucketName || '';
+      this.region = _syncSetting.awsS3_Region || '';
+      this.identityPoolId = _syncSetting.awsS3_IdentityPoolId || '';
 
-    this.bucketName = _syncSetting.awsS3_BucketName || '';
-    this.region = _syncSetting.awsS3_Region || '';
-    this.identityPoolId = _syncSetting.awsS3_IdentityPoolId || '';
-
-    this.s3Client = new S3Client({
-      region: this.region,
-      credentials: fromCognitoIdentityPool({
-        client: new CognitoIdentityClient({ region: this.region }),
-        identityPoolId: this.identityPoolId,
-      }),
-    });
-  }
-
-  async sync(): Promise<boolean> {
-    let _syncSetting = await SyncSetting.fetch();
-
-    await this.searchSyncFile();
-
-    //If file is not exists on server, create one
-    if (this.syncFileInfo == null) {
-      console.log('[Sync] Remote Sync File is not exists, creating...');
-      await this.createSyncFile();
+      this.s3Client = new S3Client({
+        region: this.region,
+        credentials: fromCognitoIdentityPool({
+          client: new CognitoIdentityClient({ region: this.region }),
+          identityPoolId: this.identityPoolId,
+        }),
+      });
+    } catch (e) {
+      console.error(e);
+      return false;
     }
-
-    //If file on server is older than local, upload local data
-    if (
-      moment(_syncSetting.lastSyncTime).isSameOrAfter(
-        this.syncFileInfo!.modifyTime!
-      )
-    ) {
-      console.log('[Sync] Local Data is newer, uploading...');
-      await this.createSyncFile();
-    } else {
-      console.log('[Sync] Remote Data is newer, download...');
-
-      let json = await this.getSyncFile();
-      console.log('[Sync] Importing Data...');
-
-      const collections: ICollection[] = JSON.parse(json);
-      await Collections.import(collections);
-
-      console.log('[Sync] Uploading imported Data...');
-      await this.createSyncFile();
-    }
-
-    let _datetime = new Date().toISOString();
-    await SyncSetting.updateLastSyncTime(_datetime);
-
-    console.log('[Sync] Done...');
-
     return true;
   }
 
-  async searchSyncFile(): Promise<boolean> {
+  async searchSyncFile(): Promise<IFileInfo> {
+    let result: IFileInfo = {
+      id: '',
+      name: '',
+      modifyTime: '',
+    };
+
     try {
       let response = await this.s3Client.send(
         new ListObjectsV2Command({
@@ -93,29 +60,27 @@ class awsS3 implements ISyncProvider {
       if (response.Contents && response.Contents.length > 0) {
         let file = response.Contents[0];
 
-        this.syncFileInfo = {
-          name: file.Key!,
-          id: file.ETag!,
-          modifyTime: file.LastModified!.toISOString(),
-        };
+        result.name = file.Key!;
+        result.id = file.ETag!;
+        result.modifyTime = file.LastModified!.toISOString();
       }
     } catch (e) {
       console.error(e);
-      return false;
+      return result;
     }
 
-    return true;
+    return result;
   }
 
-  async getSyncFile(): Promise<string> {
+  async getSyncFile(_file: IFileInfo): Promise<string> {
     let result: string = '';
 
     try {
       let response = await this.s3Client.send(
         new GetObjectCommand({
-          Key: this.syncFileInfo!.name,
+          Key: _file.name,
           Bucket: this.bucketName,
-          IfMatch: this.syncFileInfo!.id,
+          IfMatch: _file.id,
         })
       );
 

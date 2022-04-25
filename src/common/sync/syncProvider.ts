@@ -5,5 +5,8 @@ export interface IFileInfo {
 }
 
 export default interface ISyncProvider {
-  sync(): Promise<boolean>;
+  init(): Promise<boolean>;
+  searchSyncFile(): Promise<IFileInfo>;
+  createSyncFile(): Promise<boolean>;
+  getSyncFile(_file: IFileInfo): Promise<string>;
 }

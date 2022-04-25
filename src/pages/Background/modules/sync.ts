@@ -1,5 +1,7 @@
+import moment from 'moment';
 import Browser from 'webextension-polyfill';
-import { IBrowserMessage } from '../../../common/interface';
+import { IBrowserMessage, ICollection } from '../../../common/interface';
+import { Collections } from '../../../common/storage';
 import SyncSetting from '../../../common/storage/syncSetting';
 import AwsS3 from '../../../common/sync/awsS3';
 import SyncProvider from '../../../common/sync/syncProvider';
@@ -31,11 +33,39 @@ export const syncBackgroundRun = async () => {
     return;
   }
 
-  let result = await syncProvider.sync();
+  //Sync Logic here
+  let init = await syncProvider.init();
+  let fileInfo = await syncProvider.searchSyncFile();
 
-  if (result) {
-    Browser.runtime.sendMessage({
-      action: 'syncCompleted',
-    } as IBrowserMessage);
+  //If file is not exists on server, create one
+  if (fileInfo == null) {
+    console.log('[Sync] Remote Sync File is not exists, creating...');
+    await syncProvider.createSyncFile();
   }
+
+  //If file on server is older than local, upload local data
+  if (moment(_syncSetting.lastSyncTime).isSameOrAfter(fileInfo.modifyTime!)) {
+    console.log('[Sync] Local Data is newer, uploading...');
+    await syncProvider.createSyncFile();
+  } else {
+    console.log('[Sync] Remote Data is newer, download...');
+
+    let json = await syncProvider.getSyncFile(fileInfo);
+    console.log('[Sync] Importing Data...');
+
+    const collections: ICollection[] = JSON.parse(json);
+    await Collections.import(collections);
+
+    console.log('[Sync] Uploading imported Data...');
+    await syncProvider.createSyncFile();
+  }
+
+  let _datetime = new Date().toISOString();
+  await SyncSetting.updateLastSyncTime(_datetime);
+
+  console.log('[Sync] Done...');
+
+  Browser.runtime.sendMessage({
+    action: 'syncCompleted',
+  } as IBrowserMessage);
 };
