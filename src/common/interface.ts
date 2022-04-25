@@ -78,6 +78,7 @@ export interface IStorage {
   installedVersion: string;
   collections: ICollection[];
   setting: ISetting;
+  syncSetting: ISyncSetting;
 }
 
 //Setting
@@ -105,4 +106,14 @@ export interface IViewingOption {
   hiddenColumns: string[];
   spacing: string;
   imageColumns: number;
+}
+
+//Sync Setting
+export interface ISyncSetting {
+  enable: boolean;
+  lastSyncTime: string;
+  provider: string;
+  awsS3_Region?: string;
+  awsS3_BucketName?: string;
+  awsS3_IdentityPoolId?: string;
 }

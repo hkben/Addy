@@ -1,7 +1,8 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
 import Common from '../../pages/common';
-import { ICollection, ISetting, IStorage } from '../interface';
+import { ICollection, ISetting, IStorage, ISyncSetting } from '../interface';
+import Collections from './collections';
 import Setting from './setting';
 
 class Storage {
@@ -13,6 +14,7 @@ class Storage {
       installedVersion: version,
       collections: [] as ICollection[],
       setting: {} as ISetting,
+      syncSetting: {} as ISyncSetting,
     };
 
     storageObj.setting = Setting.init();
