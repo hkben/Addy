@@ -11,6 +11,7 @@ import { useDarkMode } from '../../../common/hook/useDarkMode';
 import Info from './Information';
 import Information from './Information';
 import Welcome from './Welcome';
+import SyncSettings from './Sync/SyncSettings';
 
 function Panel() {
   const [darkMode, setDarkMode] = useDarkMode();
@@ -72,6 +73,7 @@ function Panel() {
             <Route path="import" element={<Import />} />
             <Route path="welcome" element={<Welcome />} />
             <Route path="information" element={<Information />} />
+            <Route path="sync" element={<SyncSettings />} />
           </Route>
         </Routes>
       </div>

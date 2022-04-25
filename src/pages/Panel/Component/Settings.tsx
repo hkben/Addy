@@ -13,6 +13,9 @@ class Settings extends React.Component<{}> {
               <Link to="general">General</Link>
             </li>
             <li className="py-1">
+              <Link to="sync">Sync</Link>
+            </li>
+            <li className="py-1">
               <Link to="export">Export</Link>
             </li>
             <li className="py-1">
