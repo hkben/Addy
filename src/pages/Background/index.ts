@@ -2,6 +2,7 @@ import { Storage } from '../../common/storage';
 import Browser from 'webextension-polyfill';
 
 import { IBrowserMessage } from '../../common/interface';
+import { syncBackgroundRun } from './modules/sync';
 
 let isInit = false;
 
@@ -32,8 +33,8 @@ const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
   console.log('onMessageListener');
 
   switch (packet.action) {
-    case 'saveToCollection':
-      // saveCurrentTabToCollection(packet.data!.collectionId);
+    case 'SyncBackgroundRun':
+      syncBackgroundRun().catch(console.error);
       return;
   }
 };

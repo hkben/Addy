@@ -13,6 +13,9 @@
     "prettier": "prettier --write '**/*.{js,jsx,css,html}'"
   },
   "dependencies": {
+    "@aws-sdk/client-cognito-identity": "^3.75.0",
+    "@aws-sdk/client-s3": "^3.75.0",
+    "@aws-sdk/credential-provider-cognito-identity": "^3.75.0",
     "@babel/runtime": "^7.15.4",
     "@hot-loader/react-dom": "^17.0.1",
     "@types/chrome": "0.0.132",
