@@ -48,7 +48,10 @@ export const syncBackgroundRun = async () => {
 
   console.log('[Sync] Importing Data...');
   const collections: ICollection[] = JSON.parse(json);
-  await Collections.import(collections);
+
+  if (collections.length > 0) {
+    await Collections.import(collections);
+  }
 
   console.log('[Sync] Uploading imported Data...');
   await syncProvider.createSyncFile();

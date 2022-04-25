@@ -97,6 +97,11 @@ class awsS3 implements ISyncProvider {
 
   async createSyncFile(): Promise<boolean> {
     let collections = await Collections.fetch();
+
+    if (collections.length == 0) {
+      return true;
+    }
+
     let _json = JSON.stringify(collections);
 
     const blob = new Blob([_json], { type: 'application/json' });
