@@ -3,10 +3,23 @@ import Browser from 'webextension-polyfill';
 
 import { IBrowserMessage } from '../../common/interface';
 
+let isInit = false;
+
 const isFirefox = Browser.runtime.getURL('').startsWith('moz-extension://');
 const isChrome = Browser.runtime.getURL('').startsWith('chrome-extension://');
 
 const manifest_version = Browser.runtime.getManifest().manifest_version;
+
+const init = () => {
+  if (isInit) {
+    return;
+  }
+
+  if (manifest_version == 2) {
+    //Version 2 would not call onInstalled on enabling extension,
+    createContextMenus();
+  }
+};
 
 const onInstalledListener = async () => {
   //fired whem first installed, updated to a new version, and the browser updated to a new version
@@ -105,12 +118,9 @@ let createContextMenus = () => {
   );
 };
 
-if (manifest_version == 2) {
-  //Version 2 would not call onInstalled on enabling extension,
-  createContextMenus();
-}
-
 Browser.runtime.onInstalled.addListener(onInstalledListener);
 Browser.runtime.onStartup.addListener(onStartupListener);
 Browser.runtime.onMessage.addListener(onMessageListener);
 Browser.contextMenus.onClicked.addListener(onContextMenusClicked);
+
+init();
