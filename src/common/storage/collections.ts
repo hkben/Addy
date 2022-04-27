@@ -150,7 +150,13 @@ class Collections {
     return result;
   }
 
-  static async removeDeleted() {
+  static async removeDeleted(_manualRun: boolean = false) {
+    let dayRange = 30; // 30 Days
+
+    if (_manualRun) {
+      dayRange = -1; // All
+    }
+
     let collections = await this.fetch();
 
     let collectionsToRemove: number[] = [];
@@ -160,14 +166,24 @@ class Collections {
 
       collection.items.forEach((item, itemIndex) => {
         if (item.deleted) {
-          itemsToRemove.push(itemIndex);
+          let deletedDatetime = moment(item.deleted);
+          let deletedDays = moment().diff(deletedDatetime, 'days');
+
+          if (deletedDays >= dayRange) {
+            itemsToRemove.push(itemIndex);
+          }
         }
       });
 
       _.pullAt(collections[collectionIndex].items, itemsToRemove);
 
       if (collection.deleted) {
-        collectionsToRemove.push(collectionIndex);
+        let deletedDatetime = moment(collection.deleted);
+        let deletedDays = moment().diff(deletedDatetime, 'days');
+
+        if (deletedDays >= dayRange) {
+          collectionsToRemove.push(collectionIndex);
+        }
       }
     });
 

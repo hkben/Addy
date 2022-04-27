@@ -97,7 +97,7 @@ function General() {
   };
 
   const removeDeleted = async () => {
-    let result = await Collections.removeDeleted();
+    let result = await Collections.removeDeleted(true);
 
     if (result) {
       document.location.reload();
