@@ -2,6 +2,7 @@ import moment from 'moment';
 import React, { useEffect } from 'react';
 import { ISyncSetting } from '../../../../common/interface';
 import SyncSetting from '../../../../common/storage/syncSetting';
+import AwsS3SyncSettings from './AwsS3SyncSettings';
 import SyncButton from './SyncButton';
 
 function SyncSettings() {
@@ -85,6 +86,25 @@ function SyncSettings() {
     }));
   };
 
+  const syncProviderSetting = () => {
+    if (syncSetting == null) {
+      return '';
+    }
+
+    switch (syncSetting.provider) {
+      case 'awsS3':
+        return (
+          <AwsS3SyncSettings
+            handleInputChange={handleInputChange}
+            syncSetting={syncSetting}
+          />
+        );
+
+      default:
+        return '';
+    }
+  };
+
   return (
     <div>
       <p className="text-3xl py-2">Syncing</p>
@@ -120,53 +140,7 @@ function SyncSettings() {
           </div>
         </div>
 
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">AWS Region</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <input
-              name="awsS3_Region"
-              className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-              placeholder="Region"
-              value={syncSetting.awsS3_Region || ''}
-              onChange={handleInputChange}
-              onBlur={handleInputChange}
-            />
-          </div>
-        </div>
-
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">AWS S3 Bucket Name</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <input
-              name="awsS3_BucketName"
-              className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-              placeholder="Bucket Name"
-              value={syncSetting.awsS3_BucketName || ''}
-              onChange={handleInputChange}
-              onBlur={handleInputChange}
-            />
-          </div>
-        </div>
-
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">AWS Identity Pool Id</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <input
-              name="awsS3_IdentityPoolId"
-              className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-              placeholder="Identity Pool Id"
-              value={syncSetting.awsS3_IdentityPoolId || ''}
-              onChange={handleInputChange}
-              onBlur={handleInputChange}
-            />
-          </div>
-        </div>
+        {syncProviderSetting()}
 
         <div className="w-2/3 flex h-28">
           <div className="w-2/3 my-auto">
