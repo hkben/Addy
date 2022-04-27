@@ -20,26 +20,22 @@ class awsS3 implements ISyncProvider {
 
   fileName: string = 'addy-sync.json';
 
-  async init(): Promise<boolean> {
-    try {
-      let _syncSetting = await SyncSetting.fetch();
+  async init(): Promise<void> {
+    let _syncSetting = await SyncSetting.fetch();
 
-      this.bucketName = _syncSetting.awsS3_BucketName || '';
-      this.region = _syncSetting.awsS3_Region || '';
-      this.identityPoolId = _syncSetting.awsS3_IdentityPoolId || '';
+    this.bucketName = _syncSetting.awsS3_BucketName || '';
+    this.region = _syncSetting.awsS3_Region || '';
+    this.identityPoolId = _syncSetting.awsS3_IdentityPoolId || '';
 
-      this.s3Client = new S3Client({
-        region: this.region,
-        credentials: fromCognitoIdentityPool({
-          client: new CognitoIdentityClient({ region: this.region }),
-          identityPoolId: this.identityPoolId,
-        }),
-      });
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
-    return true;
+    this.s3Client = new S3Client({
+      region: this.region,
+      credentials: fromCognitoIdentityPool({
+        client: new CognitoIdentityClient({ region: this.region }),
+        identityPoolId: this.identityPoolId,
+      }),
+    });
+
+    return;
   }
 
   async searchSyncFile(): Promise<IFileInfo> {
@@ -49,24 +45,19 @@ class awsS3 implements ISyncProvider {
       modifyTime: '',
     };
 
-    try {
-      let response = await this.s3Client.send(
-        new ListObjectsV2Command({
-          Prefix: this.fileName,
-          Bucket: this.bucketName,
-        })
-      );
+    let response = await this.s3Client.send(
+      new ListObjectsV2Command({
+        Prefix: this.fileName,
+        Bucket: this.bucketName,
+      })
+    );
 
-      if (response.Contents && response.Contents.length > 0) {
-        let file = response.Contents[0];
+    if (response.Contents && response.Contents.length > 0) {
+      let file = response.Contents[0];
 
-        result.name = file.Key!;
-        result.id = file.ETag!;
-        result.modifyTime = file.LastModified!.toISOString();
-      }
-    } catch (e) {
-      console.error(e);
-      return result;
+      result.name = file.Key!;
+      result.id = file.ETag!;
+      result.modifyTime = file.LastModified!.toISOString();
     }
 
     return result;
@@ -75,51 +66,42 @@ class awsS3 implements ISyncProvider {
   async getSyncFile(_file: IFileInfo): Promise<string> {
     let result: string = '';
 
-    try {
-      let response = await this.s3Client.send(
-        new GetObjectCommand({
-          Key: _file.name,
-          Bucket: this.bucketName,
-          IfMatch: _file.id,
-        })
-      );
+    let response = await this.s3Client.send(
+      new GetObjectCommand({
+        Key: _file.name,
+        Bucket: this.bucketName,
+        IfMatch: _file.id,
+      })
+    );
 
-      if (response.Body) {
-        const res = new Response(response.Body as BodyInit);
-        result = await res.text();
-      }
-    } catch (e) {
-      console.error(e);
+    if (response.Body) {
+      const res = new Response(response.Body as BodyInit);
+      result = await res.text();
     }
 
     return result;
   }
 
-  async createSyncFile(): Promise<boolean> {
+  async createSyncFile(): Promise<void> {
     let collections = await Collections.fetch();
 
     if (collections.length == 0) {
-      return true;
+      return;
     }
 
     let _json = JSON.stringify(collections);
 
     const blob = new Blob([_json], { type: 'application/json' });
 
-    try {
-      await this.s3Client.send(
-        new PutObjectCommand({
-          Bucket: this.bucketName,
-          Key: this.fileName,
-          Body: blob,
-        })
-      );
-    } catch (e) {
-      console.error(e);
-      return false;
-    }
+    await this.s3Client.send(
+      new PutObjectCommand({
+        Bucket: this.bucketName,
+        Key: this.fileName,
+        Body: blob,
+      })
+    );
 
-    return true;
+    return;
   }
 }
 
