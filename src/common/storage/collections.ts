@@ -150,6 +150,34 @@ class Collections {
     return result;
   }
 
+  static async removeDeleted() {
+    let collections = await this.fetch();
+
+    let collectionsToRemove: number[] = [];
+
+    collections.forEach((collection, collectionIndex) => {
+      let itemsToRemove: number[] = [];
+
+      collection.items.forEach((item, itemIndex) => {
+        if (item.deleted) {
+          itemsToRemove.push(itemIndex);
+        }
+      });
+
+      _.pullAt(collections[collectionIndex].items, itemsToRemove);
+
+      if (collection.deleted) {
+        collectionsToRemove.push(collectionIndex);
+      }
+    });
+
+    _.pullAt(collections, collectionsToRemove);
+
+    let result = await this.update(collections);
+
+    return result;
+  }
+
   //for Migration only
   static async updateDeletedToDateTime() {
     let collections = await this.fetch();

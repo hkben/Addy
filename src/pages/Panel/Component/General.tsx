@@ -96,6 +96,14 @@ function General() {
     }
   };
 
+  const removeDeleted = async () => {
+    let result = await Collections.removeDeleted();
+
+    if (result) {
+      document.location.reload();
+    }
+  };
+
   return (
     <div>
       <p className="text-3xl py-2">General</p>
@@ -172,6 +180,30 @@ function General() {
               }}
             >
               Restore Deleted
+            </button>
+          </div>
+        </div>
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">Remove Deleted Content</p>
+            <p>
+              This will only remove content on local. If the content exists in
+              sync file, the deleted content will re-import to the database.
+            </p>
+          </div>
+          <div className="w-1/3 my-auto text-center">
+            <button
+              className="px-4 py-2 text-white bg-amber-500 hover:bg-amber-700 rounded-md items-center"
+              onClick={() => {
+                const confirmBox = window.confirm(
+                  'Do you really want to delete all deleted contnet permanently?'
+                );
+                if (confirmBox === true) {
+                  removeDeleted();
+                }
+              }}
+            >
+              Remove Deleted Content
             </button>
           </div>
         </div>
