@@ -2,7 +2,7 @@ import { Storage } from '../../common/storage';
 import Browser from 'webextension-polyfill';
 
 import { IBrowserMessage } from '../../common/interface';
-import { syncBackgroundRun } from './modules/sync';
+import { syncBackgroundRun, syncConnectionTest } from './modules/sync';
 
 let isInit = false;
 
@@ -35,6 +35,9 @@ const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
   switch (packet.action) {
     case 'SyncBackgroundRun':
       syncBackgroundRun().catch(console.error);
+      return;
+    case 'SyncConnectionTest':
+      syncConnectionTest().catch(console.error);
       return;
   }
 };
