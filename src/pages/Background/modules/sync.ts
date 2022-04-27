@@ -82,3 +82,50 @@ export const syncBackgroundRun = async () => {
     } as IBrowserMessage);
   }
 };
+
+export const syncConnectionTest = async () => {
+  console.log('[Sync] SyncConnectionTest');
+
+  let _syncSetting = await SyncSetting.fetch();
+
+  if (_syncSetting.enable == false) {
+    return;
+  }
+
+  let syncProvider = getSyncProvider(_syncSetting.provider);
+
+  if (syncProvider == undefined) {
+    console.error('[Sync] Sync Provider is undefined');
+
+    Browser.runtime.sendMessage({
+      action: 'SyncConnectionTestCompleted',
+      result: false,
+    } as IBrowserMessage);
+
+    return;
+  }
+
+  //Test Logic here
+
+  let _result = false;
+
+  try {
+    await syncProvider.init();
+
+    let testConnection = await syncProvider.connectionTest();
+
+    if (testConnection) {
+      _result = true;
+    }
+
+    console.log('[Sync] Done...');
+  } catch (error) {
+    console.log('[Sync] Error...');
+    console.error(error);
+  } finally {
+    Browser.runtime.sendMessage({
+      action: 'SyncConnectionTestCompleted',
+      result: _result,
+    } as IBrowserMessage);
+  }
+};

@@ -4,6 +4,7 @@ import { ISyncSetting } from '../../../../common/interface';
 import SyncSetting from '../../../../common/storage/syncSetting';
 import AwsS3SyncSettings from './AwsS3SyncSettings';
 import SyncButton from './SyncButton';
+import SyncConnectionTestButton from './SyncTestConnectionButton';
 
 function SyncSettings() {
   const [syncSetting, setSyncSetting] = React.useState<ISyncSetting>(
@@ -141,6 +142,15 @@ function SyncSettings() {
         </div>
 
         {syncProviderSetting()}
+
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">Connection Test</p>
+          </div>
+          <div className="w-1/3 my-auto text-center">
+            <SyncConnectionTestButton />
+          </div>
+        </div>
 
         <div className="w-2/3 flex h-28">
           <div className="w-2/3 my-auto">

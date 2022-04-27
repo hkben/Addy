@@ -103,6 +103,20 @@ class awsS3 implements ISyncProvider {
 
     return;
   }
+
+  async connectionTest(): Promise<boolean> {
+    let response = await this.s3Client.send(
+      new ListObjectsV2Command({
+        Bucket: this.bucketName,
+      })
+    );
+
+    if (response.$metadata.httpStatusCode == 200) {
+      return true;
+    }
+
+    return false;
+  }
 }
 
 export default awsS3;
