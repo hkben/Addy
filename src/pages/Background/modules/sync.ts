@@ -30,6 +30,12 @@ export const syncBackgroundRun = async () => {
 
   if (syncProvider == undefined) {
     console.error('[Sync] Sync Provider is undefined');
+
+    Browser.runtime.sendMessage({
+      action: 'syncCompleted',
+      result: false,
+    } as IBrowserMessage);
+
     return;
   }
 
@@ -41,20 +47,20 @@ export const syncBackgroundRun = async () => {
   if (fileInfo == null) {
     console.log('[Sync] Remote Sync File is not exists, creating...');
     await syncProvider.createSyncFile();
+  } else {
+    console.log('[Sync] Download Data...');
+    let json = await syncProvider.getSyncFile(fileInfo);
+
+    console.log('[Sync] Importing Data...');
+    const collections: ICollection[] = JSON.parse(json);
+
+    if (collections.length > 0) {
+      await Collections.import(collections);
+    }
+
+    console.log('[Sync] Uploading imported Data...');
+    await syncProvider.createSyncFile();
   }
-
-  console.log('[Sync] Download Data...');
-  let json = await syncProvider.getSyncFile(fileInfo);
-
-  console.log('[Sync] Importing Data...');
-  const collections: ICollection[] = JSON.parse(json);
-
-  if (collections.length > 0) {
-    await Collections.import(collections);
-  }
-
-  console.log('[Sync] Uploading imported Data...');
-  await syncProvider.createSyncFile();
 
   let _datetime = new Date().toISOString();
   await SyncSetting.updateLastSyncTime(_datetime);
@@ -63,5 +69,6 @@ export const syncBackgroundRun = async () => {
 
   Browser.runtime.sendMessage({
     action: 'syncCompleted',
+    result: true,
   } as IBrowserMessage);
 };

@@ -4,6 +4,7 @@ import _ from 'lodash';
 export interface IBrowserMessage {
   action: string;
   imageSrc?: string;
+  result?: boolean;
 }
 
 //Collectiom
