@@ -28,7 +28,7 @@ function SyncButton({ callbackAfterSync }: Prop) {
   const onMessageListener = (packet: IBrowserMessage, sender: any) => {
     console.log('onMessageListener');
 
-    if (packet.action == 'syncCompleted') {
+    if (packet.action == 'SyncCompleted') {
       if (packet.result) {
         setSyncingState(2); //Completed
         callbackAfterSync().catch(console.error);

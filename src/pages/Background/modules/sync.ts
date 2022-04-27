@@ -32,7 +32,7 @@ export const syncBackgroundRun = async () => {
     console.error('[Sync] Sync Provider is undefined');
 
     Browser.runtime.sendMessage({
-      action: 'syncCompleted',
+      action: 'SyncCompleted',
       result: false,
     } as IBrowserMessage);
 
@@ -77,7 +77,7 @@ export const syncBackgroundRun = async () => {
     console.error(error);
   } finally {
     Browser.runtime.sendMessage({
-      action: 'syncCompleted',
+      action: 'SyncCompleted',
       result: _result,
     } as IBrowserMessage);
   }
