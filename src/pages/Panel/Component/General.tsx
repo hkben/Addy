@@ -165,7 +165,11 @@ function General() {
         <div className="w-2/3 flex h-28">
           <div className="w-2/3 my-auto">
             <p className="text-base font-bold">Restore Deleted</p>
-            Restore All Deleted Collections and Items
+            <p>Restore content that deleted in last 30 days</p>
+            <p>
+              (Deleted content will be delete permanently after 30 days
+              automatically)
+            </p>
           </div>
           <div className="w-1/3 my-auto text-center">
             <button

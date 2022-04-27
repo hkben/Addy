@@ -1,4 +1,4 @@
-import { Storage } from '../../common/storage';
+import { Collection, Collections, Storage } from '../../common/storage';
 import Browser from 'webextension-polyfill';
 
 import { IBrowserMessage } from '../../common/interface';
@@ -20,6 +20,11 @@ const init = () => {
     //Version 2 would not call onInstalled on enabling extension,
     createContextMenus();
   }
+
+  //Run every hour
+  setInterval(() => {
+    Collections.removeDeleted();
+  }, 60 * 60000);
 };
 
 const onInstalledListener = async () => {
