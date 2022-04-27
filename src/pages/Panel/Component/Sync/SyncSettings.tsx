@@ -1,50 +1,21 @@
 import moment from 'moment';
 import React, { useEffect } from 'react';
-import Browser from 'webextension-polyfill';
-import Google from '../../../../common/auth/google';
-import { IBrowserMessage, ISyncSetting } from '../../../../common/interface';
+import { ISyncSetting } from '../../../../common/interface';
 import SyncSetting from '../../../../common/storage/syncSetting';
+import SyncButton from './SyncButton';
 
 function SyncSettings() {
   const [syncSetting, setSyncSetting] = React.useState<ISyncSetting>(
     SyncSetting.init() as ISyncSetting
   );
 
-  const [syncing, setSyncing] = React.useState<boolean>(false);
-
   const getSyncSetting = async () => {
     let _syncSetting = await SyncSetting.fetch();
     setSyncSetting(_syncSetting);
   };
 
-  const handleBackgroundSync = async () => {
-    if (syncing) {
-      return;
-    }
-
-    Browser.runtime.sendMessage({
-      action: 'SyncBackgroundRun',
-    } as IBrowserMessage);
-
-    setSyncing(true);
-  };
-
-  const onMessageListener = (packet: IBrowserMessage, sender: any) => {
-    console.log('onMessageListener');
-
-    if (packet.action == 'syncCompleted') {
-      setSyncing(false);
-      getSyncSetting().catch(console.error);
-    }
-  };
-
   useEffect(() => {
     getSyncSetting().catch(console.error);
-
-    Browser.runtime.onMessage.addListener(onMessageListener);
-    return () => {
-      Browser.runtime.onMessage.addListener(onMessageListener);
-    };
   }, []);
 
   const handleSyncingCheckbox = async (
@@ -218,43 +189,7 @@ function SyncSettings() {
             <p className="text-base font-bold">Background Sync</p>
           </div>
           <div className="w-1/3 my-auto text-center">
-            <button
-              className="flex mx-auto p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
-              onClick={handleBackgroundSync}
-            >
-              {syncing ? (
-                <>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="animate-spin h-5 w-5 inline mx-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="#bbb"
-                      fill="none"
-                      strokeWidth={3}
-                    />
-                    <circle
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      fill="none"
-                      strokeDashoffset="100"
-                      strokeDasharray="50"
-                      strokeWidth={3}
-                    />
-                  </svg>
-                  <span>Syncing...</span>
-                </>
-              ) : (
-                <span>Sync Now</span>
-              )}
-            </button>
+            <SyncButton callbackAfterSync={getSyncSetting} />
           </div>
         </div>
       </div>
