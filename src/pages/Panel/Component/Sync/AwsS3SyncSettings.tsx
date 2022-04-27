@@ -14,7 +14,7 @@ function AwsS3SyncSettings({ syncSetting, handleInputChange }: Prop) {
       <div className="w-2/3 flex h-28">
         <div className="w-2/3 my-auto">
           <p className="text-base font-bold">AWS Region</p>
-          eg: region
+          <p>eg: us-east-1</p>
         </div>
         <div className="w-1/3 my-auto text-center">
           <input
@@ -31,6 +31,7 @@ function AwsS3SyncSettings({ syncSetting, handleInputChange }: Prop) {
       <div className="w-2/3 flex h-28">
         <div className="w-2/3 my-auto">
           <p className="text-base font-bold">AWS S3 Bucket Name</p>
+          <p>eg: addy-s3-bucket</p>
         </div>
         <div className="w-1/3 my-auto text-center">
           <input
@@ -47,6 +48,7 @@ function AwsS3SyncSettings({ syncSetting, handleInputChange }: Prop) {
       <div className="w-2/3 flex h-28">
         <div className="w-2/3 my-auto">
           <p className="text-base font-bold">AWS Identity Pool Id</p>
+          <p>eg: us-east-1:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</p>
         </div>
         <div className="w-1/3 my-auto text-center">
           <input

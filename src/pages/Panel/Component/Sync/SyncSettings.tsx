@@ -127,6 +127,16 @@ function SyncSettings() {
         <div className="w-2/3 flex h-28">
           <div className="w-2/3 my-auto">
             <p className="text-base font-bold">Provider</p>
+            <p>
+              Please read{' '}
+              <a
+                className="underline"
+                href="https://github.com/hkben/Addy/wiki/Sync"
+              >
+                wiki
+              </a>{' '}
+              for more information
+            </p>
           </div>
           <div className="w-1/3 my-auto">
             <select
