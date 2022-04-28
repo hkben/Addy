@@ -55,7 +55,7 @@ function SyncButton({ callbackAfterSync }: Prop) {
           <Fragment>
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="animate-spin h-5 w-5 inline mx-1"
+              className="animate-spin h-5 w-5 inline mr-1"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -92,7 +92,7 @@ function SyncButton({ callbackAfterSync }: Prop) {
 
   return (
     <button
-      className="flex mx-auto p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+      className="flex mx-auto p-2 px-5 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
       onClick={handleBackgroundSync}
     >
       {renderText()}

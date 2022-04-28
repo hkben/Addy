@@ -173,7 +173,7 @@ function General() {
           </div>
           <div className="w-1/3 my-auto text-center">
             <button
-              className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+              className="px-5 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
               onClick={() => {
                 const confirmBox = window.confirm(
                   'Do you really want to restore all deleted collections and items?'
@@ -197,7 +197,7 @@ function General() {
           </div>
           <div className="w-1/3 my-auto text-center">
             <button
-              className="px-4 py-2 text-white bg-amber-500 hover:bg-amber-700 rounded-md items-center"
+              className="px-5 py-2 text-white bg-amber-500 hover:bg-amber-700 rounded-md items-center"
               onClick={() => {
                 const confirmBox = window.confirm(
                   'Do you really want to delete all deleted contnet permanently?'
@@ -218,7 +218,7 @@ function General() {
           </div>
           <div className="w-1/3 my-auto text-center">
             <button
-              className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+              className="px-5 py-2 text-white bg-red-500 hover:bg-red-700 rounded-md items-center"
               onClick={() => {
                 const confirmBox = window.confirm(
                   'Do you really want to clear all data?'
