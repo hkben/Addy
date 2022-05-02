@@ -42,15 +42,13 @@ function SyncSettings() {
   ) => {
     let value = event.currentTarget.value;
 
-    let _syncSetting = syncSetting;
+    let _syncSetting = SyncSetting.init();
+    _syncSetting.enable = true;
     _syncSetting.provider = value;
 
     await SyncSetting.update(_syncSetting);
 
-    setSyncSetting((prevState) => ({
-      ...prevState,
-      provider: value,
-    }));
+    setSyncSetting(_syncSetting);
   };
 
   const handleInputChange = async (
