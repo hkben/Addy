@@ -8,6 +8,7 @@ export default interface ISyncProvider {
   init(): Promise<void>;
   searchSyncFile(): Promise<IFileInfo>;
   createSyncFile(): Promise<void>;
+  updateSyncFile(_file: IFileInfo): Promise<void>;
   getSyncFile(_file: IFileInfo): Promise<string>;
   connectionTest(): Promise<boolean>;
 }

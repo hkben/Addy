@@ -64,7 +64,7 @@ export const syncBackgroundRun = async () => {
       }
 
       console.log('[Sync] Uploading imported Data...');
-      await syncProvider.createSyncFile();
+      await syncProvider.updateSyncFile(fileInfo);
     }
 
     let _datetime = new Date().toISOString();

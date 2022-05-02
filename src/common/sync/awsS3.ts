@@ -104,6 +104,10 @@ class awsS3 implements ISyncProvider {
     return;
   }
 
+  async updateSyncFile(_file: IFileInfo): Promise<void> {
+    this.createSyncFile(); //create new file with same name will replace old one
+  }
+
   async connectionTest(): Promise<boolean> {
     let response = await this.s3Client.send(
       new ListObjectsV2Command({
