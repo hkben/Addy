@@ -49,7 +49,7 @@ export const syncBackgroundRun = async () => {
     let fileInfo = await syncProvider.searchSyncFile();
 
     //If file is not exists on server, create one
-    if (fileInfo == null) {
+    if (fileInfo == null || fileInfo.id == '') {
       console.log('[Sync] Remote Sync File is not exists, creating...');
       await syncProvider.createSyncFile();
     } else {
