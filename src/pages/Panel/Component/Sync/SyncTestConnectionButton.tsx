@@ -96,7 +96,7 @@ function SyncConnectionTestButton() {
             <span>Connected!</span>
           </Fragment>
         );
-      case 2:
+      case 3:
         return (
           <Fragment>
             <svg
