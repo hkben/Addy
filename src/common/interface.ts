@@ -117,4 +117,6 @@ export interface ISyncSetting {
   awsS3_Region?: string;
   awsS3_BucketName?: string;
   awsS3_IdentityPoolId?: string;
+  google_email?: string;
+  google_oAuthAccessToken?: string;
 }

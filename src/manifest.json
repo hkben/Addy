@@ -6,7 +6,8 @@
     "storage",
     "unlimitedStorage",
     "activeTab",
-    "contextMenus"
+    "contextMenus",
+    "identity"
   ],
   "options_ui": {
     "page": "panel.html",

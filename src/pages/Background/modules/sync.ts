@@ -4,6 +4,7 @@ import { IBrowserMessage, ICollection } from '../../../common/interface';
 import { Collections } from '../../../common/storage';
 import SyncSetting from '../../../common/storage/syncSetting';
 import AwsS3 from '../../../common/sync/awsS3';
+import GoogleDrive from '../../../common/sync/googleDrive';
 import SyncProvider from '../../../common/sync/syncProvider';
 
 export const getSyncProvider = (
@@ -12,6 +13,8 @@ export const getSyncProvider = (
   switch (_provider) {
     case 'awsS3':
       return new AwsS3();
+    case 'googleDrive':
+      return new GoogleDrive();
     default:
       return undefined;
   }
