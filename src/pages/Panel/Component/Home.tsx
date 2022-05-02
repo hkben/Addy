@@ -154,9 +154,9 @@ function Home() {
           </button>
         </form>
 
-        <div className="pt-1 pb-3 my-auto text-sm">
+        <div className="w-full pt-1 pb-3 my-auto text-sm">
           <select
-            className="h-10 px-4 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+            className="w-5/6 h-10 px-4 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
             id="spaceing"
             value={ordering ? ordering.type : 0}
             onChange={handleOrderingSelection}
@@ -167,7 +167,7 @@ function Home() {
             <option value="4">Items Count</option>
           </select>
 
-          <span>
+          <span className="w-1/6">
             <button onClick={handleDescendingOption}>
               {ordering && ordering.descending ? (
                 <svg
