@@ -82,10 +82,7 @@ function GoogleDriveSyncSettings({ syncSetting, handleInputChange }: Prop) {
             </span>
           ) : (
             <a className="cursor-pointer m-auto" onClick={handelLogin}>
-              <img
-                className="m-auto"
-                src="../img/sign_in_with_google.png.png"
-              />
+              <img className="m-auto" src="../img/sign_in_with_google.png" />
             </a>
           )}
         </div>
