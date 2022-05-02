@@ -42,6 +42,15 @@ function Panel() {
 
             <li>
               <Link
+                to="/setting/sync"
+                className="px-3 py-2 rounded-lg cursor-pointer"
+              >
+                Sync
+              </Link>
+            </li>
+
+            <li>
+              <Link
                 to="/setting"
                 className="px-3 py-2 rounded-lg cursor-pointer"
               >
