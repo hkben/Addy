@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { ISyncSetting } from '../../../../common/interface';
 import SyncSetting from '../../../../common/storage/syncSetting';
 import AwsS3SyncSettings from './AwsS3SyncSettings';
+import GoogleDriveSyncSettings from './GoogleDriveSyncSettings';
 import SyncButton from './SyncButton';
 import SyncConnectionTestButton from './SyncTestConnectionButton';
 
@@ -100,6 +101,13 @@ function SyncSettings() {
             syncSetting={syncSetting}
           />
         );
+      case 'googleDrive':
+        return (
+          <GoogleDriveSyncSettings
+            handleInputChange={handleInputChange}
+            syncSetting={syncSetting}
+          />
+        );
 
       default:
         return '';
@@ -146,6 +154,7 @@ function SyncSettings() {
               onChange={handleProviderSelection}
             >
               <option value="">----</option>
+              <option value="googleDrive">Google Drive</option>
               <option value="awsS3">AWS S3</option>
             </select>
           </div>
