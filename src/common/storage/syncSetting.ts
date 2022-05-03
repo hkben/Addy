@@ -6,6 +6,7 @@ class SyncSetting {
   static init() {
     const defaultSetting: ISyncSetting = {
       enable: false,
+      autoSyncInterval: 0,
       lastSyncTime: '',
       provider: '',
     };

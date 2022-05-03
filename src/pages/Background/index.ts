@@ -2,7 +2,11 @@ import { Collection, Collections, Storage } from '../../common/storage';
 import Browser from 'webextension-polyfill';
 
 import { IBrowserMessage } from '../../common/interface';
-import { syncBackgroundRun, syncConnectionTest } from './modules/sync';
+import {
+  autoSyncChecking,
+  syncBackgroundRun,
+  syncConnectionTest,
+} from './modules/sync';
 
 let isInit = false;
 
@@ -25,6 +29,11 @@ const init = () => {
   setInterval(() => {
     Collections.removeDeleted();
   }, 60 * 60000);
+
+  //Run every 10 mins
+  setInterval(() => {
+    autoSyncChecking();
+  }, 10 * 60000);
 };
 
 const onInstalledListener = async () => {

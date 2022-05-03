@@ -62,6 +62,10 @@ function SyncSettings() {
     let _syncSetting = syncSetting;
 
     switch (name) {
+      case 'autoSyncInterval':
+        _syncSetting.autoSyncInterval = parseInt(value);
+        break;
+
       case 'awsS3_Region':
         _syncSetting.awsS3_Region = value;
         break;
@@ -126,6 +130,27 @@ function SyncSettings() {
               className="w-6 h-6 border border-gray-200 rounded-lg"
               checked={syncSetting.enable ? true : false}
               onChange={handleSyncingCheckbox}
+            />
+          </div>
+        </div>
+
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">
+              Auto Sync Interval From Last Sync (Minutes)
+            </p>
+            <p>0 = Disable</p>
+            <p>Background checking only runs every 10 minutes.</p>
+          </div>
+          <div className="w-1/3 my-auto text-center">
+            <input
+              name="autoSyncInterval"
+              type="number"
+              className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+              placeholder="Minutes"
+              value={syncSetting.autoSyncInterval || 0}
+              onChange={handleInputChange}
+              onBlur={handleInputChange}
             />
           </div>
         </div>

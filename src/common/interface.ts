@@ -112,6 +112,7 @@ export interface IViewingOption {
 //Sync Setting
 export interface ISyncSetting {
   enable: boolean;
+  autoSyncInterval: number;
   lastSyncTime: string;
   provider: string;
   awsS3_Region?: string;

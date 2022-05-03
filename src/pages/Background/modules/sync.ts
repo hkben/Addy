@@ -132,3 +132,24 @@ export const syncConnectionTest = async () => {
     } as IBrowserMessage);
   }
 };
+
+export const autoSyncChecking = async () => {
+  console.log('[Sync] autoSyncChecking');
+
+  let _syncSetting = await SyncSetting.fetch();
+
+  if (
+    _syncSetting.enable == false ||
+    _syncSetting.autoSyncInterval == 0 ||
+    !_syncSetting.lastSyncTime
+  ) {
+    return;
+  }
+
+  let lasySyncDiff = moment().diff(_syncSetting.lastSyncTime, 'minutes');
+
+  if (lasySyncDiff >= _syncSetting.autoSyncInterval) {
+    console.log('[Sync] Run background sync');
+    await syncBackgroundRun();
+  }
+};
