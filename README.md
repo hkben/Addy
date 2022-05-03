@@ -25,7 +25,7 @@ This browser extensions creates a quick method to categorize and save the keywor
 ## Download
 
 [<img src="./image/chrome.png">](https://chrome.google.com/webstore/detail/addy/aeopkajhbaodnaelhbblokdngiapbglk)
-[<img src="./image/firefox.png">](https://addons.mozilla.org/zh-TW/firefox/addon/addy/)
+[<img src="./image/firefox.png">](https://addons.mozilla.org/firefox/addon/addy/)
 
 ## FAQ
 

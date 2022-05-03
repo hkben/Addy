@@ -27,7 +27,7 @@ function Information() {
                 <a href="https://github.com/hkben/Addy">Github</a>
               </li>
               <li>
-                <a href="https://addons.mozilla.org/zh-TW/firefox/addon/addy/">
+                <a href="https://addons.mozilla.org/firefox/addon/addy/">
                   Firefox Add-ons
                 </a>
               </li>
