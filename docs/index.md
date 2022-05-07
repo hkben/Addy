@@ -38,3 +38,7 @@ Many web clipper required you to login to your Note-Taking app account. It means
 ## Support
 
 [<img src="./image/bmac.png">](https://www.buymeacoffee.com/hkben)
+
+## Privacy Policy
+
+[Privacy Policy](https://addy.insanelyones.com/privacy-policy)

@@ -36,6 +36,11 @@ function Information() {
                   Chrome Web Store
                 </a>
               </li>
+              <li>
+                <a href="https://addy.insanelyones.com/privacy-policy">
+                  Privacy Policy
+                </a>
+              </li>
             </ul>
           </div>
         </div>
