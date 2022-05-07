@@ -1,37 +1,40 @@
-## Welcome to GitHub Pages
+<img src="../src/assets/img/icon-128.png" width="64"/>
 
-You can use the [editor on GitHub](https://github.com/hkben/Addy/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+# Addy - A web extension for saving content quickly
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Using [Chrome Extension Boilerplate with React 17 and Webpack 5](https://github.com/lxieyang/chrome-extension-boilerplate-react)
 
-### Markdown
+## Introduction
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+Maybe sometime you just keep the tab for some keywords you want , but copy and paste these keywords to your Note-Taking app is slow and easy to losing focus after doing the process for serval times.
 
-```markdown
-Syntax highlighted code block
+![Preview](../image/preview.gif)
+![Preview 2](../image/preview-2.gif)
+![Panel](../image/panel.jpg)
 
-# Header 1
-## Header 2
-### Header 3
+This browser extensions creates a quick method to categorize and save the keywords that you want to a temporary area for later use, and you can focus on killing your tabs.
 
-- Bulleted
-- List
+## Features
 
-1. Numbered
-2. List
+- Cross browsers Support ( Firefox / Chrome )
+- Works with Chrome Incognito Mode and Firefox Private Browsing
+- Save Image
+- Import / Export Data
+- Dark Mode
+- Sync with Google Drive / AWS S3
+- Auto Sync
 
-**Bold** and _Italic_ and `Code` text
+## Download
 
-[Link](url) and ![Image](src)
-```
+[<img src="../image/chrome.png">](https://chrome.google.com/webstore/detail/addy/aeopkajhbaodnaelhbblokdngiapbglk)
+[<img src="../image/firefox.png">](https://addons.mozilla.org/firefox/addon/addy/)
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+## FAQ
 
-### Jekyll Themes
+_Why not just use the web clipper that come with Note-Taking Apps?_
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/hkben/Addy/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Many web clipper required you to login to your Note-Taking app account. It means you cannot use them in Incognito Mode / Private Browsing or other profiles / browsers that you don't want to login to your account. We hope this tool can works without login.
 
-### Support or Contact
+## Support
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+[<img src="../image/bmac.png">](https://www.buymeacoffee.com/hkben)
