@@ -137,6 +137,15 @@ function SyncSettings() {
 
         <div className="w-2/3 flex h-28">
           <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">Background Sync</p>
+          </div>
+          <div className="w-1/3 my-auto text-center">
+            <SyncButton callbackAfterSync={getSyncSetting} />
+          </div>
+        </div>
+
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
             <p className="text-base font-bold">
               Auto Sync Interval From Last Sync (Minutes)
             </p>
@@ -153,6 +162,22 @@ function SyncSettings() {
               onChange={handleInputChange}
               onBlur={handleInputChange}
             />
+          </div>
+        </div>
+
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">Last Sync Time</p>
+          </div>
+          <div className="w-1/3 my-auto text-center">
+            {syncSetting.lastSyncTime ? (
+              <span>
+                <p>{moment(syncSetting.lastSyncTime).fromNow()}</p>
+                <p>{moment(syncSetting.lastSyncTime).format()}</p>
+              </span>
+            ) : (
+              <span>None</span>
+            )}
           </div>
         </div>
 
@@ -192,31 +217,6 @@ function SyncSettings() {
           </div>
           <div className="w-1/3 my-auto text-center">
             <SyncConnectionTestButton />
-          </div>
-        </div>
-
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Last Sync Time</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            {syncSetting.lastSyncTime ? (
-              <span>
-                <p>{moment(syncSetting.lastSyncTime).fromNow()}</p>
-                <p>{moment(syncSetting.lastSyncTime).format()}</p>
-              </span>
-            ) : (
-              <span>None</span>
-            )}
-          </div>
-        </div>
-
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Background Sync</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <SyncButton callbackAfterSync={getSyncSetting} />
           </div>
         </div>
 
