@@ -150,6 +150,22 @@ class GoogleDrive implements ISyncProvider {
     return;
   }
 
+  async deleteSyncFile(_file: IFileInfo): Promise<void> {
+    await axios.delete(
+      `https://www.googleapis.com/drive/v3/files/${_file.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+        params: {
+          spaces: `appDataFolder`,
+        },
+      }
+    );
+
+    return;
+  }
+
   async connectionTest(): Promise<boolean> {
     await this.searchSyncFile();
 

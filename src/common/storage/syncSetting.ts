@@ -43,7 +43,7 @@ class SyncSetting {
     return true;
   }
 
-  static async updateLastSyncTime(_datetime: string): Promise<boolean> {
+  static async updateLastSyncTime(_datetime: string = ''): Promise<boolean> {
     try {
       let syncSetting = await this.fetch();
       syncSetting.lastSyncTime = _datetime;

@@ -133,6 +133,57 @@ export const syncConnectionTest = async () => {
   }
 };
 
+export const syncFileDeletion = async () => {
+  console.log('[Sync] SyncFileDeletion');
+
+  let _syncSetting = await SyncSetting.fetch();
+
+  if (_syncSetting.enable == false) {
+    return;
+  }
+
+  let syncProvider = getSyncProvider(_syncSetting.provider);
+
+  if (syncProvider == undefined) {
+    console.error('[Sync] Sync Provider is undefined');
+
+    Browser.runtime.sendMessage({
+      action: 'SyncFileDeletionCompleted',
+      result: false,
+    } as IBrowserMessage);
+
+    return;
+  }
+
+  //Delete Logic here
+
+  let _result = false;
+
+  try {
+    await syncProvider.init();
+
+    let fileInfo = await syncProvider.searchSyncFile();
+
+    if (fileInfo != null && fileInfo.id != '') {
+      console.log('[Sync] Deleting...');
+      await syncProvider.deleteSyncFile(fileInfo);
+    }
+
+    await SyncSetting.updateLastSyncTime();
+
+    console.log('[Sync] Done...');
+    _result = true;
+  } catch (error) {
+    console.log('[Sync] Error...');
+    console.error(error);
+  } finally {
+    Browser.runtime.sendMessage({
+      action: 'SyncFileDeletionCompleted',
+      result: _result,
+    } as IBrowserMessage);
+  }
+};
+
 export const autoSyncChecking = async () => {
   console.log('[Sync] autoSyncChecking');
 

@@ -5,6 +5,7 @@ import SyncSetting from '../../../../common/storage/syncSetting';
 import AwsS3SyncSettings from './AwsS3SyncSettings';
 import GoogleDriveSyncSettings from './GoogleDriveSyncSettings';
 import SyncButton from './SyncButton';
+import SyncDeleteButton from './SyncDeleteButton';
 import SyncConnectionTestButton from './SyncTestConnectionButton';
 
 function SyncSettings() {
@@ -216,6 +217,15 @@ function SyncSettings() {
           </div>
           <div className="w-1/3 my-auto text-center">
             <SyncButton callbackAfterSync={getSyncSetting} />
+          </div>
+        </div>
+
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">Delete Sync File on Server</p>
+          </div>
+          <div className="w-1/3 my-auto text-center">
+            <SyncDeleteButton callbackAfterSync={getSyncSetting} />
           </div>
         </div>
       </div>

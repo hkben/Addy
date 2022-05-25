@@ -3,6 +3,7 @@ import {
   ListObjectsV2Command,
   PutObjectCommand,
   GetObjectCommand,
+  DeleteObjectCommand,
 } from '@aws-sdk/client-s3';
 import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-provider-cognito-identity';
@@ -106,6 +107,17 @@ class awsS3 implements ISyncProvider {
 
   async updateSyncFile(_file: IFileInfo): Promise<void> {
     this.createSyncFile(); //create new file with same name will replace old one
+  }
+
+  async deleteSyncFile(_file: IFileInfo): Promise<void> {
+    let response = await this.s3Client.send(
+      new DeleteObjectCommand({
+        Bucket: this.bucketName,
+        Key: this.fileName,
+      })
+    );
+
+    return;
   }
 
   async connectionTest(): Promise<boolean> {

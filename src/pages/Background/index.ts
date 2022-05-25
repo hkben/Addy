@@ -6,6 +6,7 @@ import {
   autoSyncChecking,
   syncBackgroundRun,
   syncConnectionTest,
+  syncFileDeletion,
 } from './modules/sync';
 
 let isInit = false;
@@ -52,6 +53,9 @@ const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
       return;
     case 'SyncConnectionTest':
       syncConnectionTest().catch(console.error);
+      return;
+    case 'SyncFileDeletion':
+      syncFileDeletion().catch(console.error);
       return;
   }
 };
