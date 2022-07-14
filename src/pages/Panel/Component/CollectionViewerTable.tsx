@@ -139,6 +139,7 @@ function CollectionViewerTable({
       columns,
       data,
       initialState: { hiddenColumns: hiddenColumns || [] },
+      autoResetSortBy: false,
     },
     useSortBy
   );
