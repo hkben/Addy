@@ -188,7 +188,7 @@ function CollectionViewerImage({
               </span>
             </div>
             <div className="h-full flex items-center">
-              <img className="self-center" src={item.content} />
+              <img className="self-center" src={item.content} loading="lazy" />
             </div>
           </div>
         ))}
