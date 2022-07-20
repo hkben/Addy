@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Browser from 'webextension-polyfill';
+import { clientId, clientSecret } from '../../../credentials';
 
 export interface IOAuthToken {
   access_token: string;
@@ -14,8 +15,9 @@ export interface IOAuthUserInfo {
 }
 
 class GoogleOAuth {
-  static client_id = '';
-  static client_secret = '';
+  //Google OAuth Credentials
+  static client_id = clientId; //export const clientId = 'xxxx' - in credentials.ts
+  static client_secret = clientSecret; //export const clientSecret = 'xxxx' - in credentials.ts
   static redirect_url = Browser.identity.getRedirectURL();
 
   static async authentication(): Promise<string> {
