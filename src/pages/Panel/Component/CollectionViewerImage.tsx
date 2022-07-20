@@ -5,6 +5,7 @@ import moment from 'moment';
 import jsZip from 'jszip';
 import Common from '../../common';
 import { Setting } from '../../../common/storage';
+import _ from 'lodash';
 
 interface Prop {
   data: Array<ICollectionItem>;
@@ -25,6 +26,12 @@ function CollectionViewerImage({
 
   const [downloadingItem, setDownloadingItem] = React.useState(0);
 
+  const [isSortedDesc, setIsSortedDesc] = React.useState(false);
+
+  const [sortedData, setSortedData] = React.useState(
+    [] as Array<ICollectionItem>
+  );
+
   const handleColumnsSelection = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -37,6 +44,10 @@ function CollectionViewerImage({
   useEffect(() => {
     setColumns(imageColumns);
   }, [imageColumns]);
+
+  useEffect(() => {
+    sortData();
+  }, [data, isSortedDesc]);
 
   const downloadAllImages = async () => {
     if (isDownloading) {
@@ -88,9 +99,26 @@ function CollectionViewerImage({
     setDownloadingItem(0);
   };
 
+  const changeSorting = () => {
+    let _isSortedDesc = isSortedDesc ? false : true;
+    setIsSortedDesc(_isSortedDesc);
+  };
+
+  const sortData = () => {
+    let _data = data;
+
+    _data = _.sortBy(_data, (o) => o.createTime);
+
+    if (isSortedDesc == true) {
+      _data = _.reverse(_data);
+    }
+
+    setSortedData(_data);
+  };
+
   return (
     <div>
-      <div className="flex">
+      <div className="w-full flex">
         <div className="inline text-base mr-auto my-auto">
           <label className="px-4" htmlFor="columns">
             Columns
@@ -116,7 +144,7 @@ function CollectionViewerImage({
         <div className="inline text-base ml-auto my-auto">
           {data.length > 0 ? (
             <button
-              className="my-2 p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+              className="p-2 px-10 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
               onClick={downloadAllImages}
             >
               {isDownloading
@@ -129,8 +157,49 @@ function CollectionViewerImage({
         </div>
       </div>
 
+      <div className="w-full my-2 items-center text-xs rounded-md">
+        <button
+          className="w-1/4 px-5 py-3 font-semibold border rounded-lg border-gray-300"
+          type="button"
+          onClick={changeSorting}
+        >
+          Sort
+          {isSortedDesc == false ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 inline mx-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 15l7-7 7 7"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 inline mx-2"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          )}
+        </button>
+      </div>
+
       <div className={`py-3 grid gap-2 grid-cols-${columns}`}>
-        {data.map((item) => (
+        {sortedData.map((item) => (
           <div
             key={item.id}
             className="flex flex-col p-2 bg-gray-200 dark:bg-gray-700 rounded-md box-content"
