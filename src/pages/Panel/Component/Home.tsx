@@ -124,8 +124,8 @@ function Home() {
   };
 
   return (
-    <div className="container w-full flex flex-wrap mx-auto px-2 m-16">
-      <div className="w-full lg:w-1/5 lg:px-6 text-xl text-gray-800 leading-normal dark:text-gray-50">
+    <div className="xl:container w-full flex flex-wrap mx-auto px-2 m-16">
+      <div className="w-full w-1/5 lg:px-6 text-xl text-gray-800 leading-normal dark:text-gray-50">
         <p className="font-bold underline underline-offset-auto">Collections</p>
 
         <form onSubmit={newCollectionSubmit} className="pt-3 pb-1 flex">
@@ -156,7 +156,7 @@ function Home() {
 
         <div className="w-full pt-1 pb-3 my-auto text-sm">
           <select
-            className="w-5/6 h-10 px-4 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+            className="w-5/6 h-10 px-4 inline-block border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
             id="spaceing"
             value={ordering ? ordering.type : 0}
             onChange={handleOrderingSelection}
@@ -167,7 +167,7 @@ function Home() {
             <option value="4">Items Count</option>
           </select>
 
-          <span className="w-1/6">
+          <span className="w-1/6 inline-block">
             <button onClick={handleDescendingOption}>
               {ordering && ordering.descending ? (
                 <svg

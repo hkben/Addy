@@ -157,24 +157,26 @@ function CollectionViewerTable({
 
   return (
     <div className="">
-      <div className="flex">
-        {allColumns.map((column) => (
-          <div key={column.id} className="inline text-base p-4">
-            <input
-              type="checkbox"
-              className="w-4 h-4 border border-gray-200 rounded-md"
-              {...column.getToggleHiddenProps()}
-              //this onChange overwrite the onChange prop from getToggleHiddenProps()
-              onChange={(e) => {
-                column.toggleHidden(!e.target.checked);
-                handleHiddenToggle(column.id);
-              }}
-            />
-            <span className="ml-3 font-semibold">{column.id}</span>
-          </div>
-        ))}
+      <div className="w-full">
+        <div className="w-4/6 inline-block">
+          {allColumns.map((column) => (
+            <div key={column.id} className="inline-block text-base p-2">
+              <input
+                type="checkbox"
+                className="w-4 h-4 border border-gray-200 rounded-md"
+                {...column.getToggleHiddenProps()}
+                //this onChange overwrite the onChange prop from getToggleHiddenProps()
+                onChange={(e) => {
+                  column.toggleHidden(!e.target.checked);
+                  handleHiddenToggle(column.id);
+                }}
+              />
+              <span className="ml-3 font-semibold">{column.id}</span>
+            </div>
+          ))}
+        </div>
 
-        <div className="inline text-base ml-auto my-auto">
+        <div className="w-2/6 inline-block text-base ml-auto my-auto align-top text-right">
           <label className="px-4" htmlFor="spaceing">
             Spacing
           </label>
