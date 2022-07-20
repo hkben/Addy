@@ -206,9 +206,9 @@ function CollectionViewerImage({
           >
             <div className="flex py-2 justify-start text-base font-bold">
               {moment(item.createTime).format('YYYY-MM-DD hh:mm A')}
-              <span className="ml-auto">
+              <span className="flex ml-auto">
                 <a
-                  className="inline-block align-middle"
+                  className="inline-block align-middle m-auto"
                   href={item.source}
                   target="_blank"
                 >
@@ -229,7 +229,7 @@ function CollectionViewerImage({
                 </a>
 
                 <button
-                  className="inline-block align-middle"
+                  className="inline-block align-middle m-auto"
                   onClick={() => {
                     const confirmBox = window.confirm(
                       'Do you really want to delete this item?'
