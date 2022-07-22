@@ -43,6 +43,10 @@ function Information() {
               </li>
             </ul>
           </div>
+
+          <div className="py-3 text-small">
+            RedirectURL: {Browser.identity.getRedirectURL()}
+          </div>
         </div>
       </div>
     </div>
