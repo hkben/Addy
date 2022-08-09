@@ -76,6 +76,14 @@ function Content(props: ISetting) {
 
     setCollections(_collections);
     setNewCollectionButton(false);
+
+    let _content = document.title;
+
+    //If title is empty, use url as content
+    if (_content.length == 0) {
+      _content = document.URL;
+    }
+
     setSelection({ content: document.title, type: 'bookmark' });
     showBox(domRect);
 
