@@ -249,9 +249,9 @@ function Content(props: ISetting) {
         <div className="bookmark-popup" style={styles}>
           <div className="bp-header">
             <p className="bp-header-text">
-              {selection.type == 'image'
-                ? `Image : ${selection.content}`
-                : selection.content}
+              {selection.type == 'text' ? `📝 : ${selection.content}` : ''}
+              {selection.type == 'image' ? `🖼️ : ${selection.content}` : ''}
+              {selection.type == 'bookmark' ? `🔖 : ${selection.content}` : ''}
             </p>
             <div className="bp-header-close-btn" onClick={toggleBox}>
               <svg

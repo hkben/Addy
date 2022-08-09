@@ -318,7 +318,7 @@ function CollectionViewer(props: Prop) {
           type="button"
           onClick={() => changeType(0)}
         >
-          All ({itemCount.all})
+          📕 All ({itemCount.all})
         </button>
 
         <button
@@ -330,7 +330,7 @@ function CollectionViewer(props: Prop) {
           type="button"
           onClick={() => changeType(1)}
         >
-          Text ({itemCount.text})
+          📝 Text ({itemCount.text})
         </button>
 
         <button
@@ -342,7 +342,7 @@ function CollectionViewer(props: Prop) {
           type="button"
           onClick={() => changeType(2)}
         >
-          Image ({itemCount.image})
+          🖼️ Image ({itemCount.image})
         </button>
 
         <button
@@ -354,7 +354,7 @@ function CollectionViewer(props: Prop) {
           type="button"
           onClick={() => changeType(3)}
         >
-          Bookmark ({itemCount.bookmark})
+          🔖 Bookmark ({itemCount.bookmark})
         </button>
       </div>
 
