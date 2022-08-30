@@ -4,6 +4,7 @@ import { Column, useSortBy, useTable } from 'react-table';
 import moment from 'moment';
 import { Setting } from '../../../common/storage';
 import _ from 'lodash';
+import ReactTooltip from 'react-tooltip';
 
 interface Prop {
   data: Array<ICollectionItem>;
@@ -36,7 +37,8 @@ function CollectionViewerTable({
         accessor: (row) => {
           //Hide Base64 Image Text
           if (row.content.startsWith('data:image')) {
-            return '<Base64 Image>';
+            const text = `<Base64 Image>`;
+            return <p data-tip={row.content}>{text}</p>;
           }
 
           if (row.type == 'image') {
@@ -47,7 +49,9 @@ function CollectionViewerTable({
               type = extension[1].toUpperCase();
             }
             const { hostname } = new URL(row.content);
-            return `<${type} Image from ${hostname} >`;
+            const text = `<${type} Image from ${hostname} >`;
+
+            return <p data-tip={row.content}>{text}</p>;
           }
 
           return row.content;
@@ -155,6 +159,10 @@ function CollectionViewerTable({
     setSpacing(spacingProp);
   }, [spacingProp]);
 
+  useEffect(() => {
+    ReactTooltip.rebuild();
+  });
+
   return (
     <div className="">
       <div className="w-full">
@@ -192,6 +200,12 @@ function CollectionViewerTable({
           </select>
         </div>
       </div>
+
+      <ReactTooltip
+        effect="solid"
+        place="top"
+        getContent={(dataTip) => <img className="max-h-80" src={dataTip} />}
+      />
 
       <table
         {...getTableProps()}
