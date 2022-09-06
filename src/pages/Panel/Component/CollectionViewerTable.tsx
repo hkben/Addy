@@ -68,6 +68,11 @@ function CollectionViewerTable({
         accessor: (row) => moment(row.createTime).format('YYYY-MM-DD hh:mm A'),
       },
       {
+        Header: 'Last Modified',
+        className: 'text-center',
+        accessor: (row) => moment(row.modifyTime).format('YYYY-MM-DD hh:mm A'),
+      },
+      {
         Header: 'Source',
         className: 'text-center',
         accessor: (row) => (
