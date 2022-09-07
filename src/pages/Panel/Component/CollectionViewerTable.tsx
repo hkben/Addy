@@ -10,7 +10,7 @@ import TableEditableCell from './TableEditableCell';
 interface Prop {
   data: Array<ICollectionItem>;
   onDeleteItem: (_itemId: string) => Promise<void>;
-  hiddenColumns: string[];
+  hiddenColumnsProp: string[];
   spacingProp: string;
   onEditItem: (_itemId: string, _content: string) => Promise<void>;
 }
@@ -18,11 +18,13 @@ interface Prop {
 function CollectionViewerTable({
   data,
   onDeleteItem,
-  hiddenColumns,
+  hiddenColumnsProp,
   spacingProp,
   onEditItem,
 }: Prop) {
   const [spacing, setSpacing] = React.useState<string>('normal');
+
+  const [hiddenColumns, setHiddenColumns] = React.useState<string[]>([]);
 
   const handleSpacingSelection = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -168,12 +170,17 @@ function CollectionViewerTable({
     useSortBy
   );
 
-  const handleHiddenToggle = (_columnId: string) => {
-    //this state.hiddenColumns is memoized, so using xor to get updated hiddenColumns
+  useEffect(() => {
     let _hiddenColumns = state.hiddenColumns || [];
-    let newHiddenColumns = _.xor(_hiddenColumns, [_columnId]);
-    Setting.updateViewingHiddenColumns(newHiddenColumns);
-  };
+    Setting.updateViewingHiddenColumns(_hiddenColumns);
+    setHiddenColumns(_hiddenColumns);
+  }, [state.hiddenColumns]);
+
+  useEffect(() => {
+    if (hiddenColumnsProp != undefined) {
+      setHiddenColumns(hiddenColumnsProp);
+    }
+  }, [hiddenColumnsProp]);
 
   useEffect(() => {
     setSpacing(spacingProp);
@@ -193,11 +200,6 @@ function CollectionViewerTable({
                 type="checkbox"
                 className="w-4 h-4 border border-gray-200 rounded-md"
                 {...column.getToggleHiddenProps()}
-                //this onChange overwrite the onChange prop from getToggleHiddenProps()
-                onChange={(e) => {
-                  column.toggleHidden(!e.target.checked);
-                  handleHiddenToggle(column.id);
-                }}
               />
               <span className="ml-3 font-semibold">{column.id}</span>
             </div>

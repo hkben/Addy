@@ -395,7 +395,7 @@ function CollectionViewer(props: Prop) {
           <CollectionViewerTable
             data={data}
             onDeleteItem={removeCollectionItem}
-            hiddenColumns={viewingOption.hiddenColumns}
+            hiddenColumnsProp={viewingOption.hiddenColumns}
             spacingProp={viewingOption.spacing}
             onEditItem={editCollectionItem}
           />
