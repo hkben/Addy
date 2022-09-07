@@ -93,6 +93,31 @@ function CollectionViewer(props: Prop) {
     }
   };
 
+  const editCollectionItem = async (_itemId: string, _content: string) => {
+    let { result, datetime } = await CollectionItem.updateContent(
+      props.collection,
+      _itemId,
+      _content
+    );
+
+    //update content in Collection
+    let updateCollection = (_items: Array<ICollectionItem>) => {
+      let itemIndex = _.findIndex(_items, (o) => o.id == _itemId)!;
+      _items[itemIndex].content = _content;
+      _items[itemIndex].modifyTime = datetime;
+      return _items;
+    };
+
+    if (result) {
+      setCollection((prevState) => ({
+        ...prevState,
+        items: updateCollection(prevState.items),
+      }));
+
+      await props.callback();
+    }
+  };
+
   useEffect(() => {
     const getCollection = async () => {
       let collection = await Collection.fetch(props.collection);
@@ -372,6 +397,7 @@ function CollectionViewer(props: Prop) {
             onDeleteItem={removeCollectionItem}
             hiddenColumns={viewingOption.hiddenColumns}
             spacingProp={viewingOption.spacing}
+            onEditItem={editCollectionItem}
           />
         )}
       </div>

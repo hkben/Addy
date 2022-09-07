@@ -5,12 +5,14 @@ import moment from 'moment';
 import { Setting } from '../../../common/storage';
 import _ from 'lodash';
 import ReactTooltip from 'react-tooltip';
+import TableEditableCell from './TableEditableCell';
 
 interface Prop {
   data: Array<ICollectionItem>;
   onDeleteItem: (_itemId: string) => Promise<void>;
   hiddenColumns: string[];
   spacingProp: string;
+  onEditItem: (_itemId: string, _content: string) => Promise<void>;
 }
 
 function CollectionViewerTable({
@@ -18,6 +20,7 @@ function CollectionViewerTable({
   onDeleteItem,
   hiddenColumns,
   spacingProp,
+  onEditItem,
 }: Prop) {
   const [spacing, setSpacing] = React.useState<string>('normal');
 
@@ -134,6 +137,17 @@ function CollectionViewerTable({
     [onDeleteItem]
   );
 
+  const defaultColumn = {
+    Cell: ({ value, row, column }: any) => (
+      <TableEditableCell
+        value={value}
+        row={row}
+        column={column}
+        onEditItem={onEditItem}
+      />
+    ),
+  };
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -149,6 +163,7 @@ function CollectionViewerTable({
       data,
       initialState: { hiddenColumns: hiddenColumns || [] },
       autoResetSortBy: false,
+      defaultColumn,
     },
     useSortBy
   );
