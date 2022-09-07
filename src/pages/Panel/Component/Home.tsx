@@ -49,7 +49,7 @@ function Home() {
     //Avoid activeCollection changing when reloading CollectionsList
     if (activeCollection != '') {
       let isCollectionExists =
-        _.filter(sortedCollections, (o) => o.id == activeCollection).length > 0
+        _.filter(collections, (o) => o.id == activeCollection).length > 0
           ? true
           : false;
 
