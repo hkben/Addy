@@ -75,17 +75,17 @@ function CollectionViewerTable({
       },
       {
         Header: 'Created Time',
-        className: 'text-center',
+        className: 'text-center w-40',
         accessor: (row) => moment(row.createTime).format('YYYY-MM-DD hh:mm A'),
       },
       {
         Header: 'Last Modified',
-        className: 'text-center',
+        className: 'text-center w-40',
         accessor: (row) => moment(row.modifyTime).format('YYYY-MM-DD hh:mm A'),
       },
       {
         Header: 'Source',
-        className: 'text-center',
+        className: 'text-center w-20',
         accessor: (row) => (
           <a
             className="inline-block align-middle"
@@ -111,7 +111,7 @@ function CollectionViewerTable({
       },
       {
         Header: 'Delete',
-        className: 'text-center',
+        className: 'text-center w-20',
         accessor: (row) => (
           <button
             className="inline-block align-middle"
@@ -256,7 +256,7 @@ function CollectionViewerTable({
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <th
-                  className="py-4 text-lg"
+                  className="h-16 py-4 text-md whitespace-pre"
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                 >
                   {column.render('Header')}
@@ -265,7 +265,7 @@ function CollectionViewerTable({
                       column.isSortedDesc ? (
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 inline mx-2"
+                          className="h-6 w-6 inline ml-2"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -280,7 +280,7 @@ function CollectionViewerTable({
                       ) : (
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 inline mx-2"
+                          className="h-6 w-6 inline ml-2"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -316,7 +316,7 @@ function CollectionViewerTable({
                 {row.cells.map((cell) => {
                   return (
                     <td
-                      className={`whitespace-pre-line px-2 ${
+                      className={`whitespace-pre-line px-2 min-w-60 ${
                         spacing == 'normal' ? 'py-4' : 'py-1'
                       }`}
                       {...cell.getCellProps([
