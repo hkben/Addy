@@ -397,6 +397,7 @@ function CollectionViewer(props: Prop) {
             onDeleteItem={removeCollectionItem}
             hiddenColumnsProp={viewingOption.hiddenColumns}
             spacingProp={viewingOption.spacing}
+            sortByProp={viewingOption.sortBy}
             onEditItem={editCollectionItem}
           />
         )}

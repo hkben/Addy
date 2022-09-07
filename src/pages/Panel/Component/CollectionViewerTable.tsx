@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { ICollectionItem, IViewingOption } from '../../../common/interface';
-import { Column, useSortBy, useTable } from 'react-table';
+import { Column, SortingRule, useSortBy, useTable } from 'react-table';
 import moment from 'moment';
 import { Setting } from '../../../common/storage';
 import _ from 'lodash';
@@ -12,6 +12,7 @@ interface Prop {
   onDeleteItem: (_itemId: string) => Promise<void>;
   hiddenColumnsProp: string[];
   spacingProp: string;
+  sortByProp: SortingRule<any>[];
   onEditItem: (_itemId: string, _content: string) => Promise<void>;
 }
 
@@ -20,11 +21,16 @@ function CollectionViewerTable({
   onDeleteItem,
   hiddenColumnsProp,
   spacingProp,
+  sortByProp,
   onEditItem,
 }: Prop) {
   const [spacing, setSpacing] = React.useState<string>('normal');
 
   const [hiddenColumns, setHiddenColumns] = React.useState<string[]>([]);
+
+  const [sortBy, setSortBy] = React.useState<SortingRule<ICollectionItem>[]>(
+    []
+  );
 
   const handleSpacingSelection = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -163,9 +169,11 @@ function CollectionViewerTable({
     {
       columns,
       data,
-      initialState: { hiddenColumns: hiddenColumns || [] },
-      autoResetSortBy: false,
       defaultColumn,
+      initialState: {
+        hiddenColumns: hiddenColumns || [],
+        sortBy: sortBy || [],
+      },
     },
     useSortBy
   );
@@ -177,10 +185,20 @@ function CollectionViewerTable({
   }, [state.hiddenColumns]);
 
   useEffect(() => {
+    let _sortBy = state.sortBy || [];
+    Setting.updateViewingSortBy(_sortBy);
+    setSortBy(_sortBy);
+  }, [state.sortBy]);
+
+  useEffect(() => {
     if (hiddenColumnsProp != undefined) {
       setHiddenColumns(hiddenColumnsProp);
     }
-  }, [hiddenColumnsProp]);
+
+    if (sortByProp != undefined) {
+      setSortBy(sortByProp);
+    }
+  }, [hiddenColumnsProp, sortByProp]);
 
   useEffect(() => {
     setSpacing(spacingProp);

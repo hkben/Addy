@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { SortingRule } from 'react-table';
 import Browser from 'webextension-polyfill';
 import { IOrdering, ISetting, IStorage, IViewingOption } from '../interface';
 
@@ -15,6 +16,7 @@ class Setting {
         hiddenColumns: [],
         spacing: 'normal',
         imageColumns: 3,
+        sortBy: [],
       },
     };
     return defaultSetting;
@@ -107,6 +109,20 @@ class Setting {
     try {
       let setting = await this.fetch();
       setting.viewingOption.spacing = _spacing;
+      this.update(setting);
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+    return true;
+  }
+
+  static async updateViewingSortBy(
+    _sortBy: SortingRule<any>[]
+  ): Promise<boolean> {
+    try {
+      let setting = await this.fetch();
+      setting.viewingOption.sortBy = _sortBy;
       this.update(setting);
     } catch (e) {
       console.error(e);
