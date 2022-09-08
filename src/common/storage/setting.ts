@@ -96,6 +96,12 @@ class Setting {
   ): Promise<boolean> {
     try {
       let setting = await this.fetch();
+
+      //return true when data is not changed
+      if (setting.viewingOption.hiddenColumns == _hiddenColumns) {
+        return true;
+      }
+
       setting.viewingOption.hiddenColumns = _hiddenColumns;
       this.update(setting);
     } catch (e) {
@@ -122,6 +128,12 @@ class Setting {
   ): Promise<boolean> {
     try {
       let setting = await this.fetch();
+
+      //return true when data is not changed
+      if (setting.viewingOption.sortBy == _sortBy) {
+        return true;
+      }
+
       setting.viewingOption.sortBy = _sortBy;
       this.update(setting);
     } catch (e) {

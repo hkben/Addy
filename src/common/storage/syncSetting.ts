@@ -23,6 +23,10 @@ class SyncSetting {
         'syncSetting'
       )) as IStorage;
 
+      if (typeof localStorage.syncSetting == 'undefined') {
+        throw new Error('[SyncSetting] localStorage.syncSetting undefined');
+      }
+
       if (localStorage.syncSetting != null) {
         syncSetting = localStorage.syncSetting;
       }

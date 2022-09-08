@@ -19,6 +19,10 @@ class Collections {
         'collections'
       )) as IStorage;
 
+      if (typeof localStorage.collections == 'undefined') {
+        throw new Error('[Collections] localStorage.collections undefined');
+      }
+
       collections = localStorage.collections;
     } catch (e) {
       console.error(e);
