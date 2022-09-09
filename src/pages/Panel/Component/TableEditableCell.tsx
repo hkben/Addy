@@ -43,6 +43,11 @@ function TableEditableCell({
     setIsEditing(false);
   };
 
+  const handleDecode = (event: React.MouseEvent<HTMLButtonElement>) => {
+    let _content = decodeURIComponent(content);
+    setContent(_content);
+  };
+
   const handleCancel = (event: React.MouseEvent<HTMLButtonElement>) => {
     setContent(original.content);
     setIsEditing(false);
@@ -70,6 +75,12 @@ function TableEditableCell({
             onClick={handleSave}
           >
             Save
+          </button>
+          <button
+            className="m-2 p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+            onClick={handleDecode}
+          >
+            Decode URI
           </button>
           <button
             className="m-2 p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
