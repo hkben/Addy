@@ -26,7 +26,7 @@ function CollectionViewerImage({
 
   const [downloadingItem, setDownloadingItem] = React.useState(0);
 
-  const [isSortedDesc, setIsSortedDesc] = React.useState(false);
+  const [isSortedDesc, setIsSortedDesc] = React.useState(true);
 
   const [sortedData, setSortedData] = React.useState(
     [] as Array<ICollectionItem>
