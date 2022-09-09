@@ -71,11 +71,29 @@ function CollectionViewerTable({
         Header: 'Created Time',
         className: 'text-center w-40',
         accessor: (row) => moment(row.createTime).format('YYYY-MM-DD hh:mm A'),
+        sortType: (a, b) => {
+          var _a = moment(a.original.createTime);
+          var _b = moment(b.original.createTime);
+          if (_a.isSameOrBefore(_b)) {
+            return 1;
+          } else {
+            return -1;
+          }
+        },
       },
       {
         Header: 'Last Modified',
         className: 'text-center w-40',
         accessor: (row) => moment(row.modifyTime).format('YYYY-MM-DD hh:mm A'),
+        sortType: (a, b) => {
+          var _a = moment(a.original.modifyTime);
+          var _b = moment(b.original.modifyTime);
+          if (_a.isSameOrBefore(_b)) {
+            return 1;
+          } else {
+            return -1;
+          }
+        },
       },
       {
         Header: 'Source',
