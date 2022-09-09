@@ -122,9 +122,9 @@ function CollectionViewer(props: Prop) {
     const getCollection = async () => {
       let collection = await Collection.fetch(props.collection);
 
-      console.log(props.collection);
+      console.log(`Loading ${props.collection}`);
 
-      console.log(collection);
+      console.log(`Name:${collection.name} Items:${collection.items.length}`);
 
       if (typeof collection == 'undefined') {
         return;
