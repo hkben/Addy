@@ -26,12 +26,6 @@ function CollectionViewerTable({
 }: Prop) {
   const [spacing, setSpacing] = React.useState<string>('normal');
 
-  const [hiddenColumns, setHiddenColumns] = React.useState<string[]>([]);
-
-  const [sortBy, setSortBy] = React.useState<SortingRule<ICollectionItem>[]>(
-    []
-  );
-
   const handleSpacingSelection = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -165,15 +159,15 @@ function CollectionViewerTable({
     allColumns,
     visibleColumns,
     state,
+    setHiddenColumns,
+    setSortBy,
   } = useTable(
     {
       columns,
       data,
       defaultColumn,
-      initialState: {
-        hiddenColumns: hiddenColumns || [],
-        sortBy: sortBy || [],
-      },
+      autoResetHiddenColumns: false,
+      autoResetSortBy: false,
     },
     useSortBy
   );
@@ -181,13 +175,11 @@ function CollectionViewerTable({
   useEffect(() => {
     let _hiddenColumns = state.hiddenColumns || [];
     Setting.updateViewingHiddenColumns(_hiddenColumns);
-    setHiddenColumns(_hiddenColumns);
   }, [state.hiddenColumns]);
 
   useEffect(() => {
     let _sortBy = state.sortBy || [];
     Setting.updateViewingSortBy(_sortBy);
-    setSortBy(_sortBy);
   }, [state.sortBy]);
 
   useEffect(() => {
