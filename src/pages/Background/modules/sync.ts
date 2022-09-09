@@ -66,6 +66,9 @@ export const syncBackgroundRun = async () => {
         await Collections.import(collections);
       }
 
+      console.log('[Sync] Remove Deleted...');
+      await Collections.removeDeleted();
+
       console.log('[Sync] Uploading imported Data...');
       await syncProvider.updateSyncFile(fileInfo);
     }
