@@ -43,6 +43,11 @@ function TableEditableCell({
     setIsEditing(false);
   };
 
+  const handleCopy = (event: React.MouseEvent<HTMLButtonElement>) => {
+    navigator.clipboard.writeText(content);
+    setIsEditing(false);
+  };
+
   const handleDecode = (event: React.MouseEvent<HTMLButtonElement>) => {
     let _content = decodeURIComponent(content);
     setContent(_content);
@@ -75,6 +80,12 @@ function TableEditableCell({
             onClick={handleSave}
           >
             Save
+          </button>
+          <button
+            className="m-2 p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+            onClick={handleCopy}
+          >
+            Copy
           </button>
           <button
             className="m-2 p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
