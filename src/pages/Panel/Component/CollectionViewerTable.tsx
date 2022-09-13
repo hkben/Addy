@@ -216,7 +216,7 @@ function CollectionViewerTable({
 
   useEffect(() => {
     ReactTooltip.rebuild();
-  });
+  }, [state, columns]);
 
   return (
     <div className="">
