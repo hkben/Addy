@@ -75,17 +75,16 @@ function CollectionViewerTable({
         accessor: (row) => {
           let _moment = moment(row.createTime);
 
-          if (timeDisplayProp == 0) {
-            return _moment.format('YYYY-MM-DD hh:mm A');
-          }
-
-          if (timeDisplayProp == 1) {
+          if (timeDisplayProp == 1 || null) {
             return _moment.format('YYYY-MM-DD HH:mm');
           }
 
-          if (timeDisplayProp == 2) {
+          if (timeDisplayProp == 2 || null) {
             return _moment.fromNow();
           }
+
+          //always return 12-hour clock
+          return _moment.format('YYYY-MM-DD hh:mm A');
         },
         sortType: (a, b) => {
           var _a = moment(a.original.createTime);
@@ -103,10 +102,6 @@ function CollectionViewerTable({
         accessor: (row) => {
           let _moment = moment(row.modifyTime);
 
-          if (timeDisplayProp == 0) {
-            return _moment.format('YYYY-MM-DD hh:mm A');
-          }
-
           if (timeDisplayProp == 1) {
             return _moment.format('YYYY-MM-DD HH:mm');
           }
@@ -114,6 +109,9 @@ function CollectionViewerTable({
           if (timeDisplayProp == 2) {
             return _moment.fromNow();
           }
+
+          //always return 12-hour clock
+          return _moment.format('YYYY-MM-DD hh:mm A');
         },
         sortType: (a, b) => {
           var _a = moment(a.original.modifyTime);
