@@ -17,6 +17,7 @@ class Setting {
         spacing: 'normal',
         imageColumns: 3,
         sortBy: [],
+        timeDisplay: 0,
       },
     };
     return defaultSetting;

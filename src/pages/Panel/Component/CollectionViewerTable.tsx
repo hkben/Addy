@@ -13,6 +13,7 @@ interface Prop {
   hiddenColumnsProp: string[];
   spacingProp: string;
   sortByProp: SortingRule<any>[];
+  timeDisplayProp: number;
   onEditItem: (_itemId: string, _content: string) => Promise<void>;
 }
 
@@ -22,6 +23,7 @@ function CollectionViewerTable({
   hiddenColumnsProp,
   spacingProp,
   sortByProp,
+  timeDisplayProp,
   onEditItem,
 }: Prop) {
   const [spacing, setSpacing] = React.useState<string>('normal');
@@ -69,8 +71,22 @@ function CollectionViewerTable({
       },
       {
         Header: 'Created Time',
-        accessor: (row) => moment(row.createTime).format('YYYY-MM-DD hh:mm A'),
         className: 'text-center w-36 whitespace-nowrap',
+        accessor: (row) => {
+          let _moment = moment(row.createTime);
+
+          if (timeDisplayProp == 0) {
+            return _moment.format('YYYY-MM-DD hh:mm A');
+          }
+
+          if (timeDisplayProp == 1) {
+            return _moment.format('YYYY-MM-DD HH:mm');
+          }
+
+          if (timeDisplayProp == 2) {
+            return _moment.fromNow();
+          }
+        },
         sortType: (a, b) => {
           var _a = moment(a.original.createTime);
           var _b = moment(b.original.createTime);
@@ -83,8 +99,22 @@ function CollectionViewerTable({
       },
       {
         Header: 'Last Modified',
-        accessor: (row) => moment(row.modifyTime).format('YYYY-MM-DD hh:mm A'),
         className: 'text-center w-36 whitespace-nowrap',
+        accessor: (row) => {
+          let _moment = moment(row.modifyTime);
+
+          if (timeDisplayProp == 0) {
+            return _moment.format('YYYY-MM-DD hh:mm A');
+          }
+
+          if (timeDisplayProp == 1) {
+            return _moment.format('YYYY-MM-DD HH:mm');
+          }
+
+          if (timeDisplayProp == 2) {
+            return _moment.fromNow();
+          }
+        },
         sortType: (a, b) => {
           var _a = moment(a.original.modifyTime);
           var _b = moment(b.original.modifyTime);

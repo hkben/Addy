@@ -80,6 +80,25 @@ function General() {
     }));
   };
 
+  const handleTimeDisplaySelection = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    let value = parseInt(event.currentTarget.value);
+
+    let _setting = setting;
+    _setting.viewingOption.timeDisplay = value;
+
+    await Setting.update(_setting);
+
+    setSetting((prevState) => ({
+      ...prevState,
+      viewingOption: {
+        ...prevState.viewingOption,
+        timeDisplay: value,
+      },
+    }));
+  };
+
   const clearData = async () => {
     let result = await Storage.clear();
 
@@ -160,6 +179,25 @@ function General() {
               checked={setting.quickSearch}
               onChange={handleQuickSearchCheckbox}
             />
+          </div>
+        </div>
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">Time Display</p>
+          </div>
+          <div className="w-1/3 my-auto">
+            <select
+              className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+              id="spaceing"
+              value={
+                setting.viewingOption ? setting.viewingOption.timeDisplay : 0
+              }
+              onChange={handleTimeDisplaySelection}
+            >
+              <option value="0">12-hour clock</option>
+              <option value="1">24-hour clock</option>
+              <option value="2">Relative Time</option>
+            </select>
           </div>
         </div>
         <div className="w-2/3 flex h-28">

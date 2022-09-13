@@ -109,6 +109,7 @@ export interface IViewingOption {
   spacing: string;
   imageColumns: number;
   sortBy: SortingRule<any>[];
+  timeDisplay: number;
 }
 
 //Sync Setting

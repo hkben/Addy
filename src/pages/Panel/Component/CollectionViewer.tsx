@@ -398,6 +398,7 @@ function CollectionViewer(props: Prop) {
             hiddenColumnsProp={viewingOption.hiddenColumns}
             spacingProp={viewingOption.spacing}
             sortByProp={viewingOption.sortBy}
+            timeDisplayProp={viewingOption.timeDisplay}
             onEditItem={editCollectionItem}
           />
         )}
