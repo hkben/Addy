@@ -17,7 +17,7 @@ function TableEditableCell({
   onEditItem,
 }: Prop) {
   if (Header != 'Content') {
-    return displayValue;
+    return displayValue || null;
   }
 
   const [content, setContent] = React.useState<string>('');
