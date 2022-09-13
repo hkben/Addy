@@ -69,8 +69,8 @@ function CollectionViewerTable({
       },
       {
         Header: 'Created Time',
-        className: 'text-center w-40',
         accessor: (row) => moment(row.createTime).format('YYYY-MM-DD hh:mm A'),
+        className: 'text-center w-36 whitespace-nowrap',
         sortType: (a, b) => {
           var _a = moment(a.original.createTime);
           var _b = moment(b.original.createTime);
@@ -83,8 +83,8 @@ function CollectionViewerTable({
       },
       {
         Header: 'Last Modified',
-        className: 'text-center w-40',
         accessor: (row) => moment(row.modifyTime).format('YYYY-MM-DD hh:mm A'),
+        className: 'text-center w-36 whitespace-nowrap',
         sortType: (a, b) => {
           var _a = moment(a.original.modifyTime);
           var _b = moment(b.original.modifyTime);
