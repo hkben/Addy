@@ -38,4 +38,9 @@ let preload_popup = async () => {
   render(reactElement, contentDiv);
 };
 
-window.addEventListener('load', preload_popup);
+window.addEventListener('load', function (event: Event) {
+  if (event.isTrusted) {
+    //Block load event created by a script
+    preload_popup();
+  }
+});
