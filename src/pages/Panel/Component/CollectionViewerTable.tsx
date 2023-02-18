@@ -288,7 +288,7 @@ function CollectionViewerTable({
 
       <table
         {...getTableProps()}
-        className="table-auto min-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500"
+        className="table-auto w-full max-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500"
       >
         <thead>
           {headerGroups.map((headerGroup) => (
@@ -355,7 +355,7 @@ function CollectionViewerTable({
                 {row.cells.map((cell) => {
                   return (
                     <td
-                      className={`whitespace-pre-line px-2 min-w-60 ${
+                      className={`whitespace-pre-line px-2 max-w-lg break-all ${
                         spacing == 'normal' ? 'py-4' : 'py-1'
                       }`}
                       {...cell.getCellProps([

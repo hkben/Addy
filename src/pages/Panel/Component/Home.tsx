@@ -125,7 +125,7 @@ function Home() {
 
   return (
     <div className="xl:container w-full flex flex-wrap mx-auto px-2 m-16">
-      <div className="w-full w-1/5 lg:px-6 text-xl text-gray-800 leading-normal dark:text-gray-50">
+      <div className="w-1/5 lg:px-6 text-xl text-gray-800 leading-normal dark:text-gray-50">
         <p className="font-bold underline underline-offset-auto">Collections</p>
 
         <form onSubmit={newCollectionSubmit} className="pt-3 pb-1 flex">
