@@ -6,6 +6,7 @@ import { Setting } from '../../../common/storage';
 import _ from 'lodash';
 import ReactTooltip from 'react-tooltip';
 import TableEditableCell from './TableEditableCell';
+import ImageTooltip from './ImageTooltip';
 
 interface Prop {
   data: Array<ICollectionItem>;
@@ -282,7 +283,7 @@ function CollectionViewerTable({
       <ReactTooltip
         effect="solid"
         place="top"
-        getContent={(dataTip) => <img className="max-h-80" src={dataTip} />}
+        getContent={(dataTip) => <ImageTooltip imageSrc={dataTip} />}
       />
 
       <table
