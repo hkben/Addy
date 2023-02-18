@@ -1,6 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Addy",
+  "description": "A web extension for saving content quickly",
 
   "permissions": [
     "storage",
