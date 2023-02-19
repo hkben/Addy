@@ -6,6 +6,7 @@ import jsZip from 'jszip';
 import Common from '../../common';
 import { Setting } from '../../../common/storage';
 import _ from 'lodash';
+import Browser from 'webextension-polyfill';
 
 interface Prop {
   data: Array<ICollectionItem>;
@@ -59,27 +60,31 @@ function CollectionViewerImage({
     let zip = new jsZip();
 
     for (const item of data) {
-      let pathFileName = new URL(item.content).pathname
-        .split('/')
-        .pop()
-        ?.split('.');
+      try {
+        let pathFileName = new URL(item.content).pathname
+          .split('/')
+          .pop()
+          ?.split('.');
 
-      let createTime = `${moment(item.createTime).format(
-        'YYYY-MM-DD-HH-mm-ss'
-      )}`;
+        let createTime = `${moment(item.createTime).format(
+          'YYYY-MM-DD-HH-mm-ss'
+        )}`;
 
-      let name = `${createTime}`;
+        let name = `${createTime}`;
 
-      if (pathFileName != null && pathFileName.length > 1) {
-        name = `${pathFileName[0]}-${createTime}`;
+        if (pathFileName != null && pathFileName.length > 1) {
+          name = `${pathFileName[0]}-${createTime}`;
+        }
+
+        let res = await fetch(item.content);
+        let blob = await res.blob();
+        let extension = Common.getExtensionByContentType(blob.type);
+        zip.file(`${name}${extension}`, blob, { base64: true });
+
+        setDownloadingItem((prev) => prev + 1);
+      } catch (error) {
+        console.error(error);
       }
-
-      let res = await fetch(item.content);
-      let blob = await res.blob();
-      let extension = Common.getExtensionByContentType(blob.type);
-      zip.file(`${name}${extension}`, blob, { base64: true });
-
-      setDownloadingItem((prev) => prev + 1);
     }
 
     const content = await zip.generateAsync({ type: 'blob' });
