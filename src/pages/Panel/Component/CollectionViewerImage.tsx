@@ -150,7 +150,19 @@ function CollectionViewerImage({
           {data.length > 0 ? (
             <button
               className="p-2 px-10 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
-              onClick={downloadAllImages}
+              onClick={() => {
+                const isFirefox = Browser.runtime
+                  .getURL('')
+                  .startsWith('moz-extension://');
+
+                if (isFirefox) {
+                  window.confirm(
+                    `Some images may not be downloaded in Firefox due to Firefox's CORS security policy.\n We suggest download images on Chrome.`
+                  );
+                }
+
+                downloadAllImages();
+              }}
             >
               {isDownloading
                 ? `${downloadingItem} / ${data.length} Items`
