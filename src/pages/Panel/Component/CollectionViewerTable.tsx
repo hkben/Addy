@@ -1,6 +1,16 @@
 import React, { useEffect, useMemo } from 'react';
 import { ICollectionItem, IViewingOption } from '../../../common/interface';
-import { Column, SortingRule, useSortBy, useTable } from 'react-table';
+import {
+  Column,
+  ColumnDef,
+  Row,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
 import moment from 'moment';
 import { Setting } from '../../../common/storage';
 import _ from 'lodash';
@@ -13,7 +23,7 @@ interface Prop {
   onDeleteItem: (_itemId: string) => Promise<void>;
   hiddenColumnsProp: string[];
   spacingProp: string;
-  sortByProp: SortingRule<any>[];
+  sortByProp: SortingState;
   timeDisplayProp: number;
   onEditItem: (_itemId: string, _content: string) => Promise<void>;
 }
@@ -29,6 +39,11 @@ function CollectionViewerTable({
 }: Prop) {
   const [spacing, setSpacing] = React.useState<string>('normal');
 
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+
   const handleSpacingSelection = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -38,11 +53,14 @@ function CollectionViewerTable({
     Setting.updateViewingSpacing(value);
   };
 
-  const columns: Array<Column<ICollectionItem>> = useMemo(
+  const columns: ColumnDef<ICollectionItem>[] = useMemo(
     () => [
       {
-        Header: 'Content',
-        accessor: (row) => {
+        header: 'Content',
+        meta: {
+          className: 'whitespace-pre-line px-2 max-w-lg break-all',
+        },
+        accessorFn: (row) => {
           //Hide Base64 Image Text
           if (row.content.startsWith('data:image')) {
             const text = `<Base64 Image>`;
@@ -66,14 +84,18 @@ function CollectionViewerTable({
         },
       },
       {
-        Header: 'Type',
-        className: 'text-center',
-        accessor: (row) => row.type,
+        header: 'Type',
+        meta: {
+          className: 'text-center',
+        },
+        accessorFn: (row) => row.type,
       },
       {
-        Header: 'Created Time',
-        className: 'text-center w-36 whitespace-nowrap',
-        accessor: (row) => {
+        header: 'Created Time',
+        meta: {
+          className: 'text-center w-36 whitespace-nowrap',
+        },
+        accessorFn: (row) => {
           let _moment = moment(row.createTime);
 
           if (timeDisplayProp == 1 || null) {
@@ -87,7 +109,7 @@ function CollectionViewerTable({
           //always return 12-hour clock
           return _moment.format('YYYY-MM-DD hh:mm A');
         },
-        sortType: (a, b) => {
+        sortingFn: (a: Row<ICollectionItem>, b: Row<ICollectionItem>) => {
           var _a = moment(a.original.createTime);
           var _b = moment(b.original.createTime);
           if (_a.isSameOrBefore(_b)) {
@@ -98,9 +120,11 @@ function CollectionViewerTable({
         },
       },
       {
-        Header: 'Last Modified',
-        className: 'text-center w-36 whitespace-nowrap',
-        accessor: (row) => {
+        header: 'Last Modified',
+        meta: {
+          className: 'text-center w-36 whitespace-nowrap',
+        },
+        accessorFn: (row) => {
           let _moment = moment(row.modifyTime);
 
           if (timeDisplayProp == 1) {
@@ -114,7 +138,7 @@ function CollectionViewerTable({
           //always return 12-hour clock
           return _moment.format('YYYY-MM-DD hh:mm A');
         },
-        sortType: (a, b) => {
+        sortingFn: (a: Row<ICollectionItem>, b: Row<ICollectionItem>) => {
           var _a = moment(a.original.modifyTime);
           var _b = moment(b.original.modifyTime);
           if (_a.isSameOrBefore(_b)) {
@@ -125,9 +149,11 @@ function CollectionViewerTable({
         },
       },
       {
-        Header: 'Source',
-        className: 'text-center w-20',
-        accessor: (row) => (
+        header: 'Source',
+        meta: {
+          className: 'text-center w-20',
+        },
+        accessorFn: (row) => (
           <a
             className="inline-block align-middle"
             href={row.source}
@@ -151,9 +177,11 @@ function CollectionViewerTable({
         ),
       },
       {
-        Header: 'Delete',
-        className: 'text-center w-20',
-        accessor: (row) => (
+        header: 'Delete',
+        meta: {
+          className: 'text-center w-20',
+        },
+        accessorFn: (row) => (
           <button
             className="inline-block align-middle"
             onClick={() => {
@@ -186,56 +214,59 @@ function CollectionViewerTable({
     [onDeleteItem]
   );
 
-  const defaultColumn = {
-    Cell: ({ value, row, column }: any) => (
+  const defaultColumn: Partial<ColumnDef<ICollectionItem>> = {
+    cell: (props) => (
       <TableEditableCell
-        value={value}
-        row={row}
-        column={column}
+        value={props.getValue()}
+        row={props.row}
+        column={props.column.columnDef}
         onEditItem={onEditItem}
       />
     ),
   };
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-    allColumns,
-    visibleColumns,
-    state,
-    setHiddenColumns,
-    setSortBy,
-  } = useTable(
-    {
+  const { getAllLeafColumns, getHeaderGroups, getRowModel } =
+    useReactTable<ICollectionItem>({
       columns,
       data,
       defaultColumn,
-      autoResetHiddenColumns: false,
-      autoResetSortBy: false,
-    },
-    useSortBy
-  );
+      getCoreRowModel: getCoreRowModel(),
+      getSortedRowModel: getSortedRowModel(),
+      onColumnVisibilityChange: setColumnVisibility,
+      onSortingChange: setSorting,
+      state: {
+        columnVisibility,
+        sorting,
+      },
+    });
 
   useEffect(() => {
-    let _hiddenColumns = state.hiddenColumns || [];
-    Setting.updateViewingHiddenColumns(_hiddenColumns);
-  }, [state.hiddenColumns]);
+    let _hiddenColumnsKeys = _.keys(
+      _.pickBy(columnVisibility, (value) => value == false)
+    );
+
+    Setting.updateViewingHiddenColumns(_hiddenColumnsKeys);
+  }, [columnVisibility]);
 
   useEffect(() => {
-    let _sortBy = state.sortBy || [];
-    Setting.updateViewingSortBy(_sortBy);
-  }, [state.sortBy]);
+    let _sorting = sorting || [];
+    Setting.updateViewingSortBy(_sorting);
+  }, [sorting]);
 
   useEffect(() => {
     if (hiddenColumnsProp != undefined) {
-      setHiddenColumns(hiddenColumnsProp);
+      // Update the above code to the following:
+      const _columnVisibility: Record<string, boolean> = {};
+
+      hiddenColumnsProp.forEach((value: string) => {
+        _columnVisibility[value] = false;
+      });
+
+      setColumnVisibility(_columnVisibility);
     }
 
     if (sortByProp != undefined) {
-      setSortBy(sortByProp);
+      setSorting(sortByProp);
     }
   }, [hiddenColumnsProp, sortByProp]);
 
@@ -245,18 +276,21 @@ function CollectionViewerTable({
 
   useEffect(() => {
     ReactTooltip.rebuild();
-  }, [state, columns]);
+  }, [columns]);
 
   return (
     <div className="">
       <div className="w-full">
         <div className="w-4/6 inline-block">
-          {allColumns.map((column) => (
+          {getAllLeafColumns().map((column) => (
             <div key={column.id} className="inline-block text-base p-2">
               <input
                 type="checkbox"
                 className="w-4 h-4 border border-gray-200 rounded-md"
-                {...column.getToggleHiddenProps()}
+                {...{
+                  checked: column.getIsVisible(),
+                  onChange: column.getToggleVisibilityHandler(),
+                }}
               />
               <span className="ml-3 font-semibold">{column.id}</span>
             </div>
@@ -286,85 +320,90 @@ function CollectionViewerTable({
         getContent={(dataTip) => <ImageTooltip imageSrc={dataTip} />}
       />
 
-      <table
-        {...getTableProps()}
-        className="table-auto w-full max-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500"
-      >
+      <table className="table-auto w-full max-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500">
         <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
+          {getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
                 <th
                   className="h-16 py-4 text-md whitespace-pre"
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  key={header.id}
+                  colSpan={header.colSpan}
                 >
-                  {column.render('Header')}
-                  <span>
-                    {column.isSorted ? (
-                      column.isSortedDesc ? (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 inline ml-2"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 15l7-7 7 7"
-                          />
-                        </svg>
-                      ) : (
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-6 w-6 inline ml-2"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      )
-                    ) : (
-                      ''
+                  <div
+                    {...{
+                      className: header.column.getCanSort()
+                        ? 'cursor-pointer select-none'
+                        : '',
+                      onClick: header.column.getToggleSortingHandler(),
+                    }}
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
                     )}
-                  </span>
+                    <span>
+                      {{
+                        asc: (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 inline ml-2"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        ),
+                        desc: (
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 inline ml-2"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 15l7-7 7 7"
+                            />
+                          </svg>
+                        ),
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </span>
+                  </div>
                 </th>
               ))}
             </tr>
           ))}
         </thead>
-        <tbody
-          {...getTableBodyProps()}
-          className="divide-y divide-gray-200 dark:divide-gray-500"
-        >
-          {rows.map((row, i) => {
-            prepareRow(row);
+        <tbody className="divide-y divide-gray-200 dark:divide-gray-500">
+          {getRowModel().rows.map((row) => {
             return (
               <tr
                 className="hover:bg-gray-200 dark:hover:bg-gray-700"
-                {...row.getRowProps()}
+                key={row.id}
               >
-                {row.cells.map((cell) => {
+                {row.getVisibleCells().map((cell) => {
+                  // console.log(cell.getContext());
                   return (
                     <td
-                      className={`whitespace-pre-line px-2 max-w-lg break-all ${
-                        spacing == 'normal' ? 'py-4' : 'py-1'
+                      className={`${spacing == 'normal' ? 'py-4' : 'py-1'} ${
+                        cell.column.columnDef.meta?.className ?? ''
                       }`}
-                      {...cell.getCellProps([
-                        {
-                          className: cell.column.className,
-                        },
-                      ])}
+                      key={cell.id}
                     >
-                      {cell.render('Cell')}
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
                     </td>
                   );
                 })}

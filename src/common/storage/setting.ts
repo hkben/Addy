@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { SortingRule } from 'react-table';
+import { SortingState } from '@tanstack/react-table';
 import Browser from 'webextension-polyfill';
 import { IOrdering, ISetting, IStorage, IViewingOption } from '../interface';
 
@@ -124,9 +124,7 @@ class Setting {
     return true;
   }
 
-  static async updateViewingSortBy(
-    _sortBy: SortingRule<any>[]
-  ): Promise<boolean> {
+  static async updateViewingSortBy(_sortBy: SortingState): Promise<boolean> {
     try {
       let setting = await this.fetch();
 

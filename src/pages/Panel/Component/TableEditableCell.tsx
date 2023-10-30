@@ -1,22 +1,22 @@
 import React, { useEffect } from 'react';
 import { ICollectionItem } from '../../../common/interface';
-import { Column, Row } from 'react-table';
+import { ColumnDef, Row } from '@tanstack/react-table';
 import _ from 'lodash';
 
 interface Prop {
   value: any;
   row: Row<ICollectionItem>;
-  column: Column<ICollectionItem>;
+  column: ColumnDef<ICollectionItem>;
   onEditItem: (_itemId: string, _content: string) => Promise<void>;
 }
 
 function TableEditableCell({
   value: displayValue,
   row: { original },
-  column: { Header },
+  column: { header },
   onEditItem,
 }: Prop) {
-  if (Header != 'Content') {
+  if (header != 'Content') {
     return displayValue || null;
   }
 

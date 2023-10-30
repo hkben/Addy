@@ -10,7 +10,6 @@ import {
   Setting,
   Storage,
 } from '../../../common/storage';
-import { Column, useSortBy, useTable } from 'react-table';
 import CollectionViewerTable from './CollectionViewerTable';
 import _ from 'lodash';
 import CollectionImageViewer from './CollectionViewerImage';

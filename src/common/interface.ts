@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { SortingRule } from 'react-table';
+import { SortingState } from '@tanstack/react-table';
 
 //BrowserMessage
 export interface IBrowserMessage {
@@ -108,7 +108,7 @@ export interface IViewingOption {
   hiddenColumns: string[];
   spacing: string;
   imageColumns: number;
-  sortBy: SortingRule<any>[];
+  sortBy: SortingState;
   timeDisplay: number;
 }
 

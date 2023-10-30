@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
 import { ICollectionItem } from '../../../common/interface';
-import { Column, useSortBy, useTable } from 'react-table';
 import moment from 'moment';
 import jsZip from 'jszip';
 import Common from '../../common';
