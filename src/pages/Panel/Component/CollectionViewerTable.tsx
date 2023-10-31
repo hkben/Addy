@@ -105,17 +105,32 @@ function CollectionViewerTable({
         },
         accessorFn: (row) => {
           let _moment = moment(row.createTime);
+          let _fromNow = _moment.fromNow();
+          let _24Hour = _moment.format('YYYY-MM-DD HH:mm');
+          let _12Hour = _moment.format('YYYY-MM-DD hh:mm A');
 
-          if (timeDisplayProp == 1 || null) {
-            return _moment.format('YYYY-MM-DD HH:mm');
+          if (timeDisplayProp == 1) {
+            return (
+              <span data-tooltip-id="tooltip" data-tooltip-content={_fromNow}>
+                {_24Hour}
+              </span>
+            );
           }
 
-          if (timeDisplayProp == 2 || null) {
-            return _moment.fromNow();
+          if (timeDisplayProp == 2) {
+            return (
+              <span data-tooltip-id="tooltip" data-tooltip-content={_12Hour}>
+                {_fromNow}
+              </span>
+            );
           }
 
           //always return 12-hour clock
-          return _moment.format('YYYY-MM-DD hh:mm A');
+          return (
+            <span data-tooltip-id="tooltip" data-tooltip-content={_fromNow}>
+              {_12Hour}
+            </span>
+          );
         },
         sortingFn: (a: Row<ICollectionItem>, b: Row<ICollectionItem>) => {
           var _a = moment(a.original.createTime);
@@ -134,17 +149,32 @@ function CollectionViewerTable({
         },
         accessorFn: (row) => {
           let _moment = moment(row.modifyTime);
+          let _fromNow = _moment.fromNow();
+          let _24Hour = _moment.format('YYYY-MM-DD HH:mm');
+          let _12Hour = _moment.format('YYYY-MM-DD hh:mm A');
 
           if (timeDisplayProp == 1) {
-            return _moment.format('YYYY-MM-DD HH:mm');
+            return (
+              <span data-tooltip-id="tooltip" data-tooltip-content={_fromNow}>
+                {_24Hour}
+              </span>
+            );
           }
 
           if (timeDisplayProp == 2) {
-            return _moment.fromNow();
+            return (
+              <span data-tooltip-id="tooltip" data-tooltip-content={_12Hour}>
+                {_fromNow}
+              </span>
+            );
           }
 
           //always return 12-hour clock
-          return _moment.format('YYYY-MM-DD hh:mm A');
+          return (
+            <span data-tooltip-id="tooltip" data-tooltip-content={_fromNow}>
+              {_12Hour}
+            </span>
+          );
         },
         sortingFn: (a: Row<ICollectionItem>, b: Row<ICollectionItem>) => {
           var _a = moment(a.original.modifyTime);
