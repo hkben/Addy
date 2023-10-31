@@ -14,7 +14,7 @@ import {
 import moment from 'moment';
 import { Setting } from '../../../common/storage';
 import _ from 'lodash';
-import ReactTooltip from 'react-tooltip';
+import { Tooltip } from 'react-tooltip';
 import TableEditableCell from './TableEditableCell';
 import ImageTooltip from './ImageTooltip';
 
@@ -77,7 +77,11 @@ function CollectionViewerTable({
             const { hostname } = new URL(row.content);
             const text = `<${type} Image from ${hostname} >`;
 
-            return <p data-tip={row.content}>{text}</p>;
+            return (
+              <p data-tooltip-id="tooltip" data-tooltip-content={row.content}>
+                {text}
+              </p>
+            );
           }
 
           return row.content;
@@ -274,10 +278,6 @@ function CollectionViewerTable({
     setSpacing(spacingProp);
   }, [spacingProp]);
 
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  }, [columns]);
-
   return (
     <div className="">
       <div className="w-full">
@@ -314,10 +314,12 @@ function CollectionViewerTable({
         </div>
       </div>
 
-      <ReactTooltip
-        effect="solid"
+      <Tooltip
+        id="tooltip"
         place="top"
-        getContent={(dataTip) => <ImageTooltip imageSrc={dataTip} />}
+        render={({ content, activeAnchor }) => (
+          <ImageTooltip imageSrc={content ?? ''} />
+        )}
       />
 
       <table className="table-auto w-full max-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500">
