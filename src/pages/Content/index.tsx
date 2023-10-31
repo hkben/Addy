@@ -7,12 +7,22 @@ import { Setting } from '../../common/storage';
 
 import css from '!!css-loader!sass-loader!./index.scss';
 
+const isFirefox = Browser.runtime.getURL('').startsWith('moz-extension://');
+
 console.log('Content script works!');
 console.log('Must reload extension for modifications to take effect.');
 
+const elementId = 'webextension_addy_popup';
+
 let preload_popup = async () => {
+  if (document.getElementById(elementId)) {
+    console.log('popup already loaded');
+    return;
+  }
+
   let shadowHost = document.createElement('section');
   shadowHost.style.cssText = 'position:absolute;top:0;left:0;';
+  shadowHost.id = elementId;
 
   document.body.appendChild(shadowHost);
 
@@ -44,3 +54,12 @@ window.addEventListener('load', function (event: Event) {
     preload_popup();
   }
 });
+
+// If open image in new tab in firefox, on load event is not triggered on first load
+// This is a workaround for that
+// preload_popup would check if popup is already loaded for page refreshes (which on load would trigger)
+if (isFirefox && document.toString().includes('ImageDocument')) {
+  setTimeout(() => {
+    preload_popup();
+  }, 1000);
+}
