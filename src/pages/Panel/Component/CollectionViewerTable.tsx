@@ -78,7 +78,11 @@ function CollectionViewerTable({
             const text = `<${type} Image from ${hostname} >`;
 
             return (
-              <p data-tooltip-id="tooltip" data-tooltip-content={row.content}>
+              <p
+                data-tooltip-id="tooltip"
+                data-tooltip-content={row.content}
+                data-type="image"
+              >
                 {text}
               </p>
             );
@@ -317,9 +321,15 @@ function CollectionViewerTable({
       <Tooltip
         id="tooltip"
         place="top"
-        render={({ content, activeAnchor }) => (
-          <ImageTooltip imageSrc={content ?? ''} />
-        )}
+        render={({ content, activeAnchor }) => {
+          let type = activeAnchor?.getAttribute('data-type') ?? 'text';
+
+          if (type == 'image') {
+            return <ImageTooltip imageSrc={content ?? ''} />;
+          }
+
+          return <span>{content}</span>;
+        }}
       />
 
       <table className="table-auto w-full max-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500">
