@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Setting from '../storage/setting';
 
 export const useDarkMode = () => {
-  const [darkMode, setDarkMode] = React.useState(false);
+  const [darkMode, setDarkMode] = React.useState(true); //Default true to avoid flash
 
   const [loaded, setLoaded] = React.useState(false);
 
