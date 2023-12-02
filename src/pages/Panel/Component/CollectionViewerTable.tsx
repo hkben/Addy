@@ -17,6 +17,7 @@ import _ from 'lodash';
 import { Tooltip } from 'react-tooltip';
 import TableEditableCell from './TableEditableCell';
 import ImageTooltip from './ImageTooltip';
+import useViewingOptionStore from '../../../common/hook/useViewingOptionStore';
 
 interface Prop {
   data: Array<ICollectionItem>;
@@ -34,9 +35,10 @@ function CollectionViewerTable({
   hiddenColumnsProp,
   spacingProp,
   sortByProp,
-  timeDisplayProp,
   onEditItem,
 }: Prop) {
+  const { viewingOption } = useViewingOptionStore();
+
   const [spacing, setSpacing] = React.useState<string>('normal');
 
   const [columnVisibility, setColumnVisibility] =
@@ -109,7 +111,7 @@ function CollectionViewerTable({
           let _24Hour = _moment.format('YYYY-MM-DD HH:mm');
           let _12Hour = _moment.format('YYYY-MM-DD hh:mm A');
 
-          if (timeDisplayProp == 1) {
+          if (viewingOption.timeDisplay == 1) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_fromNow}>
                 {_24Hour}
@@ -117,7 +119,7 @@ function CollectionViewerTable({
             );
           }
 
-          if (timeDisplayProp == 2) {
+          if (viewingOption.timeDisplay == 2) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_12Hour}>
                 {_fromNow}
@@ -153,7 +155,7 @@ function CollectionViewerTable({
           let _24Hour = _moment.format('YYYY-MM-DD HH:mm');
           let _12Hour = _moment.format('YYYY-MM-DD hh:mm A');
 
-          if (timeDisplayProp == 1) {
+          if (viewingOption.timeDisplay == 1) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_fromNow}>
                 {_24Hour}
@@ -161,7 +163,7 @@ function CollectionViewerTable({
             );
           }
 
-          if (timeDisplayProp == 2) {
+          if (viewingOption.timeDisplay == 2) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_12Hour}>
                 {_fromNow}

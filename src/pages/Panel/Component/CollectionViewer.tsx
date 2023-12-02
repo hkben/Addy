@@ -13,6 +13,7 @@ import {
 import CollectionViewerTable from './CollectionViewerTable';
 import _ from 'lodash';
 import CollectionImageViewer from './CollectionViewerImage';
+import useViewingOptionStore from '../../../common/hook/useViewingOptionStore';
 
 interface Prop {
   collection: string;
@@ -37,18 +38,11 @@ function CollectionViewer(props: Prop) {
     bookmark: 0,
   });
 
-  const [viewingOption, setViewingOption] = React.useState<IViewingOption>(
-    {} as IViewingOption
-  );
+  const { viewingOption, fetchViewingOption } = useViewingOptionStore();
 
   useEffect(() => {
-    const getViewingOption = async () => {
-      let _viewingOption = await Setting.fetchViewingOption();
-      setViewingOption(_viewingOption);
-    };
-
-    getViewingOption().catch(console.error);
-  }, []);
+    fetchViewingOption();
+  }, [fetchViewingOption]);
 
   const data = React.useMemo(() => {
     if (collection.items == null) {
