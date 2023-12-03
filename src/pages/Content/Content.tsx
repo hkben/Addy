@@ -12,6 +12,7 @@ import CollectionButton from './modules/CollectionButton';
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
 import { useSortCollections } from '../../common/hook/useSortCollections';
+import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 function Content(props: ISetting) {
   const [selection, setSelection] = React.useState({
@@ -262,17 +263,7 @@ function Content(props: ISetting) {
               {selection.type == 'bookmark' ? `🔖 : ${selection.content}` : ''}
             </p>
             <div className="bp-header-close-btn" onClick={toggleBox}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <XMarkIcon className="h-5 w-5" strokeWidth={2} />
             </div>
           </div>
 
@@ -308,19 +299,7 @@ function Content(props: ISetting) {
             {newCollectionButton ? (
               <div className="add-btn" onClick={newCollectionAndSave}>
                 <span>New Collection</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 4v16m8-8H4"
-                  />
-                </svg>
+                <PlusIcon className="h-5 w-5" strokeWidth={2} />
               </div>
             ) : null}
           </div>

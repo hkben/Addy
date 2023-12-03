@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import Browser from 'webextension-polyfill';
 import { IBrowserMessage } from '../../../../common/interface';
+import { ArrowPathIcon } from '@heroicons/react/24/outline';
 
 interface Prop {
   callbackAfterSync: () => Promise<void>;
@@ -53,31 +54,10 @@ function SyncDeleteButton({ callbackAfterSync }: Prop) {
       case 1:
         return (
           <Fragment>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
+            <ArrowPathIcon
               className="animate-spin h-5 w-5 inline mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="#bbb"
-                fill="none"
-                strokeWidth={3}
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                fill="none"
-                strokeDashoffset="100"
-                strokeDasharray="50"
-                strokeWidth={3}
-              />
-            </svg>
+              strokeWidth={3}
+            />
             <span>Deleting...</span>
           </Fragment>
         );

@@ -6,6 +6,13 @@ import Common from '../../common';
 import { Setting } from '../../../common/storage';
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  MagnifyingGlassIcon,
+  ArrowTopRightOnSquareIcon,
+  XCircleIcon,
+} from '@heroicons/react/24/outline';
 
 interface Prop {
   data: Array<ICollectionItem>;
@@ -181,35 +188,9 @@ function CollectionViewerImage({
         >
           Sort
           {isSortedDesc == false ? (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 inline mx-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 15l7-7 7 7"
-              />
-            </svg>
+            <ChevronUpIcon className="h-4 w-4 inline mx-2" strokeWidth={2} />
           ) : (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 inline mx-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
+            <ChevronDownIcon className="h-4 w-4 inline mx-2" strokeWidth={2} />
           )}
         </button>
       </div>
@@ -228,40 +209,17 @@ function CollectionViewerImage({
                   href={`https://lens.google.com/uploadbyurl?url=${item.content}`}
                   target="_blank"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                    />
-                  </svg>
+                  <MagnifyingGlassIcon className="w-6 h-6" strokeWidth={2} />
                 </a>
                 <a
                   className="inline-block align-middle m-auto"
                   href={item.source}
                   target="_blank"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                    />
-                  </svg>
+                  <ArrowTopRightOnSquareIcon
+                    className="w-6 h-6"
+                    strokeWidth={2}
+                  />
                 </a>
 
                 <button
@@ -275,20 +233,7 @@ function CollectionViewerImage({
                     }
                   }}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
+                  <XCircleIcon className="w-6 h-6" strokeWidth={2} />
                 </button>
               </span>
             </div>

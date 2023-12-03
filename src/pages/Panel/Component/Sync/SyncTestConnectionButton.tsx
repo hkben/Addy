@@ -1,6 +1,11 @@
 import React, { Fragment, useEffect } from 'react';
 import Browser from 'webextension-polyfill';
 import { IBrowserMessage } from '../../../../common/interface';
+import {
+  ArrowPathIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+} from '@heroicons/react/24/outline';
 
 function SyncConnectionTestButton() {
   const [connectionState, setConnectionState] = React.useState<number>(0);
@@ -48,71 +53,24 @@ function SyncConnectionTestButton() {
       case 1:
         return (
           <Fragment>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
+            <ArrowPathIcon
               className="animate-spin h-5 w-5 inline mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="#bbb"
-                fill="none"
-                strokeWidth={3}
-              />
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                fill="none"
-                strokeDashoffset="100"
-                strokeDasharray="50"
-                strokeWidth={3}
-              />
-            </svg>
+              strokeWidth={3}
+            />
             <span>Testing...</span>
           </Fragment>
         );
       case 2:
         return (
           <Fragment>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <CheckCircleIcon className="h-6 w-6 mr-1" strokeWidth={2} />
             <span>Connected!</span>
           </Fragment>
         );
       case 3:
         return (
           <Fragment>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 mr-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <XCircleIcon className="h-6 w-6 mr-1" strokeWidth={2} />
 
             <span>Unauthorized</span>
           </Fragment>

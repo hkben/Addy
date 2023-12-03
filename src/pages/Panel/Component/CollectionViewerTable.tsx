@@ -18,6 +18,12 @@ import { Tooltip } from 'react-tooltip';
 import TableEditableCell from './TableEditableCell';
 import ImageTooltip from './ImageTooltip';
 import useViewingOptionStore from '../../../common/hook/useViewingOptionStore';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  ArrowTopRightOnSquareIcon,
+  XCircleIcon,
+} from '@heroicons/react/24/outline';
 
 interface Prop {
   data: Array<ICollectionItem>;
@@ -199,20 +205,7 @@ function CollectionViewerTable({
             href={row.source}
             target="_blank"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-              />
-            </svg>
+            <ArrowTopRightOnSquareIcon className="h-6 w-6" strokeWidth={2} />
           </a>
         ),
       },
@@ -233,20 +226,7 @@ function CollectionViewerTable({
               }
             }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <XCircleIcon className="h-6 w-6" strokeWidth={2} />
           </button>
         ),
       },
@@ -389,36 +369,16 @@ function CollectionViewerTable({
                     <span>
                       {{
                         asc: (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
+                          <ChevronDownIcon
                             className="h-6 w-6 inline ml-2"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 9l-7 7-7-7"
-                            />
-                          </svg>
+                            strokeWidth={2}
+                          />
                         ),
                         desc: (
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
+                          <ChevronUpIcon
                             className="h-6 w-6 inline ml-2"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 15l7-7 7 7"
-                            />
-                          </svg>
+                            strokeWidth={2}
+                          />
                         ),
                       }[header.column.getIsSorted() as string] ?? null}
                     </span>
