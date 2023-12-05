@@ -348,16 +348,11 @@ function CollectionViewer(props: Prop) {
             data={data}
             onDeleteItem={removeCollectionItem}
             collectionName={collection.name}
-            imageColumns={viewingOption.imageColumns}
           />
         ) : (
           <CollectionViewerTable
             data={data}
             onDeleteItem={removeCollectionItem}
-            hiddenColumnsProp={viewingOption.hiddenColumns}
-            spacingProp={viewingOption.spacing}
-            sortByProp={viewingOption.sortBy}
-            timeDisplayProp={viewingOption.timeDisplay}
             onEditItem={editCollectionItem}
           />
         )}

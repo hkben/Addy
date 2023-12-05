@@ -13,20 +13,17 @@ import {
   ArrowTopRightOnSquareIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
+import useViewingOptionStore from '../../../common/hook/useViewingOptionStore';
 
 interface Prop {
   data: Array<ICollectionItem>;
   onDeleteItem: (_itemId: string) => Promise<void>;
   collectionName: string;
-  imageColumns: number;
 }
 
-function CollectionViewerImage({
-  data,
-  onDeleteItem,
-  collectionName,
-  imageColumns,
-}: Prop) {
+function CollectionViewerImage({ data, onDeleteItem, collectionName }: Prop) {
+  const { viewingOption } = useViewingOptionStore();
+
   const [columns, setColumns] = React.useState(3);
 
   const [isDownloading, setIsDownloading] = React.useState(false);
@@ -49,8 +46,8 @@ function CollectionViewerImage({
   };
 
   useEffect(() => {
-    setColumns(imageColumns);
-  }, [imageColumns]);
+    setColumns(viewingOption.imageColumns);
+  }, [viewingOption]);
 
   useEffect(() => {
     sortData();

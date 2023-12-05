@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { ICollectionItem, IViewingOption } from '../../../common/interface';
+import { ICollectionItem } from '../../../common/interface';
 import {
   Column,
   ColumnDef,
@@ -28,21 +28,10 @@ import {
 interface Prop {
   data: Array<ICollectionItem>;
   onDeleteItem: (_itemId: string) => Promise<void>;
-  hiddenColumnsProp: string[];
-  spacingProp: string;
-  sortByProp: SortingState;
-  timeDisplayProp: number;
   onEditItem: (_itemId: string, _content: string) => Promise<void>;
 }
 
-function CollectionViewerTable({
-  data,
-  onDeleteItem,
-  hiddenColumnsProp,
-  spacingProp,
-  sortByProp,
-  onEditItem,
-}: Prop) {
+function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
   const { viewingOption } = useViewingOptionStore();
 
   const [spacing, setSpacing] = React.useState<string>('normal');
@@ -274,25 +263,25 @@ function CollectionViewerTable({
   }, [sorting]);
 
   useEffect(() => {
-    if (hiddenColumnsProp != undefined) {
+    if (viewingOption.hiddenColumns != undefined) {
       // Update the above code to the following:
       const _columnVisibility: Record<string, boolean> = {};
 
-      hiddenColumnsProp.forEach((value: string) => {
+      viewingOption.hiddenColumns.forEach((value: string) => {
         _columnVisibility[value] = false;
       });
 
       setColumnVisibility(_columnVisibility);
     }
 
-    if (sortByProp != undefined) {
-      setSorting(sortByProp);
+    if (viewingOption.sortBy != undefined) {
+      setSorting(viewingOption.sortBy);
     }
-  }, [hiddenColumnsProp, sortByProp]);
+  }, [viewingOption]);
 
   useEffect(() => {
-    setSpacing(spacingProp);
-  }, [spacingProp]);
+    setSpacing(viewingOption.spacing);
+  }, [viewingOption]);
 
   return (
     <div className="">
