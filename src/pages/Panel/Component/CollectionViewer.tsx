@@ -186,6 +186,26 @@ function CollectionViewer(props: Prop) {
     }
   };
 
+  let viewer = useMemo(() => {
+    return (
+      <CollectionViewerTable
+        data={data}
+        onDeleteItem={removeCollectionItem}
+        onEditItem={editCollectionItem}
+      />
+    );
+  }, [data]);
+
+  let imageViewer = useMemo(() => {
+    return (
+      <CollectionImageViewer
+        data={data}
+        onDeleteItem={removeCollectionItem}
+        collectionName={collection.name}
+      />
+    );
+  }, [data]);
+
   return (
     <div>
       <div className="w-full py-5 flex gap-2.5">
@@ -342,21 +362,7 @@ function CollectionViewer(props: Prop) {
         </button>
       </div>
 
-      <div className="py-8">
-        {collectionType == 2 ? (
-          <CollectionImageViewer
-            data={data}
-            onDeleteItem={removeCollectionItem}
-            collectionName={collection.name}
-          />
-        ) : (
-          <CollectionViewerTable
-            data={data}
-            onDeleteItem={removeCollectionItem}
-            onEditItem={editCollectionItem}
-          />
-        )}
-      </div>
+      <div className="py-8">{collectionType == 2 ? imageViewer : viewer}</div>
     </div>
   );
 }
