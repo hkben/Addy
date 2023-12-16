@@ -1,5 +1,13 @@
 import React, { useEffect } from 'react';
-import { HashRouter, Link, Route, Routes } from 'react-router-dom';
+import {
+  HashRouter,
+  Link,
+  Route,
+  RouterProvider,
+  Routes,
+  createHashRouter,
+  createRoutesFromElements,
+} from 'react-router-dom';
 import { ISetting } from '../../../common/interface';
 import Export from './Export';
 import General from './General';
@@ -14,88 +22,39 @@ import Welcome from './Welcome';
 import SyncSettings from './Sync/SyncSettings';
 import CollectionViewer from './CollectionViewer';
 import { MoonIcon } from '@heroicons/react/24/solid';
+import Layout from './Layout';
+
+const router = createHashRouter(
+  createRoutesFromElements(
+    <Route path="/" element={<Layout />}>
+      <Route path="/" element={<Home />}>
+        <Route index element={<Welcome />} />
+        <Route
+          path="/:collectionId"
+          element={
+            <CollectionViewer
+              callback={function (): Promise<void> {
+                throw new Error('Function not implemented.');
+              }}
+            />
+          }
+        />
+      </Route>
+      <Route path="setting" element={<Settings />}>
+        <Route index element={<General />} />
+        <Route path="general" element={<General />} />
+        <Route path="export" element={<Export />} />
+        <Route path="import" element={<Import />} />
+        <Route path="welcome" element={<Welcome />} />
+        <Route path="information" element={<Information />} />
+        <Route path="sync" element={<SyncSettings />} />
+      </Route>
+    </Route>
+  )
+);
 
 function Panel() {
-  const [darkMode, setDarkMode] = useDarkMode();
-
-  const toggleDarkMode = async (event: React.MouseEvent<HTMLDivElement>) => {
-    let _darkMode = darkMode ? false : true;
-
-    setDarkMode(_darkMode);
-  };
-
-  return (
-    <HashRouter>
-      <div>
-        <nav className="flex items-center justify-between max-w-3xl p-4 mx-auto">
-          <a
-            className="inline-flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg dark:bg-gray-700"
-            href="#"
-          >
-            <img src="icon-34.png" />
-          </a>
-
-          <ul className="flex items-center space-x-2 text-sm font-semibold text-gray-500 dark:text-gray-50">
-            <li>
-              <Link to="/" className="px-3 py-2 rounded-lg cursor-pointer">
-                Home
-              </Link>
-            </li>
-
-            <li>
-              <Link
-                to="/setting/sync"
-                className="px-3 py-2 rounded-lg cursor-pointer"
-              >
-                Sync
-              </Link>
-            </li>
-
-            <li>
-              <Link
-                to="/setting"
-                className="px-3 py-2 rounded-lg cursor-pointer"
-              >
-                Settings
-              </Link>
-            </li>
-
-            <li>
-              <div className="cursor-pointer mx-auto" onClick={toggleDarkMode}>
-                <MoonIcon className="h-4 w-4" strokeWidth={2} />
-              </div>
-            </li>
-          </ul>
-        </nav>
-
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Welcome />} />
-            <Route
-              path=":collectionId"
-              element={
-                <CollectionViewer
-                  callback={function (): Promise<void> {
-                    //TODO: implement
-                    throw new Error('Function not implemented.');
-                  }}
-                />
-              }
-            />
-          </Route>
-          <Route path="setting" element={<Settings />}>
-            <Route index element={<General />} />
-            <Route path="general" element={<General />} />
-            <Route path="export" element={<Export />} />
-            <Route path="import" element={<Import />} />
-            <Route path="welcome" element={<Welcome />} />
-            <Route path="information" element={<Information />} />
-            <Route path="sync" element={<SyncSettings />} />
-          </Route>
-        </Routes>
-      </div>
-    </HashRouter>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default Panel;
