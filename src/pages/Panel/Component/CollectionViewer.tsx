@@ -25,8 +25,17 @@ interface Prop {
   callback: () => Promise<void>;
 }
 
+export async function loader({ params }: LoaderFunctionArgs<any>) {
+  let collection = await Collection.fetch(params.collectionId!);
+
+  console.log(`Loading ${params.collectionId}`);
+
+  console.log(`Name:${collection.name} Items:${collection.items.length}`);
+  return collection;
+}
+
 function CollectionViewer(props: Prop) {
-  let { collectionId } = useParams();
+  const loaderData = useLoaderData() as ICollection;
 
   const [collection, setCollection] = React.useState<ICollection>(
     {} as ICollection
@@ -119,24 +128,10 @@ function CollectionViewer(props: Prop) {
   };
 
   useEffect(() => {
-    const getCollection = async () => {
-      let collection = await Collection.fetch(collectionId!);
-
-      console.log(`Loading ${collectionId!}`);
-
-      console.log(`Name:${collection.name} Items:${collection.items.length}`);
-
-      if (typeof collection == 'undefined') {
-        return;
-      }
-
-      setCollection(collection);
-      setCollectionName(collection.name);
-      setCollectionType(0);
-    };
-
-    const collection = getCollection().catch(console.error);
-  }, [collectionId]);
+    setCollection(loaderData);
+    setCollectionName(loaderData.name);
+    setCollectionType(0);
+  }, [loaderData]);
 
   const removeAllItems = async () => {
     console.log('removeAllItems');

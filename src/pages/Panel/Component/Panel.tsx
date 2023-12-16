@@ -20,7 +20,7 @@ import Info from './Information';
 import Information from './Information';
 import Welcome from './Welcome';
 import SyncSettings from './Sync/SyncSettings';
-import CollectionViewer from './CollectionViewer';
+import CollectionViewer, { loader } from './CollectionViewer';
 import { MoonIcon } from '@heroicons/react/24/solid';
 import Layout from './Layout';
 
@@ -31,6 +31,7 @@ const router = createHashRouter(
         <Route index element={<Welcome />} />
         <Route
           path="/:collectionId"
+          loader={loader}
           element={
             <CollectionViewer
               callback={function (): Promise<void> {
