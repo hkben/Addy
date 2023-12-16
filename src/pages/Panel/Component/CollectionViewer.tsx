@@ -14,6 +14,7 @@ import CollectionViewerTable from './CollectionViewerTable';
 import _ from 'lodash';
 import CollectionImageViewer from './CollectionViewerImage';
 import useViewingOptionStore from '../../../common/hook/useViewingOptionStore';
+import { LoaderFunctionArgs, useLoaderData, useParams } from 'react-router-dom';
 import {
   PencilIcon,
   DocumentMinusIcon,
@@ -21,11 +22,12 @@ import {
 } from '@heroicons/react/24/outline';
 
 interface Prop {
-  collection: string;
   callback: () => Promise<void>;
 }
 
 function CollectionViewer(props: Prop) {
+  let { collectionId } = useParams();
+
   const [collection, setCollection] = React.useState<ICollection>(
     {} as ICollection
   );
@@ -78,7 +80,7 @@ function CollectionViewer(props: Prop) {
   }, [collection, collectionType]);
 
   const removeCollectionItem = async (_itemId: string) => {
-    let result = await CollectionItem.delete(props.collection, _itemId);
+    let result = await CollectionItem.delete(collection.id, _itemId);
 
     if (result) {
       setCollection((prevState) => ({
@@ -93,7 +95,7 @@ function CollectionViewer(props: Prop) {
 
   const editCollectionItem = async (_itemId: string, _content: string) => {
     let { result, datetime } = await CollectionItem.updateContent(
-      props.collection,
+      collection.id,
       _itemId,
       _content
     );
@@ -118,9 +120,9 @@ function CollectionViewer(props: Prop) {
 
   useEffect(() => {
     const getCollection = async () => {
-      let collection = await Collection.fetch(props.collection);
+      let collection = await Collection.fetch(collectionId!);
 
-      console.log(`Loading ${props.collection}`);
+      console.log(`Loading ${collectionId!}`);
 
       console.log(`Name:${collection.name} Items:${collection.items.length}`);
 
@@ -134,7 +136,7 @@ function CollectionViewer(props: Prop) {
     };
 
     const collection = getCollection().catch(console.error);
-  }, [props.collection]);
+  }, [collectionId]);
 
   const removeAllItems = async () => {
     console.log('removeAllItems');
@@ -165,7 +167,7 @@ function CollectionViewer(props: Prop) {
   };
 
   const handleCollectionNameSubmbit = async () => {
-    await Collection.updateName(props.collection, collectionName);
+    await Collection.updateName(collection.id, collectionName);
     setEditCollectionName(false);
     await props.callback();
   };
@@ -175,7 +177,7 @@ function CollectionViewer(props: Prop) {
   };
 
   const handleColorClick = async (_color: number) => {
-    let result = await Collection.updateColor(props.collection, _color);
+    let result = await Collection.updateColor(collection.id, _color);
 
     if (result) {
       await props.callback();

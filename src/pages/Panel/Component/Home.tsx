@@ -15,6 +15,7 @@ import {
 } from '../../../common/storage';
 import CollectionViewer from './CollectionViewer';
 import Welcome from './Welcome';
+import { Link, Outlet } from 'react-router-dom';
 import {
   PencilSquareIcon,
   ChevronDownIcon,
@@ -179,37 +180,28 @@ function Home() {
         <ul>
           {sortedCollections.map((collection, index) => {
             return (
-              <li
-                key={index}
-                onClick={() => changeCollection(collection.id)}
-                className="py-1 cursor-pointer"
-              >
-                <p>
-                  {collection.name}
-                  <span className="text-sm"> ({collection.items})</span>
-                  {collection.color != null && collection.color != 0 ? (
-                    <span
-                      className={`mx-1 rounded-full inline-block h-3 w-3 color-${collection.color}`}
-                    ></span>
-                  ) : (
-                    ''
-                  )}
-                </p>
-              </li>
+              <Link to={`/${collection.id}`} key={index}>
+                <li className="py-1 cursor-pointer">
+                  <p>
+                    {collection.name}
+                    <span className="text-sm"> ({collection.items})</span>
+                    {collection.color != null && collection.color != 0 ? (
+                      <span
+                        className={`mx-1 rounded-full inline-block h-3 w-3 color-${collection.color}`}
+                      ></span>
+                    ) : (
+                      ''
+                    )}
+                  </p>
+                </li>
+              </Link>
             );
           })}
         </ul>
       </div>
 
       <div className="w-4/5 p-8 text-gray-900 bg-white border border-gray-400 dark:text-gray-50 dark:bg-gray-800 dark:border-gray-400">
-        {activeCollection ? (
-          <CollectionViewer
-            collection={activeCollection}
-            callback={loadCollectionsList}
-          />
-        ) : (
-          <Welcome />
-        )}
+        <Outlet />
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import Info from './Information';
 import Information from './Information';
 import Welcome from './Welcome';
 import SyncSettings from './Sync/SyncSettings';
+import CollectionViewer from './CollectionViewer';
 import { MoonIcon } from '@heroicons/react/24/solid';
 
 function Panel() {
@@ -68,7 +69,20 @@ function Panel() {
         </nav>
 
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />}>
+            <Route index element={<Welcome />} />
+            <Route
+              path=":collectionId"
+              element={
+                <CollectionViewer
+                  callback={function (): Promise<void> {
+                    //TODO: implement
+                    throw new Error('Function not implemented.');
+                  }}
+                />
+              }
+            />
+          </Route>
           <Route path="setting" element={<Settings />}>
             <Route index element={<General />} />
             <Route path="general" element={<General />} />
