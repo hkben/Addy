@@ -10,15 +10,16 @@ import {
 } from '@heroicons/react/24/outline';
 import { Collection, Collections } from '../../../../common/storage';
 import _ from 'lodash';
+import useCollectionsListStore from '../../../../common/hook/useCollectionsListStore';
 
 function SideBar() {
   const newCollectionInput = useRef<HTMLInputElement>(null);
 
-  const [collections, setCollections] = React.useState<ICollectionSummary[]>(
-    [] as ICollectionSummary[]
-  );
+  const collections = useCollectionsListStore((state) => state.summary);
 
-  const [activeCollection, setActiveCollection] = React.useState('');
+  const fetchCollectionsList = useCollectionsListStore(
+    (state) => state.fetchList
+  );
 
   const [ordering, setOrdering] = React.useState<IOrdering>({} as IOrdering);
 
@@ -32,41 +33,15 @@ function SideBar() {
 
   useEffect(() => {
     getOrdering().catch(console.error);
-    loadCollectionsList().catch(console.error);
   }, []);
 
   useEffect(() => {
-    //Avoid activeCollection changing when reloading CollectionsList
-    if (activeCollection != '') {
-      let isCollectionExists =
-        _.filter(collections, (o) => o.id == activeCollection).length > 0
-          ? true
-          : false;
-
-      if (isCollectionExists) {
-        return;
-      }
-    }
-
-    if (sortedCollections.length > 0) {
-      let firstCollection = sortedCollections[0].id;
-      setActiveCollection(firstCollection);
-    }
-  }, [sortedCollections]);
+    fetchCollectionsList();
+  }, [fetchCollectionsList]);
 
   const getOrdering = async () => {
     let _ordering = await Setting.fetchOrdering();
     setOrdering(_ordering);
-  };
-
-  const loadCollectionsList = async () => {
-    let summary = await Collections.fetchSummary();
-    setCollections(summary);
-  };
-
-  const changeCollection = (_collectionId: string) => {
-    console.log(_collectionId);
-    setActiveCollection(_collectionId);
   };
 
   const newCollectionSubmit = async (
@@ -83,7 +58,7 @@ function SideBar() {
     await Collection.create(inputValue);
     inputValue = '';
 
-    await loadCollectionsList();
+    fetchCollectionsList();
   };
 
   const handleOrderingSelection = async (
