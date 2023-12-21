@@ -24,6 +24,7 @@ import {
   ArrowTopRightOnSquareIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
+import RowItem from './Viewer/RowItem';
 
 interface Prop {
   data: Array<ICollectionItem>;
@@ -337,6 +338,7 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
         <thead>
           {getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
+              <th className="h-16 py-4 text-md whitespace-pre"></th>
               {headerGroup.headers.map((header) => (
                 <th
                   className="h-16 py-4 text-md whitespace-pre"
@@ -378,31 +380,9 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
           ))}
         </thead>
         <tbody className="divide-y divide-gray-200 dark:divide-gray-500">
-          {getRowModel().rows.map((row) => {
-            return (
-              <tr
-                className="hover:bg-gray-200 dark:hover:bg-gray-700"
-                key={row.id}
-              >
-                {row.getVisibleCells().map((cell) => {
-                  // console.log(cell.getContext());
-                  return (
-                    <td
-                      className={`${spacing == 'normal' ? 'py-4' : 'py-1'} ${
-                        cell.column.columnDef.meta?.className ?? ''
-                      }`}
-                      key={cell.id}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
+          {getRowModel().rows.map((row) => (
+            <RowItem key={row.id} row={row} />
+          ))}
         </tbody>
       </table>
     </div>

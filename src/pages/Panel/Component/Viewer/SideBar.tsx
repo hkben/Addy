@@ -11,6 +11,7 @@ import {
 import { Collection, Collections } from '../../../../common/storage';
 import _ from 'lodash';
 import useCollectionsListStore from '../../../../common/hook/useCollectionsListStore';
+import CollectionsListItem from './CollectionsListItem';
 
 function SideBar() {
   const newCollectionInput = useRef<HTMLInputElement>(null);
@@ -134,23 +135,7 @@ function SideBar() {
 
       <ul>
         {sortedCollections.map((collection, index) => {
-          return (
-            <Link to={`/${collection.id}`} key={index}>
-              <li className="py-1 cursor-pointer">
-                <p>
-                  {collection.name}
-                  <span className="text-sm"> ({collection.items})</span>
-                  {collection.color != null && collection.color != 0 ? (
-                    <span
-                      className={`mx-1 rounded-full inline-block h-3 w-3 color-${collection.color}`}
-                    ></span>
-                  ) : (
-                    ''
-                  )}
-                </p>
-              </li>
-            </Link>
-          );
+          return <CollectionsListItem collection={collection} key={index} />;
         })}
       </ul>
     </div>
