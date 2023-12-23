@@ -113,7 +113,7 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
           let _24Hour = _moment.format('YYYY-MM-DD HH:mm');
           let _12Hour = _moment.format('YYYY-MM-DD hh:mm A');
 
-          if (viewingOption.timeDisplay == 1) {
+          if (viewingOption?.timeDisplay == 1) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_fromNow}>
                 {_24Hour}
@@ -121,7 +121,7 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
             );
           }
 
-          if (viewingOption.timeDisplay == 2) {
+          if (viewingOption?.timeDisplay == 2) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_12Hour}>
                 {_fromNow}
@@ -157,7 +157,7 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
           let _24Hour = _moment.format('YYYY-MM-DD HH:mm');
           let _12Hour = _moment.format('YYYY-MM-DD hh:mm A');
 
-          if (viewingOption.timeDisplay == 1) {
+          if (viewingOption?.timeDisplay == 1) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_fromNow}>
                 {_24Hour}
@@ -165,7 +165,7 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
             );
           }
 
-          if (viewingOption.timeDisplay == 2) {
+          if (viewingOption?.timeDisplay == 2) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_12Hour}>
                 {_fromNow}
@@ -270,6 +270,10 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
   }, [sorting]);
 
   useEffect(() => {
+    if (viewingOption == null) {
+      return;
+    }
+
     if (viewingOption.hiddenColumns != undefined) {
       // Update the above code to the following:
       const _columnVisibility: Record<string, boolean> = {};
@@ -342,7 +346,7 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
 
       <table
         className={`table-auto w-full max-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500 ${
-          viewingOption.spacing == 'normal' ? 'table-td-y-4' : 'table-td-y-1'
+          viewingOption?.spacing == 'normal' ? 'table-td-y-4' : 'table-td-y-1'
         }`}
       >
         <thead>

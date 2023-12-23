@@ -3,18 +3,12 @@ import { Setting } from '../storage';
 import { IViewingOption } from '../interface';
 
 interface Store {
-  viewingOption: IViewingOption;
+  viewingOption: IViewingOption | null;
   fetchViewingOption: () => void;
 }
 
 const useViewingOptionStore = create<Store>((set) => ({
-  viewingOption: {
-    hiddenColumns: [],
-    spacing: '',
-    imageColumns: 0,
-    sortBy: [],
-    timeDisplay: 0,
-  },
+  viewingOption: null,
   fetchViewingOption: async () => {
     let _viewingOption = await Setting.fetchViewingOption();
     set({ viewingOption: _viewingOption });

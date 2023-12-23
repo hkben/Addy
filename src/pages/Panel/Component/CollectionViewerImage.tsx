@@ -46,6 +46,10 @@ function CollectionViewerImage({ data, onDeleteItem, collectionName }: Prop) {
   };
 
   useEffect(() => {
+    if (viewingOption == null) {
+      return;
+    }
+
     setColumns(viewingOption.imageColumns);
   }, [viewingOption]);
 

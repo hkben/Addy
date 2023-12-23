@@ -54,7 +54,11 @@ function CollectionViewer(props: Prop) {
     bookmark: 0,
   });
 
-  const { viewingOption, fetchViewingOption } = useViewingOptionStore();
+  const fetchViewingOption = useViewingOptionStore(
+    (state) => state.fetchViewingOption
+  );
+
+  const viewingOption = useViewingOptionStore((state) => state.viewingOption);
 
   useEffect(() => {
     fetchViewingOption();
@@ -128,10 +132,15 @@ function CollectionViewer(props: Prop) {
   };
 
   useEffect(() => {
+    //update only after viewingOption is loaded
+    if (viewingOption == null) {
+      return;
+    }
+
     setCollection(loaderData);
     setCollectionName(loaderData.name);
     setCollectionType(0);
-  }, [loaderData]);
+  }, [loaderData, viewingOption]);
 
   const removeAllItems = async () => {
     console.log('removeAllItems');
