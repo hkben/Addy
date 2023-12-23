@@ -53,4 +53,15 @@
     @apply border-2 border-gray-700 dark:border-white
   }
 
+  .table-td-y-1 {
+    td {
+      @apply py-1;
+    }
+  }
+
+  .table-td-y-4 {
+    td {
+      @apply py-4;
+    }
+  }
 }

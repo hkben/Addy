@@ -3,15 +3,12 @@ import { useDrag } from 'react-dnd';
 import { ICollectionItem } from '../../../../common/interface';
 import { Row, flexRender } from '@tanstack/react-table';
 import { Bars3Icon } from '@heroicons/react/24/outline';
-import useViewingOptionStore from '../../../../common/hook/useViewingOptionStore';
 
 interface Prop {
   row: Row<ICollectionItem>;
 }
 
 function RowItem({ row }: Prop) {
-  const viewingOption = useViewingOptionStore((state) => state.viewingOption);
-
   const [{ isDragging }, dragRef, previewRef] = useDrag({
     type: 'row',
     item: () => {
@@ -38,9 +35,7 @@ function RowItem({ row }: Prop) {
       {row.getVisibleCells().map((cell) => {
         return (
           <td
-            className={`${
-              viewingOption.spacing == 'normal' ? 'py-4' : 'py-1'
-            } ${cell.column.columnDef.meta?.className ?? ''}`}
+            className={`${cell.column.columnDef.meta?.className ?? ''}`}
             key={cell.id}
           >
             {flexRender(cell.column.columnDef.cell, cell.getContext())}

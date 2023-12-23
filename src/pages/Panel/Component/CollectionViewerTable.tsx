@@ -340,7 +340,11 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
         }}
       />
 
-      <table className="table-auto w-full max-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500">
+      <table
+        className={`table-auto w-full max-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500 ${
+          viewingOption.spacing == 'normal' ? 'table-td-y-4' : 'table-td-y-1'
+        }`}
+      >
         <thead>
           {getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
