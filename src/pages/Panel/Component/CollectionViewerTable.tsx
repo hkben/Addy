@@ -39,8 +39,6 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
     (state) => state.fetchViewingOption
   );
 
-  const [spacing, setSpacing] = React.useState<string>('normal');
-
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
 
@@ -50,7 +48,6 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     let value = event.target.value;
-    setSpacing(value);
 
     await Setting.updateViewingSpacing(value);
 
@@ -290,10 +287,6 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
     }
   }, [viewingOption]);
 
-  useEffect(() => {
-    setSpacing(viewingOption.spacing);
-  }, [viewingOption]);
-
   return (
     <div className="">
       <div className="w-full">
@@ -321,7 +314,7 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
           <select
             className="h-10 px-4 pr-10 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
             id="spaceing"
-            value={spacing}
+            value={viewingOption?.spacing ?? 'normal'}
             onChange={handleSpacingSelection}
           >
             <option value="normal">Normal</option>
