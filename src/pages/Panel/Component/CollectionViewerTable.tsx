@@ -33,7 +33,11 @@ interface Prop {
 }
 
 function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
-  const { viewingOption } = useViewingOptionStore();
+  const viewingOption = useViewingOptionStore((state) => state.viewingOption);
+
+  const fetchViewingOption = useViewingOptionStore(
+    (state) => state.fetchViewingOption
+  );
 
   const [spacing, setSpacing] = React.useState<string>('normal');
 
@@ -42,13 +46,15 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
-  const handleSpacingSelection = (
+  const handleSpacingSelection = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     let value = event.target.value;
     setSpacing(value);
 
-    Setting.updateViewingSpacing(value);
+    await Setting.updateViewingSpacing(value);
+
+    fetchViewingOption();
   };
 
   const columns: ColumnDef<ICollectionItem>[] = useMemo(
