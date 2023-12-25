@@ -20,10 +20,7 @@ import {
   DocumentMinusIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
-
-interface Prop {
-  callback: () => Promise<void>;
-}
+import useCollectionsListStore from '../../../common/hook/useCollectionsListStore';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   let collection = await Collection.fetch(params.collectionId!);
@@ -34,7 +31,7 @@ export async function loader({ params }: LoaderFunctionArgs<any>) {
   return collection;
 }
 
-function CollectionViewer(props: Prop) {
+function CollectionViewer() {
   const loaderData = useLoaderData() as ICollection;
 
   const [collection, setCollection] = React.useState<ICollection>(
@@ -59,6 +56,10 @@ function CollectionViewer(props: Prop) {
   );
 
   const viewingOption = useViewingOptionStore((state) => state.viewingOption);
+
+  let fetchCollectionsList = useCollectionsListStore(
+    (state) => state.fetchList
+  );
 
   useEffect(() => {
     fetchViewingOption();
@@ -102,7 +103,7 @@ function CollectionViewer(props: Prop) {
         items: _.remove(prevState.items, (o) => o.id != _itemId),
       }));
 
-      await props.callback();
+      fetchCollectionsList();
     }
   };
 
@@ -127,7 +128,7 @@ function CollectionViewer(props: Prop) {
         items: updateCollection(prevState.items),
       }));
 
-      await props.callback();
+      fetchCollectionsList();
     }
   };
 
@@ -160,7 +161,7 @@ function CollectionViewer(props: Prop) {
 
     await Collection.delete(collection.id);
 
-    await props.callback();
+    fetchCollectionsList();
   };
 
   const handleCollectionNameChange = (
@@ -173,7 +174,7 @@ function CollectionViewer(props: Prop) {
   const handleCollectionNameSubmbit = async () => {
     await Collection.updateName(collection.id, collectionName);
     setEditCollectionName(false);
-    await props.callback();
+    fetchCollectionsList();
   };
 
   const changeType = (_type: number) => {
@@ -184,7 +185,7 @@ function CollectionViewer(props: Prop) {
     let result = await Collection.updateColor(collection.id, _color);
 
     if (result) {
-      await props.callback();
+      fetchCollectionsList();
       setCollection({
         ...collection,
         color: _color,

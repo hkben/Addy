@@ -32,13 +32,7 @@ const router = createHashRouter(
         <Route
           path="/:collectionId"
           loader={loader}
-          element={
-            <CollectionViewer
-              callback={function (): Promise<void> {
-                throw new Error('Function not implemented.');
-              }}
-            />
-          }
+          element={<CollectionViewer />}
         />
       </Route>
       <Route path="setting" element={<Settings />}>
