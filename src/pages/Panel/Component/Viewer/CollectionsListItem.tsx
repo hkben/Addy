@@ -6,21 +6,37 @@ import {
 } from '../../../../common/interface';
 import { Row } from '@tanstack/react-table';
 import { Link, useParams } from 'react-router-dom';
+import CollectionItem from '../../../../common/storage/collectionItem';
+import useCollectionsListStore from '../../../../common/hook/useCollectionsListStore';
+import { stat } from 'fs';
 
 interface Prop {
   collection: ICollectionSummary;
 }
 
+interface DropItem {
+  id: string;
+}
+
 function CollectionsListItem({ collection }: Prop) {
   let { collectionId: sourceCollectionId } = useParams();
 
+  let fetchCollectionsList = useCollectionsListStore(
+    (state) => state.fetchList
+  );
+
   const [{ canDrop, isOver }, dropRef] = useDrop({
     accept: 'row',
-    drop: (draggedRow: Row<ICollectionItem>) => {
-      console.log(draggedRow);
-      console.log(collection.id);
-      console.log(sourceCollectionId);
-      //TODO move item
+    drop: async (item: Row<DropItem>) => {
+      if (sourceCollectionId == null) {
+        return;
+      }
+
+      await CollectionItem.move(sourceCollectionId, item.id, collection.id);
+
+      fetchCollectionsList();
+
+      //TODO delete item from source collection state
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
