@@ -29,7 +29,7 @@ function RowItem({ row }: Prop) {
       key={row.id}
       ref={previewRef}
     >
-      <td ref={dragRef} className="cursor-pointer">
+      <td ref={dragRef} className="w-1 cursor-pointer">
         <Bars3Icon className="w-5 h-5" strokeWidth={2} />
       </td>
       {row.getVisibleCells().map((cell) => {
