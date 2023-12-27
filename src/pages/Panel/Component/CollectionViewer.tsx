@@ -21,6 +21,7 @@ import {
   TrashIcon,
 } from '@heroicons/react/24/outline';
 import useCollectionsListStore from '../../../common/hook/useCollectionsListStore';
+import useCollectionStore from '../../../common/hook/useCollectionStore';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   let collection = await Collection.fetch(params.collectionId!);
@@ -33,10 +34,6 @@ export async function loader({ params }: LoaderFunctionArgs<any>) {
 
 function CollectionViewer() {
   const loaderData = useLoaderData() as ICollection;
-
-  const [collection, setCollection] = React.useState<ICollection>(
-    {} as ICollection
-  );
 
   const [editCollectionName, setEditCollectionName] = React.useState(false);
 
@@ -60,6 +57,10 @@ function CollectionViewer() {
   let fetchCollectionsList = useCollectionsListStore(
     (state) => state.fetchList
   );
+
+  let collection = useCollectionStore((state) => state.collection);
+
+  let setCollection = useCollectionStore((state) => state.setCollection);
 
   useEffect(() => {
     fetchViewingOption();
@@ -97,11 +98,12 @@ function CollectionViewer() {
     let result = await CollectionItem.delete(collection.id, _itemId);
 
     if (result) {
-      setCollection((prevState) => ({
-        ...prevState,
-        //_.remove return new array of removed elements
-        items: _.remove(prevState.items, (o) => o.id != _itemId),
-      }));
+      //TODO move to store action
+      // setCollection((prevState) => ({
+      //   ...prevState,
+      //   //_.remove return new array of removed elements
+      //   items: _.remove(prevState.items, (o) => o.id != _itemId),
+      // }));
 
       fetchCollectionsList();
     }
@@ -123,10 +125,11 @@ function CollectionViewer() {
     };
 
     if (result) {
-      setCollection((prevState) => ({
-        ...prevState,
-        items: updateCollection(prevState.items),
-      }));
+      //TODO move to store action
+      // setCollection((prevState) => ({
+      //   ...prevState,
+      //   items: updateCollection(prevState.items),
+      // }));
 
       fetchCollectionsList();
     }
@@ -149,10 +152,11 @@ function CollectionViewer() {
     let result = await Collection.deleteAllItems(collection.id);
 
     if (result) {
-      setCollection((prevState) => ({
-        ...prevState,
-        items: [],
-      }));
+      //TODO move to store action
+      // setCollection((prevState) => ({
+      //   ...prevState,
+      //   items: [],
+      // }));
     }
   };
 

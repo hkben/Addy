@@ -26,6 +26,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/webextension-polyfill": "^0.8.0",
     "axios": "^0.21.4",
+    "immer": "^10.0.3",
     "jszip": "^3.7.1",
     "moment": "^2.29.4",
     "react": "^17.0.1",
