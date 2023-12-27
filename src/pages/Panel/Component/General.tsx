@@ -99,6 +99,25 @@ function General() {
     }));
   };
 
+  const handleImageSearchEngineSelection = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    let value = parseInt(event.currentTarget.value);
+
+    let _setting = setting;
+    _setting.viewingOption.imageSearchEngine = value;
+
+    await Setting.update(_setting);
+
+    setSetting((prevState) => ({
+      ...prevState,
+      viewingOption: {
+        ...prevState.viewingOption,
+        imageSearchEngine: value,
+      },
+    }));
+  };
+
   const clearData = async () => {
     let result = await Storage.clear();
 
@@ -197,6 +216,28 @@ function General() {
               <option value="0">12-hour clock</option>
               <option value="1">24-hour clock</option>
               <option value="2">Relative Time</option>
+            </select>
+          </div>
+        </div>
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">Image Search Engine</p>
+          </div>
+          <div className="w-1/3 my-auto">
+            <select
+              className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+              id="spaceing"
+              value={
+                setting.viewingOption
+                  ? setting.viewingOption.imageSearchEngine
+                  : 0
+              }
+              onChange={handleImageSearchEngineSelection}
+            >
+              <option value="0">Google Lens</option>
+              <option value="1">Bing</option>
+              <option value="2">Yandex</option>
+              <option value="3">TinEye</option>
             </select>
           </div>
         </div>

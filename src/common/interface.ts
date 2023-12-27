@@ -110,6 +110,7 @@ export interface IViewingOption {
   imageColumns: number;
   sortBy: SortingState;
   timeDisplay: number;
+  imageSearchEngine: number;
 }
 
 //Sync Setting

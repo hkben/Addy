@@ -10,6 +10,7 @@ import moment from 'moment';
 import { Bars3Icon } from '@heroicons/react/24/solid';
 import { useParams } from 'react-router-dom';
 import useCollectionStore from '../../../../common/hook/useCollectionStore';
+import useViewingOptionStore from '../../../../common/hook/useViewingOptionStore';
 
 interface Prop {
   item: ICollectionItem;
@@ -17,6 +18,8 @@ interface Prop {
 
 function ImageItem({ item }: Prop) {
   let { collectionId } = useParams();
+
+  const { viewingOption } = useViewingOptionStore();
 
   let removeCollectionItem = useCollectionStore(
     (state) => state.removeCollectionItem
@@ -33,6 +36,26 @@ function ImageItem({ item }: Prop) {
       isDragging: monitor.isDragging(),
     }),
   });
+
+  const imageSearchURL = () => {
+    //Bing
+    if (viewingOption?.imageSearchEngine == 1) {
+      return `https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:${item.content}`;
+    }
+
+    //Yandex
+    if (viewingOption?.imageSearchEngine == 2) {
+      return `https://yandex.com/images/search?source=collections&rpt=imageview&url=${item.content}`;
+    }
+
+    //TinEye
+    if (viewingOption?.imageSearchEngine == 3) {
+      return `https://www.tineye.com/search/?url=${item.content}`;
+    }
+
+    //Google
+    return `https://lens.google.com/uploadbyurl?url=${item.content}`;
+  };
 
   return (
     <div
@@ -51,7 +74,7 @@ function ImageItem({ item }: Prop) {
         <span className="flex ml-auto">
           <a
             className="inline-block align-middle m-auto"
-            href={`https://lens.google.com/uploadbyurl?url=${item.content}`}
+            href={imageSearchURL()}
             target="_blank"
             rel="noreferrer"
           >

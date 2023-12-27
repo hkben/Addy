@@ -18,6 +18,7 @@ class Setting {
         imageColumns: 3,
         sortBy: [],
         timeDisplay: 0,
+        imageSearchEngine: 0,
       },
     };
     return defaultSetting;
