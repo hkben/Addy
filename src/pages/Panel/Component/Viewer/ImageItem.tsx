@@ -53,6 +53,7 @@ function ImageItem({ item }: Prop) {
             className="inline-block align-middle m-auto"
             href={`https://lens.google.com/uploadbyurl?url=${item.content}`}
             target="_blank"
+            rel="noreferrer"
           >
             <MagnifyingGlassIcon className="w-6 h-6" strokeWidth={2} />
           </a>
@@ -60,6 +61,7 @@ function ImageItem({ item }: Prop) {
             className="inline-block align-middle m-auto"
             href={item.source}
             target="_blank"
+            rel="noreferrer"
           >
             <ArrowTopRightOnSquareIcon className="w-6 h-6" strokeWidth={2} />
           </a>
@@ -80,7 +82,12 @@ function ImageItem({ item }: Prop) {
         </span>
       </div>
       <div className="h-full flex items-center">
-        <img className="self-center" src={item.content} loading="lazy" />
+        <img
+          className="self-center"
+          src={item.content}
+          loading="lazy"
+          alt={item.id}
+        />
       </div>
     </div>
   );
