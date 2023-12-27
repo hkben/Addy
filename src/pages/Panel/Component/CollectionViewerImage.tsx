@@ -14,14 +14,17 @@ import {
   XCircleIcon,
 } from '@heroicons/react/24/outline';
 import useViewingOptionStore from '../../../common/hook/useViewingOptionStore';
+import useCollectionStore from '../../../common/hook/useCollectionStore';
+import { useParams } from 'react-router-dom';
 
 interface Prop {
   data: Array<ICollectionItem>;
-  onDeleteItem: (_itemId: string) => Promise<void>;
   collectionName: string;
 }
 
-function CollectionViewerImage({ data, onDeleteItem, collectionName }: Prop) {
+function CollectionViewerImage({ data, collectionName }: Prop) {
+  let { collectionId } = useParams();
+
   const { viewingOption } = useViewingOptionStore();
 
   const [columns, setColumns] = React.useState(3);
@@ -34,6 +37,10 @@ function CollectionViewerImage({ data, onDeleteItem, collectionName }: Prop) {
 
   const [sortedData, setSortedData] = React.useState(
     [] as Array<ICollectionItem>
+  );
+
+  let removeCollectionItem = useCollectionStore(
+    (state) => state.removeCollectionItem
   );
 
   const handleColumnsSelection = (
@@ -229,8 +236,8 @@ function CollectionViewerImage({ data, onDeleteItem, collectionName }: Prop) {
                     const confirmBox = window.confirm(
                       'Do you really want to delete this item?'
                     );
-                    if (confirmBox === true) {
-                      onDeleteItem(item.id);
+                    if (confirmBox === true && collectionId != null) {
+                      removeCollectionItem(collectionId, item.id);
                     }
                   }}
                 >

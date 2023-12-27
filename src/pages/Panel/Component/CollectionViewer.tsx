@@ -94,21 +94,6 @@ function CollectionViewer() {
     return collection.items || [];
   }, [collection, collectionType]);
 
-  const removeCollectionItem = async (_itemId: string) => {
-    let result = await CollectionItem.delete(collection.id, _itemId);
-
-    if (result) {
-      //TODO move to store action
-      // setCollection((prevState) => ({
-      //   ...prevState,
-      //   //_.remove return new array of removed elements
-      //   items: _.remove(prevState.items, (o) => o.id != _itemId),
-      // }));
-
-      fetchCollectionsList();
-    }
-  };
-
   const editCollectionItem = async (_itemId: string, _content: string) => {
     let { result, datetime } = await CollectionItem.updateContent(
       collection.id,
@@ -199,21 +184,13 @@ function CollectionViewer() {
 
   let viewer = useMemo(() => {
     return (
-      <CollectionViewerTable
-        data={data}
-        onDeleteItem={removeCollectionItem}
-        onEditItem={editCollectionItem}
-      />
+      <CollectionViewerTable data={data} onEditItem={editCollectionItem} />
     );
   }, [data]);
 
   let imageViewer = useMemo(() => {
     return (
-      <CollectionImageViewer
-        data={data}
-        onDeleteItem={removeCollectionItem}
-        collectionName={collection.name}
-      />
+      <CollectionImageViewer data={data} collectionName={collection.name} />
     );
   }, [data]);
 

@@ -25,14 +25,17 @@ import {
   XCircleIcon,
 } from '@heroicons/react/24/outline';
 import RowItem from './Viewer/RowItem';
+import useCollectionStore from '../../../common/hook/useCollectionStore';
+import { useParams } from 'react-router-dom';
 
 interface Prop {
   data: Array<ICollectionItem>;
-  onDeleteItem: (_itemId: string) => Promise<void>;
   onEditItem: (_itemId: string, _content: string) => Promise<void>;
 }
 
-function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
+function CollectionViewerTable({ data, onEditItem }: Prop) {
+  let { collectionId } = useParams();
+
   const viewingOption = useViewingOptionStore((state) => state.viewingOption);
 
   const fetchViewingOption = useViewingOptionStore(
@@ -43,6 +46,10 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
     React.useState<VisibilityState>({});
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
+
+  let removeCollectionItem = useCollectionStore(
+    (state) => state.removeCollectionItem
+  );
 
   const handleSpacingSelection = async (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -214,8 +221,8 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
               const confirmBox = window.confirm(
                 'Do you really want to delete this item?'
               );
-              if (confirmBox === true) {
-                onDeleteItem(row.id);
+              if (confirmBox === true && collectionId != null) {
+                removeCollectionItem(collectionId, row.id);
               }
             }}
           >
@@ -224,7 +231,7 @@ function CollectionViewerTable({ data, onDeleteItem, onEditItem }: Prop) {
         ),
       },
     ],
-    [onDeleteItem]
+    [removeCollectionItem]
   );
 
   const defaultColumn: Partial<ColumnDef<ICollectionItem>> = {
