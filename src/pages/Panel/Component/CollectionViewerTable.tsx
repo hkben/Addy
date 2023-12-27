@@ -230,7 +230,7 @@ function CollectionViewerTable({ data }: Prop) {
         ),
       },
     ],
-    [removeCollectionItem]
+    [collectionId, removeCollectionItem, viewingOption?.timeDisplay]
   );
 
   const defaultColumn: Partial<ColumnDef<ICollectionItem>> = {
