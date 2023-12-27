@@ -64,6 +64,10 @@ function CollectionViewer() {
 
   let removeAllItems = useCollectionStore((state) => state.removeAllItems);
 
+  let changeCollectionColor = useCollectionStore(
+    (state) => state.changeCollectionColor
+  );
+
   useEffect(() => {
     fetchViewingOption();
   }, [fetchViewingOption]);
@@ -130,18 +134,6 @@ function CollectionViewer() {
 
   const changeType = (_type: number) => {
     setCollectionType(_type);
-  };
-
-  const handleColorClick = async (_color: number) => {
-    let result = await Collection.updateColor(collection.id, _color);
-
-    if (result) {
-      fetchCollectionsList();
-      setCollection({
-        ...collection,
-        color: _color,
-      });
-    }
   };
 
   let viewer = useMemo(() => {
@@ -220,43 +212,43 @@ function CollectionViewer() {
               ? ''
               : 'border-dotted '
           } rounded-full my-auto h-6 w-6 cursor-pointer bg-transparent border-2 border-gray-700 dark:border-white`}
-          onClick={() => handleColorClick(0)}
+          onClick={() => changeCollectionColor(collection.id, 0)}
         ></div>
         <div
           className={`${
             collection.color == 1 ? 'active-color' : ''
           } rounded-full my-auto h-6 w-6 cursor-pointer color-1`}
-          onClick={() => handleColorClick(1)}
+          onClick={() => changeCollectionColor(collection.id, 1)}
         ></div>
         <div
           className={`${
             collection.color == 2 ? 'active-color' : ''
           } rounded-full my-auto h-6 w-6 cursor-pointer color-2`}
-          onClick={() => handleColorClick(2)}
+          onClick={() => changeCollectionColor(collection.id, 2)}
         ></div>
         <div
           className={`${
             collection.color == 3 ? 'active-color' : ''
           } rounded-full my-auto h-6 w-6 cursor-pointer color-3`}
-          onClick={() => handleColorClick(3)}
+          onClick={() => changeCollectionColor(collection.id, 3)}
         ></div>
         <div
           className={`${
             collection.color == 4 ? 'active-color' : ''
           } rounded-full my-auto h-6 w-6 cursor-pointer color-4`}
-          onClick={() => handleColorClick(4)}
+          onClick={() => changeCollectionColor(collection.id, 4)}
         ></div>
         <div
           className={`${
             collection.color == 5 ? 'active-color' : ''
           } rounded-full my-auto h-6 w-6 cursor-pointer color-5`}
-          onClick={() => handleColorClick(5)}
+          onClick={() => changeCollectionColor(collection.id, 5)}
         ></div>
         <div
           className={`${
             collection.color == 6 ? 'active-color' : ''
           } rounded-full my-auto h-6 w-6 cursor-pointer color-6`}
-          onClick={() => handleColorClick(6)}
+          onClick={() => changeCollectionColor(collection.id, 6)}
         ></div>
       </div>
 

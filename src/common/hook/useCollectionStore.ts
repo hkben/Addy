@@ -14,6 +14,7 @@ interface Store {
     _content: string
   ) => void;
   removeAllItems: (_collectionId: string) => void;
+  changeCollectionColor: (_collectionId: string, _color: number) => void;
 }
 
 const useCollectionStore = create<Store>()(
@@ -74,6 +75,22 @@ const useCollectionStore = create<Store>()(
 
       set((state) => {
         state.collection.items = [];
+      });
+
+      //refresh collection list
+      fetchCollectionsList();
+    },
+    changeCollectionColor: async (_collectionId, _color) => {
+      let result = await Collection.updateColor(_collectionId, _color);
+
+      if (result == false) {
+        return;
+      }
+
+      let fetchCollectionsList = useCollectionsListStore.getState().fetchList;
+
+      set((state) => {
+        state.collection.color = _color;
       });
 
       //refresh collection list
