@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { ICollection } from '../interface';
-import { CollectionItem } from '../storage';
+import { Collection, CollectionItem } from '../storage';
 import useCollectionsListStore from './useCollectionsListStore';
 import { immer } from 'zustand/middleware/immer';
 
@@ -13,6 +13,7 @@ interface Store {
     _item: string,
     _content: string
   ) => void;
+  removeAllItems: (_collectionId: string) => void;
 }
 
 const useCollectionStore = create<Store>()(
@@ -62,6 +63,21 @@ const useCollectionStore = create<Store>()(
           }
         });
       }
+    },
+    removeAllItems: async (_collectionId) => {
+      let result = await Collection.deleteAllItems(_collectionId);
+
+      if (result == false) {
+        return;
+      }
+      let fetchCollectionsList = useCollectionsListStore.getState().fetchList;
+
+      set((state) => {
+        state.collection.items = [];
+      });
+
+      //refresh collection list
+      fetchCollectionsList();
     },
   }))
 );

@@ -62,6 +62,8 @@ function CollectionViewer() {
 
   let setCollection = useCollectionStore((state) => state.setCollection);
 
+  let removeAllItems = useCollectionStore((state) => state.removeAllItems);
+
   useEffect(() => {
     fetchViewingOption();
   }, [fetchViewingOption]);
@@ -104,20 +106,6 @@ function CollectionViewer() {
     setCollectionName(loaderData.name);
     setCollectionType(0);
   }, [loaderData, viewingOption]);
-
-  const removeAllItems = async () => {
-    console.log('removeAllItems');
-
-    let result = await Collection.deleteAllItems(collection.id);
-
-    if (result) {
-      //TODO move to store action
-      // setCollection((prevState) => ({
-      //   ...prevState,
-      //   items: [],
-      // }));
-    }
-  };
 
   const removeCollection = async () => {
     console.log('removeCollection');
@@ -204,7 +192,7 @@ function CollectionViewer() {
               'Do you really want to delete all items in this collection?'
             );
             if (confirmBox === true) {
-              removeAllItems();
+              removeAllItems(collection.id);
             }
           }}
         >
