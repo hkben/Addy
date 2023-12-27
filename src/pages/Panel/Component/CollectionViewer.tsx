@@ -94,32 +94,6 @@ function CollectionViewer() {
     return collection.items || [];
   }, [collection, collectionType]);
 
-  const editCollectionItem = async (_itemId: string, _content: string) => {
-    let { result, datetime } = await CollectionItem.updateContent(
-      collection.id,
-      _itemId,
-      _content
-    );
-
-    //update content in Collection
-    let updateCollection = (_items: Array<ICollectionItem>) => {
-      let itemIndex = _.findIndex(_items, (o) => o.id == _itemId)!;
-      _items[itemIndex].content = _content;
-      _items[itemIndex].modifyTime = datetime;
-      return _items;
-    };
-
-    if (result) {
-      //TODO move to store action
-      // setCollection((prevState) => ({
-      //   ...prevState,
-      //   items: updateCollection(prevState.items),
-      // }));
-
-      fetchCollectionsList();
-    }
-  };
-
   useEffect(() => {
     //update only after viewingOption is loaded
     if (viewingOption == null) {
@@ -183,9 +157,7 @@ function CollectionViewer() {
   };
 
   let viewer = useMemo(() => {
-    return (
-      <CollectionViewerTable data={data} onEditItem={editCollectionItem} />
-    );
+    return <CollectionViewerTable data={data} />;
   }, [data]);
 
   let imageViewer = useMemo(() => {

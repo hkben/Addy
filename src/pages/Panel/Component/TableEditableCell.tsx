@@ -2,27 +2,33 @@ import React, { useEffect } from 'react';
 import { ICollectionItem } from '../../../common/interface';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import _ from 'lodash';
+import { useParams } from 'react-router-dom';
+import useCollectionStore from '../../../common/hook/useCollectionStore';
 
 interface Prop {
   value: any;
   row: Row<ICollectionItem>;
   column: ColumnDef<ICollectionItem>;
-  onEditItem: (_itemId: string, _content: string) => Promise<void>;
 }
 
 function TableEditableCell({
   value: displayValue,
   row: { original },
   column: { header },
-  onEditItem,
 }: Prop) {
   if (header != 'Content') {
     return displayValue || null;
   }
 
+  let { collectionId } = useParams();
+
   const [content, setContent] = React.useState<string>('');
 
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
+
+  let editCollectionItem = useCollectionStore(
+    (state) => state.editCollectionItem
+  );
 
   React.useEffect(() => {
     setContent(original.content);
@@ -39,7 +45,11 @@ function TableEditableCell({
   };
 
   const handleSave = (event: React.MouseEvent<HTMLButtonElement>) => {
-    onEditItem(original.id, content);
+    if (collectionId == null) {
+      return;
+    }
+
+    editCollectionItem(collectionId, original.id, content);
     setIsEditing(false);
   };
 

@@ -8,6 +8,11 @@ interface Store {
   collection: ICollection;
   setCollection: (collection: ICollection) => void;
   removeCollectionItem: (_collectionId: string, _item: string) => void;
+  editCollectionItem: (
+    _collectionId: string,
+    _item: string,
+    _content: string
+  ) => void;
 }
 
 const useCollectionStore = create<Store>()(
@@ -37,6 +42,26 @@ const useCollectionStore = create<Store>()(
 
       //refresh collection list
       fetchCollectionsList();
+    },
+    editCollectionItem: async (_collectionId, _itemId, _content) => {
+      let { result, datetime } = await CollectionItem.updateContent(
+        _collectionId,
+        _itemId,
+        _content
+      );
+
+      if (result) {
+        set((state) => {
+          let index = state.collection.items.findIndex(
+            (item) => item.id === _itemId
+          );
+
+          if (index >= 0) {
+            state.collection.items[index].content = _content;
+            state.collection.items[index].modifyTime = datetime;
+          }
+        });
+      }
     },
   }))
 );

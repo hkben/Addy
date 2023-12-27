@@ -30,10 +30,9 @@ import { useParams } from 'react-router-dom';
 
 interface Prop {
   data: Array<ICollectionItem>;
-  onEditItem: (_itemId: string, _content: string) => Promise<void>;
 }
 
-function CollectionViewerTable({ data, onEditItem }: Prop) {
+function CollectionViewerTable({ data }: Prop) {
   let { collectionId } = useParams();
 
   const viewingOption = useViewingOptionStore((state) => state.viewingOption);
@@ -240,7 +239,6 @@ function CollectionViewerTable({ data, onEditItem }: Prop) {
         value={props.getValue()}
         row={props.row}
         column={props.column.columnDef}
-        onEditItem={onEditItem}
       />
     ),
   };
