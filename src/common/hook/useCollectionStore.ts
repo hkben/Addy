@@ -15,6 +15,11 @@ interface Store {
   ) => void;
   removeAllItems: (_collectionId: string) => void;
   changeCollectionColor: (_collectionId: string, _color: number) => void;
+  moveCollectionItem: (
+    _collectionId: string,
+    _itemId: string,
+    _newCollectionId: string
+  ) => void;
 }
 
 const useCollectionStore = create<Store>()(
@@ -91,6 +96,32 @@ const useCollectionStore = create<Store>()(
 
       set((state) => {
         state.collection.color = _color;
+      });
+
+      //refresh collection list
+      fetchCollectionsList();
+    },
+    moveCollectionItem: async (_collectionId, _itemId, _newCollectionId) => {
+      let result = await CollectionItem.move(
+        _collectionId,
+        _itemId,
+        _newCollectionId
+      );
+
+      if (result == false) {
+        return;
+      }
+
+      let fetchCollectionsList = useCollectionsListStore.getState().fetchList;
+
+      set((state) => {
+        let index = state.collection.items.findIndex(
+          (item) => item.id === _itemId
+        );
+
+        if (index >= 0) {
+          state.collection.items.splice(index, 1);
+        }
       });
 
       //refresh collection list

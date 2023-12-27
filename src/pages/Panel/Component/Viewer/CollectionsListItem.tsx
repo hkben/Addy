@@ -7,7 +7,7 @@ import {
 import { Row } from '@tanstack/react-table';
 import { Link, useParams } from 'react-router-dom';
 import CollectionItem from '../../../../common/storage/collectionItem';
-import useCollectionsListStore from '../../../../common/hook/useCollectionsListStore';
+import useCollectionStore from '../../../../common/hook/useCollectionStore';
 import { stat } from 'fs';
 
 interface Prop {
@@ -21,8 +21,8 @@ interface DropItem {
 function CollectionsListItem({ collection }: Prop) {
   let { collectionId: sourceCollectionId } = useParams();
 
-  let fetchCollectionsList = useCollectionsListStore(
-    (state) => state.fetchList
+  let moveCollectionItem = useCollectionStore(
+    (state) => state.moveCollectionItem
   );
 
   const [{ canDrop, isOver }, dropRef] = useDrop({
@@ -32,11 +32,7 @@ function CollectionsListItem({ collection }: Prop) {
         return;
       }
 
-      await CollectionItem.move(sourceCollectionId, item.id, collection.id);
-
-      fetchCollectionsList();
-
-      //TODO delete item from source collection state
+      moveCollectionItem(sourceCollectionId, item.id, collection.id);
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),

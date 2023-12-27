@@ -104,7 +104,7 @@ class CollectionItem {
 
     let result = await Collections.update(collections);
 
-    return { _collectionId, datetime };
+    return result;
   }
 }
 
