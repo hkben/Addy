@@ -14,7 +14,13 @@ import CollectionViewerTable from './CollectionViewerTable';
 import _ from 'lodash';
 import CollectionImageViewer from './CollectionViewerImage';
 import useViewingOptionStore from '../../../common/hook/useViewingOptionStore';
-import { LoaderFunctionArgs, useLoaderData, useParams } from 'react-router-dom';
+import {
+  LoaderFunctionArgs,
+  redirect,
+  useLoaderData,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import {
   PencilIcon,
   DocumentMinusIcon,
@@ -34,6 +40,8 @@ export async function loader({ params }: LoaderFunctionArgs<any>) {
 
 function CollectionViewer() {
   const loaderData = useLoaderData() as ICollection;
+
+  const navigate = useNavigate();
 
   const [editCollectionName, setEditCollectionName] = React.useState(false);
 
@@ -117,6 +125,8 @@ function CollectionViewer() {
     await Collection.delete(collection.id);
 
     fetchCollectionsList();
+
+    navigate('/');
   };
 
   const handleCollectionNameChange = (
