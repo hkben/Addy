@@ -75,7 +75,9 @@ function CollectionViewerTable({ data }: Prop) {
           }
 
           if (row.type == 'image') {
-            let extension = row.content.match(/\.(jpeg|jpg|gif|png)$/);
+            let extension = row.content.match(
+              /\.(jpeg|jpg|gif|png|webp|svg|bmp)$/
+            );
             let type = 'Unknown';
 
             if (extension != null) {
