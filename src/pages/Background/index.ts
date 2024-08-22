@@ -11,31 +11,63 @@ import {
 
 let isInit = false;
 
+//Alarm Names
+const autoSyncAlarmName = 'addy_auto_sync';
+const autoCleanAlarmName = 'addy_auto_clean';
+
 const isFirefox = Browser.runtime.getURL('').startsWith('moz-extension://');
 const isChrome = Browser.runtime.getURL('').startsWith('chrome-extension://');
 
 const manifest_version = Browser.runtime.getManifest().manifest_version;
 
-const init = () => {
-  if (isInit) {
-    return;
-  }
-
-  if (manifest_version == 2) {
+const init = async () => {
+  if (manifest_version == 2 && !isInit) {
     //Version 2 would not call onInstalled on enabling extension,
     createContextMenus();
   }
 
-  //Run every hour
-  setInterval(() => {
-    Collections.removeDeleted();
-  }, 60 * 60000);
+  // Auto Sync Alarm
+  const autoSyncAlarm = await Browser.alarms.get(autoSyncAlarmName);
 
-  //Run every 10 mins
-  setInterval(() => {
-    autoSyncChecking();
-  }, 10 * 60000);
+  console.log(`[Addy] Checking Alarm: ${autoSyncAlarmName}`, autoSyncAlarm);
+
+  if (typeof autoSyncAlarm === 'undefined') {
+    Browser.alarms.create(autoSyncAlarmName, {
+      periodInMinutes: 10, // Every 10 minutes
+    });
+
+    console.log(`[Addy] Created Alarm: ${autoSyncAlarmName}`);
+  }
+
+  // Auto Clean Alarm
+  const autoCleanAlarm = await Browser.alarms.get(autoCleanAlarmName);
+
+  console.log(`[Addy] Checking Alarm: ${autoCleanAlarmName}`, autoCleanAlarm);
+
+  if (typeof autoCleanAlarm === 'undefined') {
+    Browser.alarms.create(autoCleanAlarmName, {
+      periodInMinutes: 120, // Every 2 hours
+    });
+
+    console.log(`[Addy] Created Alarm: ${autoCleanAlarmName}`);
+  }
+
+  isInit = true;
 };
+
+// Alarm Listener
+Browser.alarms.onAlarm.addListener((alarmInfo) => {
+  console.log(`[Addy] Received Alarm: ${alarmInfo.name}`);
+
+  switch (alarmInfo.name) {
+    case autoSyncAlarmName:
+      autoSyncChecking();
+      break;
+    case autoCleanAlarmName:
+      Collections.removeDeleted();
+      break;
+  }
+});
 
 const onInstalledListener = async () => {
   //fired whem first installed, updated to a new version, and the browser updated to a new version
