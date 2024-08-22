@@ -15,10 +15,24 @@ let isInit = false;
 const autoSyncAlarmName = 'addy_auto_sync';
 const autoCleanAlarmName = 'addy_auto_clean';
 
+//Manifest Version and Browser Check
 const isFirefox = Browser.runtime.getURL('').startsWith('moz-extension://');
 const isChrome = Browser.runtime.getURL('').startsWith('chrome-extension://');
 
 const manifest_version = Browser.runtime.getManifest().manifest_version;
+
+let isServiceWorker = false;
+
+console.log(
+  `[Addy] Running Manifest version ${manifest_version} on ${
+    isFirefox ? 'Firefox' : 'Chrome'
+  }`
+);
+
+if (isChrome && manifest_version === 3) {
+  isServiceWorker = true;
+  console.log('[Addy] Running as Service Worker');
+}
 
 const init = async () => {
   if (manifest_version == 2 && !isInit) {
