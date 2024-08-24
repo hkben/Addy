@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { SortingState } from '@tanstack/react-table';
 import Browser from 'webextension-polyfill';
 import { IOrdering, ISetting, IStorage, IViewingOption } from '../interface';
+import log from 'loglevel';
 
 class Setting {
   static init() {
@@ -38,7 +39,7 @@ class Setting {
         setting = localStorage.setting;
       }
     } catch (e) {
-      console.error(e);
+      log.error(e);
     }
     return setting;
   }
@@ -63,7 +64,7 @@ class Setting {
     try {
       await Browser.storage.local.set({ setting });
     } catch (e) {
-      console.error(e);
+      log.error(e);
       return false;
     }
     return true;
@@ -75,7 +76,7 @@ class Setting {
       setting.collectionsOrdering = _ordering;
       this.update(setting);
     } catch (e) {
-      console.error(e);
+      log.error(e);
       return false;
     }
     return true;
@@ -87,7 +88,7 @@ class Setting {
       setting.darkMode = _darkMode;
       this.update(setting);
     } catch (e) {
-      console.error(e);
+      log.error(e);
       return false;
     }
     return true;
@@ -107,7 +108,7 @@ class Setting {
       setting.viewingOption.hiddenColumns = _hiddenColumns;
       this.update(setting);
     } catch (e) {
-      console.error(e);
+      log.error(e);
       return false;
     }
     return true;
@@ -119,7 +120,7 @@ class Setting {
       setting.viewingOption.spacing = _spacing;
       this.update(setting);
     } catch (e) {
-      console.error(e);
+      log.error(e);
       return false;
     }
     return true;
@@ -137,7 +138,7 @@ class Setting {
       setting.viewingOption.sortBy = _sortBy;
       this.update(setting);
     } catch (e) {
-      console.error(e);
+      log.error(e);
       return false;
     }
     return true;
@@ -149,7 +150,7 @@ class Setting {
       setting.viewingOption.imageColumns = _columns;
       this.update(setting);
     } catch (e) {
-      console.error(e);
+      log.error(e);
       return false;
     }
     return true;

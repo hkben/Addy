@@ -1,6 +1,7 @@
 import moment from 'moment';
 import React, { useEffect } from 'react';
 import { Collections } from '../../../common/storage';
+import log from 'loglevel';
 
 interface State {
   json: string;
@@ -10,7 +11,7 @@ function Export() {
   const [json, setJson] = React.useState('');
 
   useEffect(() => {
-    updateCollections().catch(console.error);
+    updateCollections().catch(log.error);
   }, []);
 
   const updateCollections = async () => {

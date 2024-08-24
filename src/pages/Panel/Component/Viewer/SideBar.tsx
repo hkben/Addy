@@ -12,6 +12,7 @@ import { Collection, Collections } from '../../../../common/storage';
 import _ from 'lodash';
 import useCollectionsListStore from '../../../../common/hook/useCollectionsListStore';
 import CollectionsListItem from './CollectionsListItem';
+import log from 'loglevel';
 
 function SideBar() {
   const newCollectionInput = useRef<HTMLInputElement>(null);
@@ -33,7 +34,7 @@ function SideBar() {
   );
 
   useEffect(() => {
-    getOrdering().catch(console.error);
+    getOrdering().catch(log.error);
   }, []);
 
   useEffect(() => {

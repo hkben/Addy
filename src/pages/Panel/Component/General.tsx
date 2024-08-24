@@ -11,6 +11,7 @@ import {
   Setting,
   Storage,
 } from '../../../common/storage';
+import log from 'loglevel';
 
 function General() {
   const [setting, setSetting] = React.useState<ISetting>(
@@ -23,7 +24,7 @@ function General() {
       setSetting(_setting);
     };
 
-    getSetting().catch(console.error);
+    getSetting().catch(log.error);
   }, []);
 
   const handleOrderingSelection = async (

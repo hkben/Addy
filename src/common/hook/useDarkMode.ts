@@ -2,6 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import { useEffect } from 'react';
 import Setting from '../storage/setting';
+import log from 'loglevel';
 
 export const useDarkMode = () => {
   const [darkMode, setDarkMode] = React.useState(true); //Default true to avoid flash
@@ -9,7 +10,7 @@ export const useDarkMode = () => {
   const [loaded, setLoaded] = React.useState(false);
 
   useEffect(() => {
-    getDarkMode().catch(console.error);
+    getDarkMode().catch(log.error);
   }, []);
 
   useEffect(() => {

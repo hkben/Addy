@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
 import { IStorage, ISyncSetting } from '../interface';
+import log from 'loglevel';
 
 class SyncSetting {
   static init() {
@@ -31,7 +32,7 @@ class SyncSetting {
         syncSetting = localStorage.syncSetting;
       }
     } catch (e) {
-      console.error(e);
+      log.error(e);
     }
     return syncSetting;
   }
@@ -41,7 +42,7 @@ class SyncSetting {
     try {
       await Browser.storage.local.set({ syncSetting });
     } catch (e) {
-      console.error(e);
+      log.error(e);
       return false;
     }
     return true;
@@ -53,7 +54,7 @@ class SyncSetting {
       syncSetting.lastSyncTime = _datetime;
       this.update(syncSetting);
     } catch (e) {
-      console.error(e);
+      log.error(e);
       return false;
     }
     return true;

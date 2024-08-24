@@ -13,6 +13,7 @@ import _ from 'lodash';
 import Browser from 'webextension-polyfill';
 import { useSortCollections } from '../../common/hook/useSortCollections';
 import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
+import log from 'loglevel';
 
 function Content(props: ISetting) {
   const [selection, setSelection] = React.useState({
@@ -217,7 +218,7 @@ function Content(props: ISetting) {
   };
 
   const handleOnMessageEvent = (packet: IBrowserMessage, sender: any) => {
-    console.log(packet);
+    log.debug(packet);
 
     switch (packet.action) {
       case 'saveText':

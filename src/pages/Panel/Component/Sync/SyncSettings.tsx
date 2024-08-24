@@ -7,6 +7,7 @@ import GoogleDriveSyncSettings from './GoogleDriveSyncSettings';
 import SyncButton from './SyncButton';
 import SyncDeleteButton from './SyncDeleteButton';
 import SyncConnectionTestButton from './SyncTestConnectionButton';
+import log from 'loglevel';
 
 function SyncSettings() {
   const [syncSetting, setSyncSetting] = React.useState<ISyncSetting>(
@@ -19,7 +20,7 @@ function SyncSettings() {
   };
 
   useEffect(() => {
-    getSyncSetting().catch(console.error);
+    getSyncSetting().catch(log.error);
   }, []);
 
   const handleSyncingCheckbox = async (

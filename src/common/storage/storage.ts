@@ -4,6 +4,7 @@ import Common from '../../pages/common';
 import { ICollection, ISetting, IStorage, ISyncSetting } from '../interface';
 import Collections from './collections';
 import Setting from './setting';
+import log from 'loglevel';
 
 class Storage {
   static async init() {
@@ -28,7 +29,7 @@ class Storage {
   }
 
   static async onInstallCheck() {
-    console.log('onInstallCheck');
+    log.trace('[Addy] onInstallCheck');
 
     let localStorage = await this.fetch();
 
@@ -41,8 +42,6 @@ class Storage {
       return;
     }
 
-    console.log(`[Migration] Instaling from ${installedVersion} to ${version}`);
-
     const isInstallingNewVersion = Common.versionCompare(
       installedVersion,
       version
@@ -52,9 +51,11 @@ class Storage {
       return;
     }
 
+    log.info(`[Migration] Instaling from ${installedVersion} to ${version}`);
+
     //Version Migration
     if (version == '0.0.4' && installedVersion <= '0.0.3') {
-      console.log('[Migration] Update to 0.0.4');
+      log.info('[Migration] Update to 0.0.4');
       await Collections.updateDeletedToDateTime();
     }
 
@@ -67,7 +68,7 @@ class Storage {
     try {
       await Browser.storage.local.set(storage);
     } catch (e) {
-      console.error(e);
+      log.error(e);
       return false;
     }
     return true;

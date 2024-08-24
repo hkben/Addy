@@ -6,6 +6,7 @@ import {
   CheckCircleIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
+import log from 'loglevel';
 
 function SyncConnectionTestButton() {
   const [connectionState, setConnectionState] = React.useState<number>(0);
@@ -27,7 +28,7 @@ function SyncConnectionTestButton() {
   };
 
   const onMessageListener = (packet: IBrowserMessage, sender: any) => {
-    console.log('onMessageListener');
+    log.trace('onMessageListener');
 
     if (packet.action == 'SyncConnectionTestCompleted') {
       if (packet.result) {

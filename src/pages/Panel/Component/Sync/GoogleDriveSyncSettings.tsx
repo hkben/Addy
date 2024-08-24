@@ -2,6 +2,7 @@ import React, { Fragment, MouseEvent, useEffect } from 'react';
 import GoogleOAuth from '../../../../common/auth/googleOAuth';
 import { ISyncSetting } from '../../../../common/interface';
 import SyncSetting from '../../../../common/storage/syncSetting';
+import log from 'loglevel';
 
 interface Prop {
   syncSetting: ISyncSetting;
@@ -50,7 +51,7 @@ function GoogleDriveSyncSettings({ syncSetting, handleInputChange }: Prop) {
     try {
       await GoogleOAuth.revoke(access_token);
     } catch (error) {
-      console.error(error);
+      log.error(error);
     }
 
     _syncSetting.google_email = undefined;

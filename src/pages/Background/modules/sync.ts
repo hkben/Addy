@@ -6,6 +6,7 @@ import SyncSetting from '../../../common/storage/syncSetting';
 import AwsS3 from '../../../common/sync/awsS3';
 import GoogleDrive from '../../../common/sync/googleDrive';
 import SyncProvider from '../../../common/sync/syncProvider';
+import log from 'loglevel';
 
 export const getSyncProvider = (
   _provider: string
@@ -21,7 +22,7 @@ export const getSyncProvider = (
 };
 
 export const syncBackgroundRun = async () => {
-  console.log('[Sync] SyncBackground');
+  log.trace('[Sync] SyncBackground');
 
   let _syncSetting = await SyncSetting.fetch();
 
@@ -32,7 +33,7 @@ export const syncBackgroundRun = async () => {
   let syncProvider = getSyncProvider(_syncSetting.provider);
 
   if (syncProvider == undefined) {
-    console.error('[Sync] Sync Provider is undefined');
+    log.error('[Sync] Sync Provider is undefined');
 
     Browser.runtime.sendMessage({
       action: 'SyncCompleted',
@@ -53,34 +54,34 @@ export const syncBackgroundRun = async () => {
 
     //If file is not exists on server, create one
     if (fileInfo == null || fileInfo.id == '') {
-      console.log('[Sync] Remote Sync File is not exists, creating...');
+      log.trace('[Sync] Remote Sync File is not exists, creating...');
       await syncProvider.createSyncFile();
     } else {
-      console.log('[Sync] Download Data...');
+      log.trace('[Sync] Download Data...');
       let json = await syncProvider.getSyncFile(fileInfo);
 
-      console.log('[Sync] Importing Data...');
+      log.trace('[Sync] Importing Data...');
       const collections: ICollection[] = JSON.parse(json);
 
       if (collections.length > 0) {
         await Collections.import(collections);
       }
 
-      console.log('[Sync] Remove Deleted...');
+      log.trace('[Sync] Remove Deleted...');
       await Collections.removeDeleted();
 
-      console.log('[Sync] Uploading imported Data...');
+      log.trace('[Sync] Uploading imported Data...');
       await syncProvider.updateSyncFile(fileInfo);
     }
 
     let _datetime = new Date().toISOString();
     await SyncSetting.updateLastSyncTime(_datetime);
 
-    console.log('[Sync] Done...');
+    log.info('[Sync] SyncBackground Done.');
     _result = true;
   } catch (error) {
-    console.log('[Sync] Error...');
-    console.error(error);
+    log.error('[Sync] Error...');
+    log.error(error);
   } finally {
     Browser.runtime.sendMessage({
       action: 'SyncCompleted',
@@ -90,7 +91,7 @@ export const syncBackgroundRun = async () => {
 };
 
 export const syncConnectionTest = async () => {
-  console.log('[Sync] SyncConnectionTest');
+  log.trace('[Sync] SyncConnectionTest');
 
   let _syncSetting = await SyncSetting.fetch();
 
@@ -101,7 +102,7 @@ export const syncConnectionTest = async () => {
   let syncProvider = getSyncProvider(_syncSetting.provider);
 
   if (syncProvider == undefined) {
-    console.error('[Sync] Sync Provider is undefined');
+    log.error('[Sync] Sync Provider is undefined');
 
     Browser.runtime.sendMessage({
       action: 'SyncConnectionTestCompleted',
@@ -124,10 +125,10 @@ export const syncConnectionTest = async () => {
       _result = true;
     }
 
-    console.log('[Sync] Done...');
+    log.info('[Sync] SyncConnectionTest Done.');
   } catch (error) {
-    console.log('[Sync] Error...');
-    console.error(error);
+    log.error('[Sync] Error...');
+    log.error(error);
   } finally {
     Browser.runtime.sendMessage({
       action: 'SyncConnectionTestCompleted',
@@ -137,7 +138,7 @@ export const syncConnectionTest = async () => {
 };
 
 export const syncFileDeletion = async () => {
-  console.log('[Sync] SyncFileDeletion');
+  log.trace('[Sync] SyncFileDeletion');
 
   let _syncSetting = await SyncSetting.fetch();
 
@@ -148,7 +149,7 @@ export const syncFileDeletion = async () => {
   let syncProvider = getSyncProvider(_syncSetting.provider);
 
   if (syncProvider == undefined) {
-    console.error('[Sync] Sync Provider is undefined');
+    log.error('[Sync] Sync Provider is undefined');
 
     Browser.runtime.sendMessage({
       action: 'SyncFileDeletionCompleted',
@@ -168,17 +169,17 @@ export const syncFileDeletion = async () => {
     let fileInfo = await syncProvider.searchSyncFile();
 
     if (fileInfo != null && fileInfo.id != '') {
-      console.log('[Sync] Deleting...');
+      log.trace('[Sync] Deleting...');
       await syncProvider.deleteSyncFile(fileInfo);
     }
 
     await SyncSetting.updateLastSyncTime();
 
-    console.log('[Sync] Done...');
+    log.info('[Sync] SyncFileDeletion Done.');
     _result = true;
   } catch (error) {
-    console.log('[Sync] Error...');
-    console.error(error);
+    log.error('[Sync] Error...');
+    log.error(error);
   } finally {
     Browser.runtime.sendMessage({
       action: 'SyncFileDeletionCompleted',
@@ -188,7 +189,7 @@ export const syncFileDeletion = async () => {
 };
 
 export const autoSyncChecking = async () => {
-  console.log('[Sync] autoSyncChecking');
+  log.trace('[Sync] autoSyncChecking');
 
   let _syncSetting = await SyncSetting.fetch();
 
@@ -203,7 +204,7 @@ export const autoSyncChecking = async () => {
   let lasySyncDiff = moment().diff(_syncSetting.lastSyncTime, 'minutes');
 
   if (lasySyncDiff >= _syncSetting.autoSyncInterval) {
-    console.log('[Sync] Run background sync');
+    log.trace('[Sync] Run background sync');
     await syncBackgroundRun();
   }
 };

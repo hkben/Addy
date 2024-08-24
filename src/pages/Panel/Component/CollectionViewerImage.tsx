@@ -17,6 +17,7 @@ import useViewingOptionStore from '../../../common/hook/useViewingOptionStore';
 import useCollectionStore from '../../../common/hook/useCollectionStore';
 import { useParams } from 'react-router-dom';
 import ImageItem from './Viewer/ImageItem';
+import log from 'loglevel';
 
 interface Prop {
   data: Array<ICollectionItem>;
@@ -92,7 +93,7 @@ function CollectionViewerImage({ data, collectionName }: Prop) {
 
         setDownloadingItem((prev) => prev + 1);
       } catch (error) {
-        console.error(error);
+        log.error(error);
       }
     }
 

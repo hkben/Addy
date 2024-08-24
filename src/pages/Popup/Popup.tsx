@@ -20,6 +20,7 @@ import { useSortCollections } from '../../common/hook/useSortCollections';
 import { useDarkMode } from '../../common/hook/useDarkMode';
 import { HomeIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { PlusIcon } from '@heroicons/react/24/outline';
+import log from 'loglevel';
 
 function Popup() {
   const [text, setText] = React.useState<string>('');
@@ -52,8 +53,8 @@ function Popup() {
   );
 
   useEffect(() => {
-    getOrdering().catch(console.error);
-    getCollectionsSummary().catch(console.error);
+    getOrdering().catch(log.error);
+    getCollectionsSummary().catch(log.error);
   }, []);
 
   useEffect(() => {

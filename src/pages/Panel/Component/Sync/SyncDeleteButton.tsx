@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import Browser from 'webextension-polyfill';
 import { IBrowserMessage } from '../../../../common/interface';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import log from 'loglevel';
 
 interface Prop {
   callbackAfterSync: () => Promise<void>;
@@ -27,12 +28,12 @@ function SyncDeleteButton({ callbackAfterSync }: Prop) {
   };
 
   const onMessageListener = (packet: IBrowserMessage, sender: any) => {
-    console.log('onMessageListener');
+    log.trace('onMessageListener');
 
     if (packet.action == 'SyncFileDeletionCompleted') {
       if (packet.result) {
         setSyncingState(2); //Completed
-        callbackAfterSync().catch(console.error);
+        callbackAfterSync().catch(log.error);
       } else {
         setSyncingState(3); //Error
       }

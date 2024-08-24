@@ -8,6 +8,7 @@ import {
   syncConnectionTest,
   syncFileDeletion,
 } from './modules/sync';
+import log from 'loglevel';
 
 let isInit = false;
 
@@ -23,7 +24,7 @@ const manifest_version = Browser.runtime.getManifest().manifest_version;
 
 let isServiceWorker = false;
 
-console.log(
+log.info(
   `[Addy] Running Manifest version ${manifest_version} on ${
     isFirefox ? 'Firefox' : 'Chrome'
   }`
@@ -31,7 +32,7 @@ console.log(
 
 if (isChrome && manifest_version === 3) {
   isServiceWorker = true;
-  console.log('[Addy] Running as Service Worker');
+  log.info('[Addy] Running as Service Worker');
 }
 
 const init = async () => {
@@ -43,27 +44,27 @@ const init = async () => {
   // Auto Sync Alarm
   const autoSyncAlarm = await Browser.alarms.get(autoSyncAlarmName);
 
-  console.log(`[Addy] Checking Alarm: ${autoSyncAlarmName}`, autoSyncAlarm);
+  log.trace(`[Addy] Checking Alarm: ${autoSyncAlarmName}`, autoSyncAlarm);
 
   if (typeof autoSyncAlarm === 'undefined') {
     Browser.alarms.create(autoSyncAlarmName, {
       periodInMinutes: 10, // Every 10 minutes
     });
 
-    console.log(`[Addy] Created Alarm: ${autoSyncAlarmName}`);
+    log.trace(`[Addy] Created Alarm: ${autoSyncAlarmName}`);
   }
 
   // Auto Clean Alarm
   const autoCleanAlarm = await Browser.alarms.get(autoCleanAlarmName);
 
-  console.log(`[Addy] Checking Alarm: ${autoCleanAlarmName}`, autoCleanAlarm);
+  log.trace(`[Addy] Checking Alarm: ${autoCleanAlarmName}`, autoCleanAlarm);
 
   if (typeof autoCleanAlarm === 'undefined') {
     Browser.alarms.create(autoCleanAlarmName, {
       periodInMinutes: 120, // Every 2 hours
     });
 
-    console.log(`[Addy] Created Alarm: ${autoCleanAlarmName}`);
+    log.trace(`[Addy] Created Alarm: ${autoCleanAlarmName}`);
   }
 
   isInit = true;
@@ -71,7 +72,7 @@ const init = async () => {
 
 // Alarm Listener
 Browser.alarms.onAlarm.addListener((alarmInfo) => {
-  console.log(`[Addy] Received Alarm: ${alarmInfo.name}`);
+  log.trace(`[Addy] Received Alarm: ${alarmInfo.name}`);
 
   switch (alarmInfo.name) {
     case autoSyncAlarmName:
@@ -85,40 +86,42 @@ Browser.alarms.onAlarm.addListener((alarmInfo) => {
 
 const onInstalledListener = async () => {
   //fired whem first installed, updated to a new version, and the browser updated to a new version
-  console.log('onInstalledListener');
+  log.trace('[Addy] onInstalledListener');
   await Storage.onInstallCheck();
   createContextMenus();
+
+  log.setLevel('debug');
 };
 
 const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
-  console.log('onMessageListener');
+  log.trace('[Addy] onMessageListener');
 
   switch (packet.action) {
     case 'SyncBackgroundRun':
-      syncBackgroundRun().catch(console.error);
+      syncBackgroundRun().catch(log.error);
       return;
     case 'SyncConnectionTest':
-      syncConnectionTest().catch(console.error);
+      syncConnectionTest().catch(log.error);
       return;
     case 'SyncFileDeletion':
-      syncFileDeletion().catch(console.error);
+      syncFileDeletion().catch(log.error);
       return;
   }
 };
 
 const onStartupListener = async () => {
-  console.log('onStartupListener');
+  log.trace('[Addy] onStartupListener');
 };
 
 const onContextMenusCreated = async () => {
-  console.log('onContextMenusCreated');
+  log.trace('[Addy] onContextMenusCreated');
 };
 
 let onContextMenusClicked = async (
   info: Browser.Menus.OnClickData,
   tab?: Browser.Tabs.Tab
 ) => {
-  console.log(info);
+  log.debug(info);
 
   var tabId: number = tab!.id!;
 

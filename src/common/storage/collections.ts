@@ -8,6 +8,7 @@ import {
 } from '../interface';
 import moment, { ISO_8601 } from 'moment';
 import Storage from './storage';
+import log from 'loglevel';
 
 class Collections {
   static async fetch(_includeDeleted: boolean = false): Promise<ICollection[]> {
@@ -25,7 +26,7 @@ class Collections {
 
       collections = localStorage.collections;
     } catch (e) {
-      console.error(e);
+      log.error(e);
     }
     return collections;
   }
@@ -49,7 +50,7 @@ class Collections {
     try {
       await Browser.storage.local.set({ collections });
     } catch (e) {
-      console.error(e);
+      log.error(e);
       return false;
     }
 

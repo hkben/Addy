@@ -4,19 +4,20 @@ import Browser from 'webextension-polyfill';
 import { IBrowserMessage } from '../../common/interface';
 import Content from './Content';
 import { Setting } from '../../common/storage';
+import log from 'loglevel';
 
 import css from '!!css-loader!sass-loader!./index.scss';
 
 const isFirefox = Browser.runtime.getURL('').startsWith('moz-extension://');
 
-console.log('Content script works!');
-console.log('Must reload extension for modifications to take effect.');
+log.trace('[Addy] Content script works!');
+log.info('[Addy] Must reload extension for modifications to take effect.');
 
 const elementId = 'webextension_addy_popup';
 
 let preload_popup = async () => {
   if (document.getElementById(elementId)) {
-    console.log('popup already loaded');
+    log.error('[Addy] popup already loaded');
     return;
   }
 

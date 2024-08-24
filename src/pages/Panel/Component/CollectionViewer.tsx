@@ -28,13 +28,14 @@ import {
 } from '@heroicons/react/24/outline';
 import useCollectionsListStore from '../../../common/hook/useCollectionsListStore';
 import useCollectionStore from '../../../common/hook/useCollectionStore';
+import log from 'loglevel';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   let collection = await Collection.fetch(params.collectionId!);
 
-  console.log(`Loading ${params.collectionId}`);
+  log.trace(`Loading ${params.collectionId}`);
 
-  console.log(`Name:${collection.name} Items:${collection.items.length}`);
+  log.debug(`Name:${collection.name} Items:${collection.items.length}`);
   return collection;
 }
 
@@ -120,7 +121,7 @@ function CollectionViewer() {
   }, [loaderData, viewingOption]);
 
   const removeCollection = async () => {
-    console.log('removeCollection');
+    log.trace('removeCollection');
 
     await Collection.delete(collection.id);
 
