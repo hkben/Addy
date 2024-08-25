@@ -5,6 +5,7 @@ import { SortingState } from '@tanstack/react-table';
 export interface IBrowserMessage {
   action: string;
   imageSrc?: string;
+  linkUrl?: string;
   result?: boolean;
 }
 

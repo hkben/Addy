@@ -69,7 +69,7 @@ function Content(props: ISetting) {
     }
   }, [sortedCollections]);
 
-  const getWebpageTitle = async () => {
+  const getWebpageTitle = async (_content: string = '') => {
     let domRect = new DOMRect(mousePos.current.x, mousePos.current.y, 0, 0);
 
     let _collections = (await Collections.fetchSummary(
@@ -79,14 +79,16 @@ function Content(props: ISetting) {
     setCollections(_collections);
     setNewCollectionButton(false);
 
-    let _content = document.title;
-
-    //If title is empty, use url as content
     if (_content.length == 0) {
-      _content = document.URL;
+      _content = document.title;
+
+      //If title is empty, use url as content
+      if (_content.length == 0) {
+        _content = document.URL;
+      }
     }
 
-    setSelection({ content: document.title, type: 'bookmark' });
+    setSelection({ content: _content, type: 'bookmark' });
     showBox(domRect);
 
     //Auto Focus on Search Box when opening Bookmark Popup
@@ -229,6 +231,9 @@ function Content(props: ISetting) {
         return;
       case 'saveBookmark':
         getWebpageTitle();
+        return;
+      case 'saveLink':
+        getWebpageTitle(packet.linkUrl!);
         return;
     }
   };

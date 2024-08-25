@@ -146,6 +146,17 @@ let onContextMenusClicked = async (
     return;
   }
 
+  //Link
+  if (info.linkUrl) {
+    var message: IBrowserMessage = {
+      action: 'saveLink',
+      linkUrl: info.linkUrl,
+    };
+
+    Browser.tabs.sendMessage(tabId, message);
+    return;
+  }
+
   //Bookmark
   var message: IBrowserMessage = {
     action: 'saveBookmark',
@@ -183,6 +194,17 @@ let createContextMenus = () => {
       title: 'Save as Bookmark',
       type: 'normal',
       contexts: ['page'],
+      documentUrlPatterns: ['http://*/*', 'https://*/*'],
+    },
+    onContextMenusCreated
+  );
+
+  Browser.contextMenus.create(
+    {
+      id: 'save-link',
+      title: 'Save Link as Bookmark',
+      type: 'normal',
+      contexts: ['link'],
       documentUrlPatterns: ['http://*/*', 'https://*/*'],
     },
     onContextMenusCreated
