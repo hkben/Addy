@@ -21,6 +21,7 @@ class Setting {
         timeDisplay: 0,
         imageSearchEngine: 0,
       },
+      debugMode: false,
     };
     return defaultSetting;
   }
@@ -57,6 +58,11 @@ class Setting {
   static async fetchViewingOption(): Promise<IViewingOption> {
     let setting = await this.fetch();
     return setting.viewingOption;
+  }
+
+  static async fetchDebugMode(): Promise<Boolean> {
+    let setting = await this.fetch();
+    return setting.debugMode;
   }
 
   static async update(_setting: ISetting): Promise<boolean> {

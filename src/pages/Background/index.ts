@@ -1,4 +1,9 @@
-import { Collection, Collections, Storage } from '../../common/storage';
+import {
+  Collection,
+  Collections,
+  Setting,
+  Storage,
+} from '../../common/storage';
 import Browser from 'webextension-polyfill';
 
 import { BrowserMessageAction, IBrowserMessage } from '../../common/interface';
@@ -9,6 +14,7 @@ import {
   syncFileDeletion,
 } from './modules/sync';
 import log from 'loglevel';
+import Common from '../common';
 
 let isInit = false;
 
@@ -90,7 +96,8 @@ const onInstalledListener = async () => {
   await Storage.onInstallCheck();
   createContextMenus();
 
-  log.setLevel('debug');
+  let _setting = await Setting.fetch();
+  Common.setLogLevel(_setting.debugMode);
 };
 
 const onMessageListener = async (packet: IBrowserMessage, sender: any) => {

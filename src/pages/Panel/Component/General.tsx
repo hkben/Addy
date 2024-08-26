@@ -119,6 +119,22 @@ function General() {
     }));
   };
 
+  const handleDebugModeCheckbox = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    let value = event.currentTarget.checked;
+
+    let _setting = setting;
+    _setting.debugMode = value;
+
+    await Setting.update(_setting);
+
+    setSetting((prevState) => ({
+      ...prevState,
+      debugMode: value,
+    }));
+  };
+
   const clearData = async () => {
     let result = await Storage.clear();
 
@@ -240,6 +256,20 @@ function General() {
               <option value="2">Yandex</option>
               <option value="3">TinEye</option>
             </select>
+          </div>
+        </div>
+        <div className="w-2/3 flex h-28">
+          <div className="w-2/3 my-auto">
+            <p className="text-base font-bold">Debug Mode</p>
+            Display debug information in the console
+          </div>
+          <div className="w-1/3 my-auto text-center">
+            <input
+              type="checkbox"
+              className="w-6 h-6 border border-gray-200 rounded-lg"
+              checked={setting.debugMode}
+              onChange={handleDebugModeCheckbox}
+            />
           </div>
         </div>
         <div className="w-2/3 flex h-28">

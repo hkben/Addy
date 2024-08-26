@@ -23,6 +23,8 @@ import SyncSettings from './Sync/SyncSettings';
 import CollectionViewer, { loader } from './CollectionViewer';
 import { MoonIcon } from '@heroicons/react/24/solid';
 import Layout from './Layout';
+import log from 'loglevel';
+import Common from '../../common';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -49,6 +51,14 @@ const router = createHashRouter(
 );
 
 function Panel() {
+  useEffect(() => {
+    const getSetting = async () => {
+      let setting = await Setting.fetch();
+      Common.setLogLevel(setting.debugMode);
+    };
+    getSetting();
+  }, []);
+
   return <RouterProvider router={router} />;
 }
 

@@ -55,6 +55,7 @@ function Popup() {
   useEffect(() => {
     getOrdering().catch(log.error);
     getCollectionsSummary().catch(log.error);
+    getDebugMode().catch(log.error);
   }, []);
 
   useEffect(() => {
@@ -78,6 +79,11 @@ function Popup() {
   const getOrdering = async () => {
     let _ordering = await Setting.fetchOrdering();
     setOrdering(_ordering);
+  };
+
+  const getDebugMode = async () => {
+    let _setting = await Setting.fetch();
+    Common.setLogLevel(_setting.debugMode);
   };
 
   const saveTextToCollection = async (name: string) => {

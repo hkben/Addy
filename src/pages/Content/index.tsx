@@ -7,6 +7,7 @@ import { Setting } from '../../common/storage';
 import log from 'loglevel';
 
 import css from '!!css-loader!sass-loader!./index.scss';
+import Common from '../common';
 
 const isFirefox = Browser.runtime.getURL('').startsWith('moz-extension://');
 
@@ -34,6 +35,9 @@ let preload_popup = async () => {
   shadowRoot.appendChild(style);
 
   let _setting = await Setting.fetch();
+
+  // Set log level
+  Common.setLogLevel(_setting.debugMode);
 
   let contentDiv = document.createElement('div');
   contentDiv.id = 'webextension_content';

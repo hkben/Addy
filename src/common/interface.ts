@@ -103,6 +103,7 @@ export interface ISetting {
   quickSearch: boolean;
   darkMode: boolean;
   viewingOption: IViewingOption;
+  debugMode: boolean;
 }
 
 export interface IOrdering {

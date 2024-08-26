@@ -1,3 +1,4 @@
+import log from 'loglevel';
 import Browser from 'webextension-polyfill';
 
 class Common {
@@ -67,6 +68,11 @@ class Common {
     }
 
     return false;
+  }
+
+  static setLogLevel(debugMode: boolean) {
+    log.setLevel(debugMode ? log.levels.TRACE : log.levels.INFO);
+    log.debug('[Addy] Debug Mode:', debugMode);
   }
 }
 
