@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 import {
+  BrowserMessageAction,
   IBrowserMessage,
   ICollection,
   ICollectionSummary,
@@ -223,16 +224,16 @@ function Content(props: ISetting) {
     log.debug(packet);
 
     switch (packet.action) {
-      case 'saveText':
+      case BrowserMessageAction.SaveText:
         getHighlightedText();
         return;
-      case 'saveImage':
+      case BrowserMessageAction.SaveImage:
         getImage(packet.imageSrc!);
         return;
-      case 'saveBookmark':
+      case BrowserMessageAction.SaveBookmark:
         getWebpageTitle();
         return;
-      case 'saveLink':
+      case BrowserMessageAction.SaveLink:
         getWebpageTitle(packet.linkUrl!);
         return;
     }

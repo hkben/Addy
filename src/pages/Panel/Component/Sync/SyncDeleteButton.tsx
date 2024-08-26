@@ -1,6 +1,9 @@
 import React, { Fragment, useEffect } from 'react';
 import Browser from 'webextension-polyfill';
-import { IBrowserMessage } from '../../../../common/interface';
+import {
+  BrowserMessageAction,
+  IBrowserMessage,
+} from '../../../../common/interface';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import log from 'loglevel';
 
@@ -21,7 +24,7 @@ function SyncDeleteButton({ callbackAfterSync }: Prop) {
     }
 
     Browser.runtime.sendMessage({
-      action: 'SyncFileDeletion',
+      action: BrowserMessageAction.SyncFileDeletion,
     } as IBrowserMessage);
 
     setSyncingState(1); //Syncing
@@ -30,7 +33,7 @@ function SyncDeleteButton({ callbackAfterSync }: Prop) {
   const onMessageListener = (packet: IBrowserMessage, sender: any) => {
     log.debug('onMessageListener');
 
-    if (packet.action == 'SyncFileDeletionCompleted') {
+    if (packet.action == BrowserMessageAction.SyncFileDeletionCompleted) {
       if (packet.result) {
         setSyncingState(2); //Completed
         callbackAfterSync().catch(log.error);

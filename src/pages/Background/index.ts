@@ -1,7 +1,7 @@
 import { Collection, Collections, Storage } from '../../common/storage';
 import Browser from 'webextension-polyfill';
 
-import { IBrowserMessage } from '../../common/interface';
+import { BrowserMessageAction, IBrowserMessage } from '../../common/interface';
 import {
   autoSyncChecking,
   syncBackgroundRun,
@@ -97,13 +97,13 @@ const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
   log.debug('[Addy] onMessageListener');
 
   switch (packet.action) {
-    case 'SyncBackgroundRun':
+    case BrowserMessageAction.SyncBackgroundRun:
       syncBackgroundRun().catch(log.error);
       return;
-    case 'SyncConnectionTest':
+    case BrowserMessageAction.SyncConnectionTest:
       syncConnectionTest().catch(log.error);
       return;
-    case 'SyncFileDeletion':
+    case BrowserMessageAction.SyncFileDeletion:
       syncFileDeletion().catch(log.error);
       return;
   }
@@ -128,7 +128,7 @@ let onContextMenusClicked = async (
   //Text
   if (typeof info.selectionText != 'undefined') {
     var message: IBrowserMessage = {
-      action: 'saveText',
+      action: BrowserMessageAction.SaveText,
     };
 
     Browser.tabs.sendMessage(tabId, message);
@@ -138,7 +138,7 @@ let onContextMenusClicked = async (
   //Image
   if (info.mediaType == 'image') {
     var message: IBrowserMessage = {
-      action: 'saveImage',
+      action: BrowserMessageAction.SaveImage,
       imageSrc: info.srcUrl!,
     };
 
@@ -149,7 +149,7 @@ let onContextMenusClicked = async (
   //Link
   if (info.linkUrl) {
     var message: IBrowserMessage = {
-      action: 'saveLink',
+      action: BrowserMessageAction.SaveLink,
       linkUrl: info.linkUrl,
     };
 
@@ -159,7 +159,7 @@ let onContextMenusClicked = async (
 
   //Bookmark
   var message: IBrowserMessage = {
-    action: 'saveBookmark',
+    action: BrowserMessageAction.SaveBookmark,
   };
 
   Browser.tabs.sendMessage(tabId, message);

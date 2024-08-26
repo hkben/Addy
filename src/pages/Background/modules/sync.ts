@@ -1,6 +1,10 @@
 import moment from 'moment';
 import Browser from 'webextension-polyfill';
-import { IBrowserMessage, ICollection } from '../../../common/interface';
+import {
+  BrowserMessageAction,
+  IBrowserMessage,
+  ICollection,
+} from '../../../common/interface';
 import { Collections } from '../../../common/storage';
 import SyncSetting from '../../../common/storage/syncSetting';
 import AwsS3 from '../../../common/sync/awsS3';
@@ -36,7 +40,7 @@ export const syncBackgroundRun = async () => {
     log.error('[Sync] Sync Provider is undefined');
 
     Browser.runtime.sendMessage({
-      action: 'SyncCompleted',
+      action: BrowserMessageAction.SyncCompleted,
       result: false,
     } as IBrowserMessage);
 
@@ -84,7 +88,7 @@ export const syncBackgroundRun = async () => {
     log.error(error);
   } finally {
     Browser.runtime.sendMessage({
-      action: 'SyncCompleted',
+      action: BrowserMessageAction.SyncCompleted,
       result: _result,
     } as IBrowserMessage);
   }
@@ -105,7 +109,7 @@ export const syncConnectionTest = async () => {
     log.error('[Sync] Sync Provider is undefined');
 
     Browser.runtime.sendMessage({
-      action: 'SyncConnectionTestCompleted',
+      action: BrowserMessageAction.SyncConnectionTestCompleted,
       result: false,
     } as IBrowserMessage);
 
@@ -131,7 +135,7 @@ export const syncConnectionTest = async () => {
     log.error(error);
   } finally {
     Browser.runtime.sendMessage({
-      action: 'SyncConnectionTestCompleted',
+      action: BrowserMessageAction.SyncConnectionTestCompleted,
       result: _result,
     } as IBrowserMessage);
   }
@@ -152,7 +156,7 @@ export const syncFileDeletion = async () => {
     log.error('[Sync] Sync Provider is undefined');
 
     Browser.runtime.sendMessage({
-      action: 'SyncFileDeletionCompleted',
+      action: BrowserMessageAction.SyncFileDeletionCompleted,
       result: false,
     } as IBrowserMessage);
 
@@ -182,7 +186,7 @@ export const syncFileDeletion = async () => {
     log.error(error);
   } finally {
     Browser.runtime.sendMessage({
-      action: 'SyncFileDeletionCompleted',
+      action: BrowserMessageAction.SyncFileDeletionCompleted,
       result: _result,
     } as IBrowserMessage);
   }

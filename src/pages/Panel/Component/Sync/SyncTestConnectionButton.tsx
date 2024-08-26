@@ -1,6 +1,9 @@
 import React, { Fragment, useEffect } from 'react';
 import Browser from 'webextension-polyfill';
-import { IBrowserMessage } from '../../../../common/interface';
+import {
+  BrowserMessageAction,
+  IBrowserMessage,
+} from '../../../../common/interface';
 import {
   ArrowPathIcon,
   CheckCircleIcon,
@@ -21,7 +24,7 @@ function SyncConnectionTestButton() {
     }
 
     Browser.runtime.sendMessage({
-      action: 'SyncConnectionTest',
+      action: BrowserMessageAction.SyncConnectionTest,
     } as IBrowserMessage);
 
     setConnectionState(1); //Testing
@@ -30,7 +33,7 @@ function SyncConnectionTestButton() {
   const onMessageListener = (packet: IBrowserMessage, sender: any) => {
     log.debug('onMessageListener');
 
-    if (packet.action == 'SyncConnectionTestCompleted') {
+    if (packet.action == BrowserMessageAction.SyncConnectionTestCompleted) {
       if (packet.result) {
         setConnectionState(2); //Completed
       } else {

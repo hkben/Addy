@@ -2,8 +2,21 @@ import _ from 'lodash';
 import { SortingState } from '@tanstack/react-table';
 
 //BrowserMessage
+export enum BrowserMessageAction {
+  SaveText,
+  SaveImage,
+  SaveBookmark,
+  SaveLink,
+  SyncBackgroundRun,
+  SyncCompleted,
+  SyncConnectionTest,
+  SyncConnectionTestCompleted,
+  SyncFileDeletion,
+  SyncFileDeletionCompleted,
+}
+
 export interface IBrowserMessage {
-  action: string;
+  action: BrowserMessageAction;
   imageSrc?: string;
   linkUrl?: string;
   result?: boolean;
