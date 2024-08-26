@@ -22,7 +22,7 @@ export const getSyncProvider = (
 };
 
 export const syncBackgroundRun = async () => {
-  log.trace('[Sync] SyncBackground');
+  log.debug('[Sync] SyncBackground');
 
   let _syncSetting = await SyncSetting.fetch();
 
@@ -54,23 +54,23 @@ export const syncBackgroundRun = async () => {
 
     //If file is not exists on server, create one
     if (fileInfo == null || fileInfo.id == '') {
-      log.trace('[Sync] Remote Sync File is not exists, creating...');
+      log.debug('[Sync] Remote Sync File is not exists, creating...');
       await syncProvider.createSyncFile();
     } else {
-      log.trace('[Sync] Download Data...');
+      log.debug('[Sync] Download Data...');
       let json = await syncProvider.getSyncFile(fileInfo);
 
-      log.trace('[Sync] Importing Data...');
+      log.debug('[Sync] Importing Data...');
       const collections: ICollection[] = JSON.parse(json);
 
       if (collections.length > 0) {
         await Collections.import(collections);
       }
 
-      log.trace('[Sync] Remove Deleted...');
+      log.debug('[Sync] Remove Deleted...');
       await Collections.removeDeleted();
 
-      log.trace('[Sync] Uploading imported Data...');
+      log.debug('[Sync] Uploading imported Data...');
       await syncProvider.updateSyncFile(fileInfo);
     }
 
@@ -91,7 +91,7 @@ export const syncBackgroundRun = async () => {
 };
 
 export const syncConnectionTest = async () => {
-  log.trace('[Sync] SyncConnectionTest');
+  log.debug('[Sync] SyncConnectionTest');
 
   let _syncSetting = await SyncSetting.fetch();
 
@@ -138,7 +138,7 @@ export const syncConnectionTest = async () => {
 };
 
 export const syncFileDeletion = async () => {
-  log.trace('[Sync] SyncFileDeletion');
+  log.debug('[Sync] SyncFileDeletion');
 
   let _syncSetting = await SyncSetting.fetch();
 
@@ -169,7 +169,7 @@ export const syncFileDeletion = async () => {
     let fileInfo = await syncProvider.searchSyncFile();
 
     if (fileInfo != null && fileInfo.id != '') {
-      log.trace('[Sync] Deleting...');
+      log.debug('[Sync] Deleting...');
       await syncProvider.deleteSyncFile(fileInfo);
     }
 
@@ -189,7 +189,7 @@ export const syncFileDeletion = async () => {
 };
 
 export const autoSyncChecking = async () => {
-  log.trace('[Sync] autoSyncChecking');
+  log.debug('[Sync] autoSyncChecking');
 
   let _syncSetting = await SyncSetting.fetch();
 
@@ -204,7 +204,7 @@ export const autoSyncChecking = async () => {
   let lasySyncDiff = moment().diff(_syncSetting.lastSyncTime, 'minutes');
 
   if (lasySyncDiff >= _syncSetting.autoSyncInterval) {
-    log.trace('[Sync] Run background sync');
+    log.debug('[Sync] Run background sync');
     await syncBackgroundRun();
   }
 };

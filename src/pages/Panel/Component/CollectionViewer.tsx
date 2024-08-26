@@ -33,7 +33,7 @@ import log from 'loglevel';
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   let collection = await Collection.fetch(params.collectionId!);
 
-  log.trace(`Loading ${params.collectionId}`);
+  log.debug(`Loading ${params.collectionId}`);
 
   log.debug(`Name:${collection.name} Items:${collection.items.length}`);
   return collection;
@@ -121,7 +121,7 @@ function CollectionViewer() {
   }, [loaderData, viewingOption]);
 
   const removeCollection = async () => {
-    log.trace('removeCollection');
+    log.debug('removeCollection');
 
     await Collection.delete(collection.id);
 

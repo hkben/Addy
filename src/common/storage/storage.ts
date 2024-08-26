@@ -29,7 +29,7 @@ class Storage {
   }
 
   static async onInstallCheck() {
-    log.trace('[Addy] onInstallCheck');
+    log.debug('[Addy] onInstallCheck');
 
     let localStorage = await this.fetch();
 

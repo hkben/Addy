@@ -28,7 +28,7 @@ function SyncDeleteButton({ callbackAfterSync }: Prop) {
   };
 
   const onMessageListener = (packet: IBrowserMessage, sender: any) => {
-    log.trace('onMessageListener');
+    log.debug('onMessageListener');
 
     if (packet.action == 'SyncFileDeletionCompleted') {
       if (packet.result) {

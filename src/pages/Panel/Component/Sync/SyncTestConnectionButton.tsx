@@ -28,7 +28,7 @@ function SyncConnectionTestButton() {
   };
 
   const onMessageListener = (packet: IBrowserMessage, sender: any) => {
-    log.trace('onMessageListener');
+    log.debug('onMessageListener');
 
     if (packet.action == 'SyncConnectionTestCompleted') {
       if (packet.result) {

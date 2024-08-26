@@ -44,27 +44,27 @@ const init = async () => {
   // Auto Sync Alarm
   const autoSyncAlarm = await Browser.alarms.get(autoSyncAlarmName);
 
-  log.trace(`[Addy] Checking Alarm: ${autoSyncAlarmName}`, autoSyncAlarm);
+  log.debug(`[Addy] Checking Alarm: ${autoSyncAlarmName}`, autoSyncAlarm);
 
   if (typeof autoSyncAlarm === 'undefined') {
     Browser.alarms.create(autoSyncAlarmName, {
       periodInMinutes: 10, // Every 10 minutes
     });
 
-    log.trace(`[Addy] Created Alarm: ${autoSyncAlarmName}`);
+    log.debug(`[Addy] Created Alarm: ${autoSyncAlarmName}`);
   }
 
   // Auto Clean Alarm
   const autoCleanAlarm = await Browser.alarms.get(autoCleanAlarmName);
 
-  log.trace(`[Addy] Checking Alarm: ${autoCleanAlarmName}`, autoCleanAlarm);
+  log.debug(`[Addy] Checking Alarm: ${autoCleanAlarmName}`, autoCleanAlarm);
 
   if (typeof autoCleanAlarm === 'undefined') {
     Browser.alarms.create(autoCleanAlarmName, {
       periodInMinutes: 120, // Every 2 hours
     });
 
-    log.trace(`[Addy] Created Alarm: ${autoCleanAlarmName}`);
+    log.debug(`[Addy] Created Alarm: ${autoCleanAlarmName}`);
   }
 
   isInit = true;
@@ -72,7 +72,7 @@ const init = async () => {
 
 // Alarm Listener
 Browser.alarms.onAlarm.addListener((alarmInfo) => {
-  log.trace(`[Addy] Received Alarm: ${alarmInfo.name}`);
+  log.debug(`[Addy] Received Alarm: ${alarmInfo.name}`);
 
   switch (alarmInfo.name) {
     case autoSyncAlarmName:
@@ -86,7 +86,7 @@ Browser.alarms.onAlarm.addListener((alarmInfo) => {
 
 const onInstalledListener = async () => {
   //fired whem first installed, updated to a new version, and the browser updated to a new version
-  log.trace('[Addy] onInstalledListener');
+  log.debug('[Addy] onInstalledListener');
   await Storage.onInstallCheck();
   createContextMenus();
 
@@ -94,7 +94,7 @@ const onInstalledListener = async () => {
 };
 
 const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
-  log.trace('[Addy] onMessageListener');
+  log.debug('[Addy] onMessageListener');
 
   switch (packet.action) {
     case 'SyncBackgroundRun':
@@ -110,11 +110,11 @@ const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
 };
 
 const onStartupListener = async () => {
-  log.trace('[Addy] onStartupListener');
+  log.debug('[Addy] onStartupListener');
 };
 
 const onContextMenusCreated = async () => {
-  log.trace('[Addy] onContextMenusCreated');
+  log.debug('[Addy] onContextMenusCreated');
 };
 
 let onContextMenusClicked = async (
