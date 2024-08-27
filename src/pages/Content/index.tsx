@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Browser from 'webextension-polyfill';
 import { IBrowserMessage } from '../../common/interface';
 import Content from './Content';
@@ -50,7 +50,8 @@ let preload_popup = async () => {
 
   var reactElement = React.createElement(Content, _setting);
 
-  render(reactElement, contentDiv);
+  const root = createRoot(contentDiv!);
+  root.render(reactElement);
 };
 
 window.addEventListener('load', function (event: Event) {

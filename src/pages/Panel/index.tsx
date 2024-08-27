@@ -1,8 +1,10 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import '../../style.scss';
 import './index.scss';
 import Panel from './Component/Panel';
 
-render(<Panel />, window.document.querySelector('#app-container'));
+const container = window.document.querySelector('#app-container');
+const root = createRoot(container!);
+root.render(<Panel />);

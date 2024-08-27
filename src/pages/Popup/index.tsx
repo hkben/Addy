@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import Popup from './Popup';
 
@@ -8,7 +8,9 @@ import './index.css';
 import Browser from 'webextension-polyfill';
 import { IBrowserMessage } from '../../common/interface';
 
-render(<Popup />, window.document.querySelector('#app-container'));
+const container = window.document.querySelector('#app-container');
+const root = createRoot(container!);
+root.render(<Popup />);
 
 Browser.runtime.onMessage.addListener(onMessageListener);
 
