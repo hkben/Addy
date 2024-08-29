@@ -10,7 +10,13 @@ var ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
-var alias = {};
+var alias = {
+  '@': path.resolve(__dirname, 'src'),
+  '@/Background': path.resolve(__dirname, 'src/pages/Background'),
+  '@/Content': path.resolve(__dirname, 'src/pages/Content'),
+  '@/Panel': path.resolve(__dirname, 'src/pages/Panel'),
+  '@/Popup': path.resolve(__dirname, 'src/pages/Popup'),
+};
 
 // load the secrets
 var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js');
