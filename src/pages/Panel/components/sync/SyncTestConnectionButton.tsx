@@ -3,7 +3,7 @@ import Browser from 'webextension-polyfill';
 import {
   BrowserMessageAction,
   IBrowserMessage,
-} from '../../../../common/interface';
+} from '@/common/interface';
 import {
   ArrowPathIcon,
   CheckCircleIcon,

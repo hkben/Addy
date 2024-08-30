@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICollectionSummary } from '../../common/interface';
+import { ICollectionSummary } from '@/common/interface';
 import { CheckIcon } from '@heroicons/react/24/outline';
 
 interface Prop {

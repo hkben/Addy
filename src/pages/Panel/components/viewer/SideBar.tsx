@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import { ICollectionSummary, IOrdering } from '../../../../common/interface';
-import { useSortCollections } from '../../../../common/hook/useSortCollections';
-import Setting from '../../../../common/storage/setting';
+import { ICollectionSummary, IOrdering } from '@/common/interface';
+import { useSortCollections } from '@/common/hooks/useSortCollections';
+import Setting from '@/common/storage/setting';
 import { Link } from 'react-router-dom';
 import {
   PencilSquareIcon,
   ChevronDownIcon,
   ChevronUpIcon,
 } from '@heroicons/react/24/outline';
-import { Collection, Collections } from '../../../../common/storage';
+import { Collection, Collections } from '@/common/storage';
 import _ from 'lodash';
-import useCollectionsListStore from '../../../../common/hook/useCollectionsListStore';
+import useCollectionsListStore from '@/common/hooks/useCollectionsListStore';
 import CollectionsListItem from './CollectionsListItem';
 import log from 'loglevel';
 

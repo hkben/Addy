@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import Browser from 'webextension-polyfill';
-import CollectionButton from './CollectionButton';
+import CollectionButton from './components/CollectionButton';
 import {
   ICollectionSummary,
   IOrdering,
@@ -13,11 +13,11 @@ import {
   Setting,
   Storage,
 } from '../../common/storage';
-import Common from '../common';
-import Settings from '../Panel/Component/Settings';
+import Common from '@/common/common';
+import Settings from '@Panel/layouts/Settings';
 import _ from 'lodash';
-import { useSortCollections } from '../../common/hook/useSortCollections';
-import { useDarkMode } from '../../common/hook/useDarkMode';
+import { useSortCollections } from '@/common/hooks/useSortCollections';
+import { useDarkMode } from '@/common/hooks/useDarkMode';
 import { HomeIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import log from 'loglevel';

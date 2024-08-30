@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
-import { ICollectionItem } from '../../../../common/interface';
+import { ICollectionItem } from '@/common/interface';
 import {
   MagnifyingGlassIcon,
   ArrowTopRightOnSquareIcon,
@@ -9,8 +9,8 @@ import {
 import moment from 'moment';
 import { Bars3Icon } from '@heroicons/react/24/solid';
 import { useParams } from 'react-router-dom';
-import useCollectionStore from '../../../../common/hook/useCollectionStore';
-import useViewingOptionStore from '../../../../common/hook/useViewingOptionStore';
+import useCollectionStore from '@/common/hooks/useCollectionStore';
+import useViewingOptionStore from '@/common/hooks/useViewingOptionStore';
 
 interface Prop {
   item: ICollectionItem;

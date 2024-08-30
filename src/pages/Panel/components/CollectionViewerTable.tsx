@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { ICollectionItem } from '../../../common/interface';
+import { ICollectionItem } from '@/common/interface';
 import {
   Column,
   ColumnDef,
@@ -17,15 +17,15 @@ import _ from 'lodash';
 import { Tooltip } from 'react-tooltip';
 import TableEditableCell from './TableEditableCell';
 import ImageTooltip from './ImageTooltip';
-import useViewingOptionStore from '../../../common/hook/useViewingOptionStore';
+import useViewingOptionStore from '@/common/hooks/useViewingOptionStore';
 import {
   ChevronDownIcon,
   ChevronUpIcon,
   ArrowTopRightOnSquareIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
-import RowItem from './Viewer/RowItem';
-import useCollectionStore from '../../../common/hook/useCollectionStore';
+import RowItem from '@Panel/components/viewer/RowItem';
+import useCollectionStore from '@/common/hooks/useCollectionStore';
 import { useParams } from 'react-router-dom';
 
 interface Prop {

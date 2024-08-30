@@ -4,13 +4,8 @@ import {
   ISetting,
   IStorage,
   SortElement,
-} from '../../../common/interface';
-import {
-  Collection,
-  Collections,
-  Setting,
-  Storage,
-} from '../../../common/storage';
+} from '@/common/interface';
+import { Collection, Collections, Setting, Storage } from '@/common/storage';
 import log from 'loglevel';
 
 function General() {

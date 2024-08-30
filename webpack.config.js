@@ -12,10 +12,10 @@ const ASSET_PATH = process.env.ASSET_PATH || '/';
 
 var alias = {
   '@': path.resolve(__dirname, 'src'),
-  '@/Background': path.resolve(__dirname, 'src/pages/Background'),
-  '@/Content': path.resolve(__dirname, 'src/pages/Content'),
-  '@/Panel': path.resolve(__dirname, 'src/pages/Panel'),
-  '@/Popup': path.resolve(__dirname, 'src/pages/Popup'),
+  '@Background': path.resolve(__dirname, 'src/pages/Background'),
+  '@Content': path.resolve(__dirname, 'src/pages/Content'),
+  '@Panel': path.resolve(__dirname, 'src/pages/Panel'),
+  '@Popup': path.resolve(__dirname, 'src/pages/Popup'),
 };
 
 // load the secrets

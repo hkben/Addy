@@ -10,7 +10,7 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 import { MoonIcon } from '@heroicons/react/24/solid';
-import { useDarkMode } from '../../../common/hook/useDarkMode';
+import { useDarkMode } from '@/common/hooks/useDarkMode';
 
 function Layout() {
   const [darkMode, setDarkMode] = useDarkMode();

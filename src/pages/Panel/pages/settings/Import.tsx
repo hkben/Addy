@@ -1,6 +1,6 @@
 import React from 'react';
-import { ICollection, IStorage } from '../../../common/interface';
-import { Collections, Storage } from '../../../common/storage';
+import { ICollection, IStorage } from '@/common/interface';
+import { Collections, Storage } from '@/common/storage';
 
 function Import() {
   const [json, setJson] = React.useState<string>('');

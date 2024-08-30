@@ -1,6 +1,6 @@
 import moment from 'moment';
 import React, { useEffect } from 'react';
-import { Collections } from '../../../common/storage';
+import { Collections } from '@/common/storage';
 import log from 'loglevel';
 
 interface State {

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
-import Common from '../../pages/common';
+import Common from '@/common//common';
 import { ICollection, ISetting, IStorage, ISyncSetting } from '../interface';
 import Collections from './collections';
 import Setting from './setting';

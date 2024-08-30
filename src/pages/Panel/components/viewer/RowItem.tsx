@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
-import { ICollectionItem } from '../../../../common/interface';
+import { ICollectionItem } from '@/common/interface';
 import { Row, flexRender } from '@tanstack/react-table';
 import { Bars3Icon } from '@heroicons/react/24/outline';
 

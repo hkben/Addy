@@ -1,13 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import Browser from 'webextension-polyfill';
-import { IBrowserMessage } from '../../common/interface';
+import { IBrowserMessage } from '@/common/interface';
 import Content from './Content';
-import { Setting } from '../../common/storage';
+import { Setting } from '@/common/storage';
 import log from 'loglevel';
 
 import css from '!!css-loader!sass-loader!./index.scss';
-import Common from '../common';
+import Common from '@/common/common';
 
 const isFirefox = Browser.runtime.getURL('').startsWith('moz-extension://');
 

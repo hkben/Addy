@@ -1,12 +1,7 @@
-import {
-  Collection,
-  Collections,
-  Setting,
-  Storage,
-} from '../../common/storage';
+import { Collection, Collections, Setting, Storage } from '@/common/storage';
 import Browser from 'webextension-polyfill';
 
-import { BrowserMessageAction, IBrowserMessage } from '../../common/interface';
+import { BrowserMessageAction, IBrowserMessage } from '@/common/interface';
 import {
   autoSyncChecking,
   syncBackgroundRun,
@@ -14,7 +9,7 @@ import {
   syncFileDeletion,
 } from './modules/sync';
 import log from 'loglevel';
-import Common from '../common';
+import Common from '@/common/common';
 
 let isInit = false;
 

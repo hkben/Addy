@@ -1,7 +1,7 @@
 import moment from 'moment';
 import React, { useEffect } from 'react';
-import { ISyncSetting } from '../../../../common/interface';
-import SyncSetting from '../../../../common/storage/syncSetting';
+import { ISyncSetting } from '@/common/interface';
+import SyncSetting from '@/common/storage/syncSetting';
 import AwsS3SyncSettings from './AwsS3SyncSettings';
 import GoogleDriveSyncSettings from './GoogleDriveSyncSettings';
 import SyncButton from './SyncButton';

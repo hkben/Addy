@@ -3,11 +3,11 @@ import { useDrop } from 'react-dnd';
 import {
   ICollectionItem,
   ICollectionSummary,
-} from '../../../../common/interface';
+} from '@/common/interface';
 import { Row } from '@tanstack/react-table';
 import { Link, useParams } from 'react-router-dom';
-import CollectionItem from '../../../../common/storage/collectionItem';
-import useCollectionStore from '../../../../common/hook/useCollectionStore';
+import CollectionItem from '@/common/storage/collectionItem';
+import useCollectionStore from '@/common/hooks/useCollectionStore';
 import { stat } from 'fs';
 
 interface Prop {

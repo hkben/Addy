@@ -3,7 +3,7 @@ import { ICollectionItem } from '../../../common/interface';
 import { ColumnDef, Row } from '@tanstack/react-table';
 import _ from 'lodash';
 import { useParams } from 'react-router-dom';
-import useCollectionStore from '../../../common/hook/useCollectionStore';
+import useCollectionStore from '@/common/hooks/useCollectionStore';
 
 interface Prop {
   value: any;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ISyncSetting } from '../../../../common/interface';
+import { ISyncSetting } from '@/common/interface';
 
 interface Prop {
   syncSetting: ISyncSetting;

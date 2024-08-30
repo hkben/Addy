@@ -17,10 +17,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@/Background/*": ["./src/pages/Background/*"],
-      "@/Content/*": ["./src/pages/Content/*"],
-      "@/Panel/*": ["./src/pages/Panel/*"],
-      "@/Popup/*": ["./src/pages/Popup/*"],
+      "@Background/*": ["./src/pages/Background/*"],
+      "@Content/*": ["./src/pages/Content/*"],
+      "@Panel/*": ["./src/pages/Panel/*"],
+      "@Popup/*": ["./src/pages/Popup/*"],
     }
   },
   "include": ["src", "src/pages/Newtab/Component/.tsx"],

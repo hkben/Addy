@@ -1,7 +1,7 @@
 import React, { Fragment, MouseEvent, useEffect } from 'react';
-import GoogleOAuth from '../../../../common/auth/googleOAuth';
-import { ISyncSetting } from '../../../../common/interface';
-import SyncSetting from '../../../../common/storage/syncSetting';
+import GoogleOAuth from '@/common/auth/googleOAuth';
+import { ISyncSetting } from '@/common/interface';
+import SyncSetting from '@/common/storage/syncSetting';
 import log from 'loglevel';
 
 interface Prop {

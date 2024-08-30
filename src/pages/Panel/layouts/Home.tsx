@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import SideBar from './Viewer/SideBar';
+import SideBar from '@Panel/components/viewer/SideBar';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 

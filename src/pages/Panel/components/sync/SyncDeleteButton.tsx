@@ -1,9 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import Browser from 'webextension-polyfill';
-import {
-  BrowserMessageAction,
-  IBrowserMessage,
-} from '../../../../common/interface';
+import { BrowserMessageAction, IBrowserMessage } from '@/common/interface';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import log from 'loglevel';
 

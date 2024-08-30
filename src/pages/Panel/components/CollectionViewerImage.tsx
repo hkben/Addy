@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
-import { ICollectionItem } from '../../../common/interface';
+import { ICollectionItem } from '@/common/interface';
 import moment from 'moment';
 import jsZip from 'jszip';
-import Common from '../../common';
-import { Setting } from '../../../common/storage';
+import Common from '@/common/common';
+import { Setting } from '@/common/storage';
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
 import {
@@ -13,10 +13,10 @@ import {
   ArrowTopRightOnSquareIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
-import useViewingOptionStore from '../../../common/hook/useViewingOptionStore';
-import useCollectionStore from '../../../common/hook/useCollectionStore';
+import useViewingOptionStore from '@/common/hooks/useViewingOptionStore';
+import useCollectionStore from '@/common/hooks/useCollectionStore';
 import { useParams } from 'react-router-dom';
-import ImageItem from './Viewer/ImageItem';
+import ImageItem from '@Panel/components/viewer/ImageItem';
 import log from 'loglevel';
 
 interface Prop {

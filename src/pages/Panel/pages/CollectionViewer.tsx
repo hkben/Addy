@@ -3,17 +3,12 @@ import {
   ICollection,
   ICollectionItem,
   IViewingOption,
-} from '../../../common/interface';
-import {
-  Collection,
-  CollectionItem,
-  Setting,
-  Storage,
-} from '../../../common/storage';
-import CollectionViewerTable from './CollectionViewerTable';
+} from '@/common/interface';
+import { Collection, CollectionItem, Setting, Storage } from '@/common/storage';
+import CollectionViewerTable from '@Panel/components/CollectionViewerTable';
 import _ from 'lodash';
-import CollectionImageViewer from './CollectionViewerImage';
-import useViewingOptionStore from '../../../common/hook/useViewingOptionStore';
+import CollectionImageViewer from '@Panel/components/CollectionViewerImage';
+import useViewingOptionStore from '@/common/hooks/useViewingOptionStore';
 import {
   LoaderFunctionArgs,
   redirect,
@@ -26,8 +21,8 @@ import {
   DocumentMinusIcon,
   TrashIcon,
 } from '@heroicons/react/24/outline';
-import useCollectionsListStore from '../../../common/hook/useCollectionsListStore';
-import useCollectionStore from '../../../common/hook/useCollectionStore';
+import useCollectionsListStore from '@/common/hooks/useCollectionsListStore';
+import useCollectionStore from '@/common/hooks/useCollectionStore';
 import log from 'loglevel';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
