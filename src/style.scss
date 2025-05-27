@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 
 @layer base {
   html {
@@ -12,11 +12,11 @@
   }
 }
 
-@layer components {
-  .btn {
-    @apply font-bold py-2 px-4 rounded-lg text-white text-center cursor-pointer;
-  }
+@utility btn {
+  @apply font-bold py-2 px-4 rounded-lg text-white text-center cursor-pointer;
+}
 
+@layer components {
   .btn-block {
     @apply btn w-1/2 mx-auto my-2;
   }
