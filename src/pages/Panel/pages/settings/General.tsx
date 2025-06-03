@@ -7,38 +7,20 @@ import {
 } from '@/common/interface';
 import { Collection, Collections, Setting, Storage } from '@/common/storage';
 import log from 'loglevel';
+import useSettingStore from '@/common/store/useSettingStore';
 
 function General() {
-  const [setting, setSetting] = React.useState<ISetting>(
-    Setting.init() as ISetting
-  );
-
-  useEffect(() => {
-    const getSetting = async () => {
-      let _setting = await Setting.fetch();
-      setSetting(_setting);
-    };
-
-    getSetting().catch(log.error);
-  }, []);
+  let { setting, updateSetting } = useSettingStore();
 
   const handleOrderingSelection = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     let value = parseInt(event.currentTarget.value);
 
-    let _setting = setting;
-    _setting.collectionsOrdering.type = value;
+    let collectionsOrdering = setting!.collectionsOrdering;
+    collectionsOrdering.type = value;
 
-    await Setting.update(_setting);
-
-    setSetting((prevState) => ({
-      ...prevState,
-      collectionsOrdering: {
-        ...prevState.collectionsOrdering,
-        type: value,
-      },
-    }));
+    await updateSetting({ collectionsOrdering });
   };
 
   const handleDescendingCheckbox = async (
@@ -46,18 +28,10 @@ function General() {
   ) => {
     let value = event.currentTarget.checked;
 
-    let _setting = setting;
-    _setting.collectionsOrdering.descending = value;
+    let collectionsOrdering = setting!.collectionsOrdering;
+    collectionsOrdering.descending = value;
 
-    await Setting.update(_setting);
-
-    setSetting((prevState) => ({
-      ...prevState,
-      collectionsOrdering: {
-        ...prevState.collectionsOrdering,
-        descending: value,
-      },
-    }));
+    await updateSetting({ collectionsOrdering });
   };
 
   const handleQuickSearchCheckbox = async (
@@ -65,15 +39,10 @@ function General() {
   ) => {
     let value = event.currentTarget.checked;
 
-    let _setting = setting;
-    _setting.quickSearch = value;
+    let quickSearch = setting!.quickSearch;
+    quickSearch = value;
 
-    await Setting.update(_setting);
-
-    setSetting((prevState) => ({
-      ...prevState,
-      quickSearch: value,
-    }));
+    await updateSetting({ quickSearch });
   };
 
   const handleTimeDisplaySelection = async (
@@ -81,18 +50,10 @@ function General() {
   ) => {
     let value = parseInt(event.currentTarget.value);
 
-    let _setting = setting;
-    _setting.viewingOption.timeDisplay = value;
+    let viewingOption = setting!.viewingOption;
+    viewingOption.timeDisplay = value;
 
-    await Setting.update(_setting);
-
-    setSetting((prevState) => ({
-      ...prevState,
-      viewingOption: {
-        ...prevState.viewingOption,
-        timeDisplay: value,
-      },
-    }));
+    await updateSetting({ viewingOption });
   };
 
   const handleImageSearchEngineSelection = async (
@@ -100,18 +61,10 @@ function General() {
   ) => {
     let value = parseInt(event.currentTarget.value);
 
-    let _setting = setting;
-    _setting.viewingOption.imageSearchEngine = value;
+    let viewingOption = setting!.viewingOption;
+    viewingOption.imageSearchEngine = value;
 
-    await Setting.update(_setting);
-
-    setSetting((prevState) => ({
-      ...prevState,
-      viewingOption: {
-        ...prevState.viewingOption,
-        imageSearchEngine: value,
-      },
-    }));
+    await updateSetting({ viewingOption });
   };
 
   const handleDebugModeCheckbox = async (
@@ -119,15 +72,10 @@ function General() {
   ) => {
     let value = event.currentTarget.checked;
 
-    let _setting = setting;
-    _setting.debugMode = value;
+    let debugMode = setting!.debugMode;
+    debugMode = value ? true : false;
 
-    await Setting.update(_setting);
-
-    setSetting((prevState) => ({
-      ...prevState,
-      debugMode: value,
-    }));
+    await updateSetting({ debugMode });
   };
 
   const clearData = async () => {
@@ -167,8 +115,8 @@ function General() {
               className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
               id="spaceing"
               value={
-                setting.collectionsOrdering
-                  ? setting.collectionsOrdering.type
+                setting!.collectionsOrdering
+                  ? setting!.collectionsOrdering.type
                   : 0
               }
               onChange={handleOrderingSelection}
@@ -190,8 +138,8 @@ function General() {
               type="checkbox"
               className="w-6 h-6 border border-gray-200 rounded-lg"
               checked={
-                setting.collectionsOrdering
-                  ? setting.collectionsOrdering.descending
+                setting!.collectionsOrdering
+                  ? setting!.collectionsOrdering.descending
                   : false
               }
               onChange={handleDescendingCheckbox}
@@ -207,7 +155,7 @@ function General() {
             <input
               type="checkbox"
               className="w-6 h-6 border border-gray-200 rounded-lg"
-              checked={setting.quickSearch}
+              checked={setting!.quickSearch}
               onChange={handleQuickSearchCheckbox}
             />
           </div>
@@ -221,7 +169,7 @@ function General() {
               className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
               id="spaceing"
               value={
-                setting.viewingOption ? setting.viewingOption.timeDisplay : 0
+                setting!.viewingOption ? setting!.viewingOption.timeDisplay : 0
               }
               onChange={handleTimeDisplaySelection}
             >
@@ -240,8 +188,8 @@ function General() {
               className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
               id="spaceing"
               value={
-                setting.viewingOption
-                  ? setting.viewingOption.imageSearchEngine
+                setting!.viewingOption
+                  ? setting!.viewingOption.imageSearchEngine
                   : 0
               }
               onChange={handleImageSearchEngineSelection}
@@ -262,7 +210,7 @@ function General() {
             <input
               type="checkbox"
               className="w-6 h-6 border border-gray-200 rounded-lg"
-              checked={setting.debugMode}
+              checked={setting!.debugMode}
               onChange={handleDebugModeCheckbox}
             />
           </div>
