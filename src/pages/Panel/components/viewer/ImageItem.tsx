@@ -10,7 +10,7 @@ import moment from 'moment';
 import { Bars3Icon } from '@heroicons/react/24/solid';
 import { useParams } from 'react-router-dom';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
-import useViewingOptionStore from '@/common/hooks/useViewingOptionStore';
+import useSettingStore from '@/common/store/useSettingStore';
 
 interface Prop {
   item: ICollectionItem;
@@ -19,7 +19,7 @@ interface Prop {
 function ImageItem({ item }: Prop) {
   let { collectionId } = useParams();
 
-  const { viewingOption } = useViewingOptionStore();
+  const { setting } = useSettingStore();
 
   let removeCollectionItem = useCollectionStore(
     (state) => state.removeCollectionItem
@@ -39,17 +39,17 @@ function ImageItem({ item }: Prop) {
 
   const imageSearchURL = () => {
     //Bing
-    if (viewingOption?.imageSearchEngine == 1) {
+    if (setting!.viewingOption?.imageSearchEngine == 1) {
       return `https://www.bing.com/images/search?view=detailv2&iss=sbi&q=imgurl:${item.content}`;
     }
 
     //Yandex
-    if (viewingOption?.imageSearchEngine == 2) {
+    if (setting!.viewingOption?.imageSearchEngine == 2) {
       return `https://yandex.com/images/search?source=collections&rpt=imageview&url=${item.content}`;
     }
 
     //TinEye
-    if (viewingOption?.imageSearchEngine == 3) {
+    if (setting!.viewingOption?.imageSearchEngine == 3) {
       return `https://www.tineye.com/search/?url=${item.content}`;
     }
 

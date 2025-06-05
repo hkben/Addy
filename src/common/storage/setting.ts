@@ -55,11 +55,6 @@ class Setting {
     return setting.darkMode;
   }
 
-  static async fetchViewingOption(): Promise<IViewingOption> {
-    let setting = await this.fetch();
-    return setting.viewingOption;
-  }
-
   static async fetchDebugMode(): Promise<Boolean> {
     let setting = await this.fetch();
     return setting.debugMode;

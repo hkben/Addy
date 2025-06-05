@@ -13,11 +13,11 @@ import {
   ArrowTopRightOnSquareIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
-import useViewingOptionStore from '@/common/hooks/useViewingOptionStore';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
 import { useParams } from 'react-router-dom';
 import ImageItem from '@Panel/components/viewer/ImageItem';
 import log from 'loglevel';
+import useSettingStore from '@/common/store/useSettingStore';
 
 interface Prop {
   data: Array<ICollectionItem>;
@@ -25,9 +25,9 @@ interface Prop {
 }
 
 function CollectionViewerImage({ data, collectionName }: Prop) {
-  const { viewingOption } = useViewingOptionStore();
+  const { setting, updateSetting } = useSettingStore();
 
-  const [columns, setColumns] = React.useState(3);
+  const columns = setting!.viewingOption.imageColumns ?? 3;
 
   const [isDownloading, setIsDownloading] = React.useState(false);
 
@@ -39,22 +39,16 @@ function CollectionViewerImage({ data, collectionName }: Prop) {
     [] as Array<ICollectionItem>
   );
 
-  const handleColumnsSelection = (
+  const handleColumnsSelection = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     let value = event.target.value;
-    setColumns(parseInt(value));
 
-    Setting.updateViewingImageGrid(parseInt(value));
+    let viewingOption = setting!.viewingOption;
+    viewingOption.imageColumns = parseInt(value);
+
+    await updateSetting({ viewingOption });
   };
-
-  useEffect(() => {
-    if (viewingOption == null) {
-      return;
-    }
-
-    setColumns(viewingOption.imageColumns);
-  }, [viewingOption]);
 
   useEffect(() => {
     sortData();

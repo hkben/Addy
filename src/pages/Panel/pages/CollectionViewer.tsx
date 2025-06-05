@@ -8,7 +8,6 @@ import { Collection, CollectionItem, Setting, Storage } from '@/common/storage';
 import CollectionViewerTable from '@Panel/components/CollectionViewerTable';
 import _ from 'lodash';
 import CollectionImageViewer from '@Panel/components/CollectionViewerImage';
-import useViewingOptionStore from '@/common/hooks/useViewingOptionStore';
 import {
   LoaderFunctionArgs,
   redirect,
@@ -24,6 +23,7 @@ import {
 import useCollectionsListStore from '@/common/hooks/useCollectionsListStore';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
 import log from 'loglevel';
+import useSettingStore from '@/common/store/useSettingStore';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   let collection = await Collection.fetch(params.collectionId!);
@@ -52,12 +52,6 @@ function CollectionViewer() {
     bookmark: 0,
   });
 
-  const fetchViewingOption = useViewingOptionStore(
-    (state) => state.fetchViewingOption
-  );
-
-  const viewingOption = useViewingOptionStore((state) => state.viewingOption);
-
   let fetchCollectionsList = useCollectionsListStore(
     (state) => state.fetchList
   );
@@ -71,10 +65,6 @@ function CollectionViewer() {
   let changeCollectionColor = useCollectionStore(
     (state) => state.changeCollectionColor
   );
-
-  useEffect(() => {
-    fetchViewingOption();
-  }, [fetchViewingOption]);
 
   const data = React.useMemo(() => {
     if (collection.items == null) {
@@ -105,15 +95,10 @@ function CollectionViewer() {
   }, [collection, collectionType]);
 
   useEffect(() => {
-    //update only after viewingOption is loaded
-    if (viewingOption == null) {
-      return;
-    }
-
     setCollection(loaderData);
     setCollectionName(loaderData.name);
     setCollectionType(0);
-  }, [loaderData, viewingOption]);
+  }, [loaderData]);
 
   const removeCollection = async () => {
     log.debug('removeCollection');

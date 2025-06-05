@@ -17,7 +17,6 @@ import _ from 'lodash';
 import { Tooltip } from 'react-tooltip';
 import TableEditableCell from './TableEditableCell';
 import ImageTooltip from './ImageTooltip';
-import useViewingOptionStore from '@/common/hooks/useViewingOptionStore';
 import {
   ChevronDownIcon,
   ChevronUpIcon,
@@ -27,6 +26,7 @@ import {
 import RowItem from '@Panel/components/viewer/RowItem';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
 import { useParams } from 'react-router-dom';
+import useSettingStore from '@/common/store/useSettingStore';
 
 interface Prop {
   data: Array<ICollectionItem>;
@@ -35,11 +35,7 @@ interface Prop {
 function CollectionViewerTable({ data }: Prop) {
   let { collectionId } = useParams();
 
-  const viewingOption = useViewingOptionStore((state) => state.viewingOption);
-
-  const fetchViewingOption = useViewingOptionStore(
-    (state) => state.fetchViewingOption
-  );
+  const { setting, updateSetting } = useSettingStore();
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -55,9 +51,10 @@ function CollectionViewerTable({ data }: Prop) {
   ) => {
     let value = event.target.value;
 
-    await Setting.updateViewingSpacing(value);
+    let viewingOption = setting!.viewingOption;
+    viewingOption.spacing = value;
 
-    fetchViewingOption();
+    await updateSetting({ viewingOption });
   };
 
   const columns: ColumnDef<ICollectionItem>[] = useMemo(
@@ -118,7 +115,7 @@ function CollectionViewerTable({ data }: Prop) {
           let _24Hour = _moment.format('YYYY-MM-DD HH:mm');
           let _12Hour = _moment.format('YYYY-MM-DD hh:mm A');
 
-          if (viewingOption?.timeDisplay == 1) {
+          if (setting!.viewingOption?.timeDisplay == 1) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_fromNow}>
                 {_24Hour}
@@ -126,7 +123,7 @@ function CollectionViewerTable({ data }: Prop) {
             );
           }
 
-          if (viewingOption?.timeDisplay == 2) {
+          if (setting!.viewingOption?.timeDisplay == 2) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_12Hour}>
                 {_fromNow}
@@ -162,7 +159,7 @@ function CollectionViewerTable({ data }: Prop) {
           let _24Hour = _moment.format('YYYY-MM-DD HH:mm');
           let _12Hour = _moment.format('YYYY-MM-DD hh:mm A');
 
-          if (viewingOption?.timeDisplay == 1) {
+          if (setting!.viewingOption?.timeDisplay == 1) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_fromNow}>
                 {_24Hour}
@@ -170,7 +167,7 @@ function CollectionViewerTable({ data }: Prop) {
             );
           }
 
-          if (viewingOption?.timeDisplay == 2) {
+          if (setting!.viewingOption?.timeDisplay == 2) {
             return (
               <span data-tooltip-id="tooltip" data-tooltip-content={_12Hour}>
                 {_fromNow}
@@ -232,7 +229,7 @@ function CollectionViewerTable({ data }: Prop) {
         ),
       },
     ],
-    [collectionId, removeCollectionItem, viewingOption?.timeDisplay]
+    [collectionId, removeCollectionItem, setting!.viewingOption?.timeDisplay]
   );
 
   const defaultColumn: Partial<ColumnDef<ICollectionItem>> = {
@@ -274,25 +271,21 @@ function CollectionViewerTable({ data }: Prop) {
   }, [sorting]);
 
   useEffect(() => {
-    if (viewingOption == null) {
-      return;
-    }
-
-    if (viewingOption.hiddenColumns != undefined) {
+    if (setting!.viewingOption.hiddenColumns != undefined) {
       // Update the above code to the following:
       const _columnVisibility: Record<string, boolean> = {};
 
-      viewingOption.hiddenColumns.forEach((value: string) => {
+      setting!.viewingOption.hiddenColumns.forEach((value: string) => {
         _columnVisibility[value] = false;
       });
 
       setColumnVisibility(_columnVisibility);
     }
 
-    if (viewingOption.sortBy != undefined) {
-      setSorting(viewingOption.sortBy);
+    if (setting!.viewingOption.sortBy != undefined) {
+      setSorting(setting!.viewingOption.sortBy);
     }
-  }, [viewingOption]);
+  }, [setting]);
 
   return (
     <div className="">
@@ -321,7 +314,7 @@ function CollectionViewerTable({ data }: Prop) {
           <select
             className="h-10 px-4 pr-10 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
             id="spaceing"
-            value={viewingOption?.spacing ?? 'normal'}
+            value={setting!.viewingOption?.spacing ?? 'normal'}
             onChange={handleSpacingSelection}
           >
             <option value="normal">Normal</option>
@@ -346,7 +339,9 @@ function CollectionViewerTable({ data }: Prop) {
 
       <table
         className={`table-auto w-full max-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500 ${
-          viewingOption?.spacing == 'normal' ? 'table-td-y-4' : 'table-td-y-1'
+          setting!.viewingOption?.spacing == 'normal'
+            ? 'table-td-y-4'
+            : 'table-td-y-1'
         }`}
       >
         <thead>
