@@ -38,9 +38,21 @@ function CollectionViewerTable({ data }: Prop) {
   const { setting, updateSetting } = useSettingStore();
 
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>(() => {
+      // Initialize column visibility on component mount
+      const _columnVisibility: VisibilityState = {};
 
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+      setting!.viewingOption.hiddenColumns.forEach((value: string) => {
+        _columnVisibility[value] = false;
+      });
+
+      return _columnVisibility;
+    });
+
+  const [sorting, setSorting] = React.useState<SortingState>(() => {
+    // Initialize sorting state on component mount
+    return setting!.viewingOption.sortBy || [];
+  });
 
   let removeCollectionItem = useCollectionStore(
     (state) => state.removeCollectionItem
@@ -269,23 +281,6 @@ function CollectionViewerTable({ data }: Prop) {
     let _sorting = sorting || [];
     Setting.updateViewingSortBy(_sorting);
   }, [sorting]);
-
-  useEffect(() => {
-    if (setting!.viewingOption.hiddenColumns != undefined) {
-      // Update the above code to the following:
-      const _columnVisibility: Record<string, boolean> = {};
-
-      setting!.viewingOption.hiddenColumns.forEach((value: string) => {
-        _columnVisibility[value] = false;
-      });
-
-      setColumnVisibility(_columnVisibility);
-    }
-
-    if (setting!.viewingOption.sortBy != undefined) {
-      setSorting(setting!.viewingOption.sortBy);
-    }
-  }, [setting]);
 
   return (
     <div className="">
