@@ -270,16 +270,31 @@ function CollectionViewerTable({ data }: Prop) {
     });
 
   useEffect(() => {
-    let _hiddenColumnsKeys = _.keys(
-      _.pickBy(columnVisibility, (value) => value == false)
-    );
+    let updateHiddenColumns = async () => {
+      let _hiddenColumnsKeys = _.keys(
+        _.pickBy(columnVisibility, (value) => value == false)
+      );
 
-    Setting.updateViewingHiddenColumns(_hiddenColumnsKeys);
+      let viewingOption = setting!.viewingOption;
+      viewingOption.hiddenColumns = _hiddenColumnsKeys;
+
+      await updateSetting({ viewingOption });
+    };
+
+    updateHiddenColumns();
   }, [columnVisibility]);
 
   useEffect(() => {
-    let _sorting = sorting || [];
-    Setting.updateViewingSortBy(_sorting);
+    let updateSorting = async () => {
+      let _sorting = sorting || [];
+
+      let viewingOption = setting!.viewingOption;
+      viewingOption.sortBy = _sorting;
+
+      await updateSetting({ viewingOption });
+    };
+
+    updateSorting();
   }, [sorting]);
 
   return (
