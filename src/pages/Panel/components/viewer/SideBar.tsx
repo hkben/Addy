@@ -13,8 +13,11 @@ import _ from 'lodash';
 import useCollectionsListStore from '@/common/hooks/useCollectionsListStore';
 import CollectionsListItem from './CollectionsListItem';
 import log from 'loglevel';
+import useSettingStore from '@/common/store/useSettingStore';
 
 function SideBar() {
+  const { setting } = useSettingStore();
+
   const newCollectionInput = useRef<HTMLInputElement>(null);
 
   const collections = useCollectionsListStore((state) => state.summary);
@@ -23,7 +26,9 @@ function SideBar() {
     (state) => state.fetchList
   );
 
-  const [ordering, setOrdering] = React.useState<IOrdering>({} as IOrdering);
+  const [ordering, setOrdering] = React.useState<IOrdering>(
+    () => setting?.collectionsOrdering || ({} as IOrdering)
+  );
 
   const [searchKeyword, setSearchKeyword] = React.useState<string>('');
 
@@ -34,17 +39,8 @@ function SideBar() {
   );
 
   useEffect(() => {
-    getOrdering().catch(log.error);
-  }, []);
-
-  useEffect(() => {
     fetchCollectionsList();
   }, [fetchCollectionsList]);
-
-  const getOrdering = async () => {
-    let _ordering = await Setting.fetchOrdering();
-    setOrdering(_ordering);
-  };
 
   const newCollectionSubmit = async (
     event: React.FormEvent<HTMLFormElement>
