@@ -21,8 +21,11 @@ import { useDarkMode } from '@/common/hooks/useDarkMode';
 import { HomeIcon, MoonIcon } from '@heroicons/react/24/outline';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import log from 'loglevel';
+import useSettingStore from '@/common/store/useSettingStore';
 
 function Popup() {
+  const { setting } = useSettingStore();
+
   const [text, setText] = React.useState<string>('');
 
   const [collections, setCollections] = React.useState<ICollectionSummary[]>(
@@ -44,18 +47,14 @@ function Popup() {
 
   const [darkMode, setDarkMode] = useDarkMode();
 
-  const [ordering, setOrdering] = React.useState<IOrdering>({} as IOrdering);
-
   const sortedCollections = useSortCollections(
     collections,
-    ordering,
+    setting!.collectionsOrdering || {},
     searchKeyword
   );
 
   useEffect(() => {
-    getOrdering().catch(log.error);
     getCollectionsSummary().catch(log.error);
-    getDebugMode().catch(log.error);
   }, []);
 
   useEffect(() => {
@@ -76,15 +75,10 @@ function Popup() {
     }
   }, [sortedCollections]);
 
-  const getOrdering = async () => {
-    let _ordering = await Setting.fetchOrdering();
-    setOrdering(_ordering);
-  };
-
-  const getDebugMode = async () => {
-    let _setting = await Setting.fetch();
-    Common.setLogLevel(_setting.debugMode);
-  };
+  useEffect(() => {
+    let debugMode = setting?.debugMode ?? false;
+    Common.setLogLevel(debugMode);
+  }, [setting?.debugMode]);
 
   const saveTextToCollection = async (name: string) => {
     if (text == '') {
