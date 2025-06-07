@@ -25,6 +25,7 @@ import { MoonIcon } from '@heroicons/react/24/solid';
 import Layout from './layouts/Layout';
 import log from 'loglevel';
 import Common from '@/common/common';
+import useSettingStore from '@/common/store/useSettingStore';
 
 const router = createHashRouter(
   createRoutesFromElements(
@@ -51,13 +52,12 @@ const router = createHashRouter(
 );
 
 function Panel() {
+  const { setting } = useSettingStore();
+
   useEffect(() => {
-    const getSetting = async () => {
-      let setting = await Setting.fetch();
-      Common.setLogLevel(setting.debugMode);
-    };
-    getSetting();
-  }, []);
+    let debugMode = setting?.debugMode ?? false;
+    Common.setLogLevel(debugMode);
+  }, [setting?.debugMode]);
 
   return <RouterProvider router={router} />;
 }
