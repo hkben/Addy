@@ -1,17 +1,13 @@
-import _ from 'lodash';
 import React from 'react';
 import { useEffect } from 'react';
-import Setting from '../storage/setting';
-import log from 'loglevel';
+import useSettingStore from '../store/useSettingStore';
 
 export const useDarkMode = () => {
-  const [darkMode, setDarkMode] = React.useState(true); //Default true to avoid flash
+  const { setting, updateSetting } = useSettingStore();
 
-  const [loaded, setLoaded] = React.useState(false);
-
-  useEffect(() => {
-    getDarkMode().catch(log.error);
-  }, []);
+  const [darkMode, setDarkMode] = React.useState(() => {
+    return setting?.darkMode ?? true; // Default to true to avoid flash
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -21,21 +17,16 @@ export const useDarkMode = () => {
     } else {
       root.setAttribute('data-theme', 'light');
     }
-
-    if (loaded) {
-      updateDarkMode();
-    }
   }, [darkMode]);
 
-  const getDarkMode = async () => {
-    let _darkMode = await Setting.fetchDarkMode();
+  const updateDarkMode = async (_darkMode: boolean) => {
+    if (darkMode === _darkMode) {
+      return; // No change
+    }
+
     setDarkMode(_darkMode);
-    setLoaded(true);
+    await updateSetting({ darkMode: _darkMode });
   };
 
-  const updateDarkMode = async () => {
-    await Setting.updateDarkMode(darkMode);
-  };
-
-  return [darkMode, setDarkMode] as const;
+  return [darkMode, updateDarkMode] as const;
 };
