@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { Collections } from '@/common/storage';
 import log from 'loglevel';
@@ -21,7 +21,7 @@ function Export() {
   };
 
   const downloadJson = async () => {
-    const fileName = `Addy-${moment().format('YYYY-MM-DD-HH-mm-ss')}`;
+    const fileName = `Addy-${format(Date.now(), 'yyyy-MM-dd-HH-mm-ss')}`;
     const blob = new Blob([json], { type: 'application/json' });
     const href = await URL.createObjectURL(blob);
     const link = document.createElement('a');

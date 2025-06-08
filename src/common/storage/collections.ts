@@ -6,7 +6,7 @@ import {
   ICollectionSummary,
   IStorage,
 } from '../interface';
-import moment, { ISO_8601 } from 'moment';
+import { isValid, parseISO, differenceInDays } from 'date-fns';
 import Storage from './storage';
 import log from 'loglevel';
 
@@ -76,11 +76,11 @@ class Collections {
         let collection = collections[collectionIndex];
 
         //Add createTime and modifyTime to collection if not valid
-        if (moment(importCollection.createTime, ISO_8601).isValid() == false) {
+        if (isValid(parseISO(importCollection.createTime)) == false) {
           collection.createTime = new Date().toISOString();
         }
 
-        if (moment(importCollection.modifyTime, ISO_8601).isValid() == false) {
+        if (isValid(parseISO(importCollection.modifyTime)) == false) {
           collection.modifyTime = new Date().toISOString();
         }
 
@@ -100,11 +100,11 @@ class Collections {
           )!;
 
           //Add createTime and modifyTime to item if not valid
-          if (moment(importItem.createTime, ISO_8601).isValid() == false) {
+          if (isValid(parseISO(importItem.createTime)) == false) {
             importItem.createTime = new Date().toISOString();
           }
 
-          if (moment(importItem.modifyTime, ISO_8601).isValid() == false) {
+          if (isValid(parseISO(importItem.modifyTime)) == false) {
             importItem.modifyTime = new Date().toISOString();
           }
 
@@ -171,8 +171,7 @@ class Collections {
 
       collection.items.forEach((item, itemIndex) => {
         if (item.deleted) {
-          let deletedDatetime = moment(item.deleted);
-          let deletedDays = moment().diff(deletedDatetime, 'days');
+          let deletedDays = differenceInDays(Date.now(), item.deleted);
 
           if (deletedDays >= dayRange) {
             itemsToRemove.push(itemIndex);
@@ -183,8 +182,7 @@ class Collections {
       _.pullAt(collections[collectionIndex].items, itemsToRemove);
 
       if (collection.deleted) {
-        let deletedDatetime = moment(collection.deleted);
-        let deletedDays = moment().diff(deletedDatetime, 'days');
+        let deletedDays = differenceInDays(Date.now(), collection.deleted);
 
         if (deletedDays >= dayRange) {
           collectionsToRemove.push(collectionIndex);

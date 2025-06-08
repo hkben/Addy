@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { formatISO, formatDistanceToNow } from 'date-fns';
 import React, { useEffect } from 'react';
 import { ISyncSetting } from '@/common/interface';
 import SyncSetting from '@/common/storage/syncSetting';
@@ -173,8 +173,8 @@ function SyncSettings() {
           <div className="w-1/3 my-auto text-center">
             {syncSetting.lastSyncTime ? (
               <span>
-                <p>{moment(syncSetting.lastSyncTime).fromNow()}</p>
-                <p>{moment(syncSetting.lastSyncTime).format()}</p>
+                <p>{formatDistanceToNow(syncSetting.lastSyncTime) + ' ago'}</p>
+                <p>{formatISO(syncSetting.lastSyncTime)}</p>
               </span>
             ) : (
               <span>None</span>

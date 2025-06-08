@@ -11,7 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import moment from 'moment';
+import { isBefore, isEqual, formatDistanceToNow, format } from 'date-fns';
 import { Setting } from '../../../common/storage';
 import _ from 'lodash';
 import { Tooltip } from 'react-tooltip';
@@ -122,10 +122,9 @@ function CollectionViewerTable({ data }: Prop) {
           className: 'text-center w-36 whitespace-nowrap',
         },
         accessorFn: (row) => {
-          let _moment = moment(row.createTime);
-          let _fromNow = _moment.fromNow();
-          let _24Hour = _moment.format('YYYY-MM-DD HH:mm');
-          let _12Hour = _moment.format('YYYY-MM-DD hh:mm A');
+          let _fromNow = formatDistanceToNow(row.createTime);
+          let _24Hour = format(row.createTime, 'yyyy-MM-dd HH:mm');
+          let _12Hour = format(row.createTime, 'yyyy-MM-dd hh:mm a');
 
           if (setting!.viewingOption?.timeDisplay == 1) {
             return (
@@ -151,9 +150,9 @@ function CollectionViewerTable({ data }: Prop) {
           );
         },
         sortingFn: (a: Row<ICollectionItem>, b: Row<ICollectionItem>) => {
-          var _a = moment(a.original.createTime);
-          var _b = moment(b.original.createTime);
-          if (_a.isSameOrBefore(_b)) {
+          var _a = a.original.createTime;
+          var _b = b.original.createTime;
+          if (isBefore(_a, _b) || isEqual(_a, _b)) {
             return 1;
           } else {
             return -1;
@@ -166,10 +165,9 @@ function CollectionViewerTable({ data }: Prop) {
           className: 'text-center w-36 whitespace-nowrap',
         },
         accessorFn: (row) => {
-          let _moment = moment(row.modifyTime);
-          let _fromNow = _moment.fromNow();
-          let _24Hour = _moment.format('YYYY-MM-DD HH:mm');
-          let _12Hour = _moment.format('YYYY-MM-DD hh:mm A');
+          let _fromNow = formatDistanceToNow(row.modifyTime);
+          let _24Hour = format(row.modifyTime, 'yyyy-MM-dd HH:mm');
+          let _12Hour = format(row.modifyTime, 'yyyy-MM-dd hh:mm a');
 
           if (setting!.viewingOption?.timeDisplay == 1) {
             return (
@@ -195,9 +193,9 @@ function CollectionViewerTable({ data }: Prop) {
           );
         },
         sortingFn: (a: Row<ICollectionItem>, b: Row<ICollectionItem>) => {
-          var _a = moment(a.original.modifyTime);
-          var _b = moment(b.original.modifyTime);
-          if (_a.isSameOrBefore(_b)) {
+          var _a = a.original.modifyTime;
+          var _b = b.original.modifyTime;
+          if (isBefore(_a, _b) || isEqual(_a, _b)) {
             return 1;
           } else {
             return -1;

@@ -6,7 +6,7 @@ import {
   ArrowTopRightOnSquareIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { Bars3Icon } from '@heroicons/react/24/solid';
 import { useParams } from 'react-router-dom';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
@@ -70,7 +70,7 @@ function ImageItem({ item }: Prop) {
           <Bars3Icon className="w-6 h-6" strokeWidth={2} />
         </span>
 
-        <span>{moment(item.createTime).format('YYYY-MM-DD hh:mm A')}</span>
+        <span>{format(item.createTime, 'yyyy-MM-dd hh:mm a')}</span>
         <span className="flex ml-auto">
           <a
             className="inline-block align-middle m-auto"

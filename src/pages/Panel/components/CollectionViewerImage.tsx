@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { ICollectionItem } from '@/common/interface';
-import moment from 'moment';
+import { format } from 'date-fns';
 import jsZip from 'jszip';
 import Common from '@/common/common';
 import { Setting } from '@/common/storage';
@@ -70,9 +70,7 @@ function CollectionViewerImage({ data, collectionName }: Prop) {
           .pop()
           ?.split('.');
 
-        let createTime = `${moment(item.createTime).format(
-          'YYYY-MM-DD-HH-mm-ss'
-        )}`;
+        let createTime = `${format(item.createTime, 'YYYY-MM-DD-HH-mm-ss')}`;
 
         let name = `${createTime}`;
 
@@ -92,8 +90,9 @@ function CollectionViewerImage({ data, collectionName }: Prop) {
     }
 
     const content = await zip.generateAsync({ type: 'blob' });
-    const fileName = `${collectionName}-${moment().format(
-      'YYYY-MM-DD-HH-mm-ss'
+    const fileName = `${collectionName}-${format(
+      Date.now(),
+      'yyyy-MM-dd-HH-mm-ss'
     )}`;
 
     const href = await URL.createObjectURL(content);

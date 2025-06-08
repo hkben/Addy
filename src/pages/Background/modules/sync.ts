@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { differenceInMinutes } from 'date-fns';
 import Browser from 'webextension-polyfill';
 import {
   BrowserMessageAction,
@@ -205,7 +205,7 @@ export const autoSyncChecking = async () => {
     return;
   }
 
-  let lasySyncDiff = moment().diff(_syncSetting.lastSyncTime, 'minutes');
+  let lasySyncDiff = differenceInMinutes(Date.now(), _syncSetting.lastSyncTime);
 
   if (lasySyncDiff >= _syncSetting.autoSyncInterval) {
     log.debug('[Sync] Run background sync');

@@ -10,7 +10,6 @@ import { fromCognitoIdentityPool } from '@aws-sdk/credential-provider-cognito-id
 import { Collections } from '../storage';
 import { ICollection } from '../interface';
 import SyncSetting from '../storage/syncSetting';
-import moment from 'moment';
 import ISyncProvider, { IFileInfo } from './syncProvider';
 
 class awsS3 implements ISyncProvider {
