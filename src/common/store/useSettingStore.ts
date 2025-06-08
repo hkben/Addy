@@ -3,6 +3,7 @@ import { Setting } from '../storage';
 import { ISetting } from '../interface';
 import { immer } from 'zustand/middleware/immer';
 import log from 'loglevel';
+import _ from 'lodash';
 
 interface Store {
   setting?: ISetting;
@@ -34,6 +35,25 @@ const useSettingStore = create<Store>()(
         return;
       }
 
+      // If no new setting values are provided, do nothing
+      if (Object.keys(newSetting).length === 0) {
+        log.debug('[useSettingStore] No new setting values provided.');
+        return;
+      }
+
+      // Ensure new Setting is different from the current setting
+      var key = Object.keys(newSetting)[0] as keyof ISetting;
+
+      const isEqual = _.isEqual(_setting![key], newSetting[key]);
+
+      if (isEqual) {
+        log.debug(
+          `[useSettingStore] New setting value for ${key} is equal to the current value.`
+        );
+        return;
+      }
+
+      // Merge new setting values into the current setting
       Object.assign(_setting, newSetting);
       set({ setting: _setting });
 

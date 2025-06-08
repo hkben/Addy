@@ -274,6 +274,12 @@ function CollectionViewerTable({ data }: Prop) {
       );
 
       let viewingOption = setting!.viewingOption;
+
+      // If new hidden columns are equal to the current hidden columns, do nothing
+      if (_.isEqual(viewingOption.hiddenColumns, _hiddenColumnsKeys)) {
+        return;
+      }
+
       viewingOption.hiddenColumns = _hiddenColumnsKeys;
 
       await updateSetting({ viewingOption });
@@ -287,6 +293,12 @@ function CollectionViewerTable({ data }: Prop) {
       let _sorting = sorting || [];
 
       let viewingOption = setting!.viewingOption;
+
+      // If new sorting is equal to the current sorting, do nothing
+      if (_.isEqual(viewingOption.sortBy, _sorting)) {
+        return;
+      }
+
       viewingOption.sortBy = _sorting;
 
       await updateSetting({ viewingOption });
