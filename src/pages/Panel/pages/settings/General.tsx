@@ -17,7 +17,7 @@ function General() {
   ) => {
     let value = parseInt(event.currentTarget.value);
 
-    let collectionsOrdering = setting!.collectionsOrdering;
+    let collectionsOrdering = { ...setting!.collectionsOrdering };
     collectionsOrdering.type = value;
 
     await updateSetting({ collectionsOrdering });
@@ -28,7 +28,7 @@ function General() {
   ) => {
     let value = event.currentTarget.checked;
 
-    let collectionsOrdering = setting!.collectionsOrdering;
+    let collectionsOrdering = { ...setting!.collectionsOrdering };
     collectionsOrdering.descending = value;
 
     await updateSetting({ collectionsOrdering });
@@ -50,7 +50,7 @@ function General() {
   ) => {
     let value = parseInt(event.currentTarget.value);
 
-    let viewingOption = setting!.viewingOption;
+    let viewingOption = { ...setting!.viewingOption };
     viewingOption.timeDisplay = value;
 
     await updateSetting({ viewingOption });
@@ -61,7 +61,7 @@ function General() {
   ) => {
     let value = parseInt(event.currentTarget.value);
 
-    let viewingOption = setting!.viewingOption;
+    let viewingOption = { ...setting!.viewingOption };
     viewingOption.imageSearchEngine = value;
 
     await updateSetting({ viewingOption });

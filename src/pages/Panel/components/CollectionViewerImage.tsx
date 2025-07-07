@@ -44,7 +44,7 @@ function CollectionViewerImage({ data, collectionName }: Prop) {
   ) => {
     let value = event.target.value;
 
-    let viewingOption = setting!.viewingOption;
+    let viewingOption = { ...setting!.viewingOption };
     viewingOption.imageColumns = parseInt(value);
 
     await updateSetting({ viewingOption });

@@ -63,7 +63,7 @@ function CollectionViewerTable({ data }: Prop) {
   ) => {
     let value = event.target.value;
 
-    let viewingOption = setting!.viewingOption;
+    let viewingOption = { ...setting!.viewingOption };
     viewingOption.spacing = value;
 
     await updateSetting({ viewingOption });
@@ -273,7 +273,7 @@ function CollectionViewerTable({ data }: Prop) {
         _.pickBy(columnVisibility, (value) => value == false)
       );
 
-      let viewingOption = setting!.viewingOption;
+      let viewingOption = { ...setting!.viewingOption };
 
       // If new hidden columns are equal to the current hidden columns, do nothing
       if (_.isEqual(viewingOption.hiddenColumns, _hiddenColumnsKeys)) {
@@ -292,7 +292,7 @@ function CollectionViewerTable({ data }: Prop) {
     let updateSorting = async () => {
       let _sorting = sorting || [];
 
-      let viewingOption = setting!.viewingOption;
+      let viewingOption = { ...setting!.viewingOption };
 
       // If new sorting is equal to the current sorting, do nothing
       if (_.isEqual(viewingOption.sortBy, _sorting)) {
