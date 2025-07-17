@@ -3,11 +3,13 @@ import { ICollectionItem } from '@/common/interface';
 import {
   Column,
   ColumnDef,
+  PaginationState,
   Row,
   SortingState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
@@ -52,6 +54,11 @@ function CollectionViewerTable({ data }: Prop) {
   const [sorting, setSorting] = React.useState<SortingState>(() => {
     // Initialize sorting state on component mount
     return setting!.viewingOption.sortBy || [];
+  });
+
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 20,
   });
 
   let removeCollectionItem = useCollectionStore(
@@ -252,20 +259,22 @@ function CollectionViewerTable({ data }: Prop) {
     ),
   };
 
-  const { getAllLeafColumns, getHeaderGroups, getRowModel } =
-    useReactTable<ICollectionItem>({
-      columns,
-      data,
-      defaultColumn,
-      getCoreRowModel: getCoreRowModel(),
-      getSortedRowModel: getSortedRowModel(),
-      onColumnVisibilityChange: setColumnVisibility,
-      onSortingChange: setSorting,
-      state: {
-        columnVisibility,
-        sorting,
-      },
-    });
+  const table = useReactTable<ICollectionItem>({
+    columns,
+    data,
+    defaultColumn,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onSortingChange: setSorting,
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
+    state: {
+      columnVisibility,
+      sorting,
+      pagination,
+    },
+  });
 
   useEffect(() => {
     let updateHiddenColumns = async () => {
@@ -311,7 +320,7 @@ function CollectionViewerTable({ data }: Prop) {
     <div className="">
       <div className="w-full">
         <div className="w-4/6 inline-block">
-          {getAllLeafColumns().map((column) => (
+          {table.getAllLeafColumns().map((column) => (
             <div key={column.id} className="inline-block text-base p-2">
               <input
                 type="checkbox"
@@ -365,7 +374,7 @@ function CollectionViewerTable({ data }: Prop) {
         }`}
       >
         <thead>
-          {getHeaderGroups().map((headerGroup) => (
+          {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               <th className="h-16 py-4 text-md whitespace-pre"></th>
               {headerGroup.headers.map((header) => (
@@ -409,11 +418,92 @@ function CollectionViewerTable({ data }: Prop) {
           ))}
         </thead>
         <tbody className="divide-y divide-gray-200 dark:divide-gray-500">
-          {getRowModel().rows.map((row) => (
+          {table.getRowModel().rows.map((row) => (
             <RowItem key={row.id} row={row} />
           ))}
         </tbody>
       </table>
+
+      <div className="w-full mt-4">
+        <div className="w-5/6 inline-block gap-2">
+          <button
+            className="p-2 px-3 text-base text-white rounded-md items-center cursor-pointer border"
+            onClick={() => table.firstPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {'<<'}
+          </button>
+          <button
+            className="p-2 px-3 text-base text-white rounded-md items-center cursor-pointer border"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {'<'}
+          </button>
+          <button
+            className="p-2 px-3 text-base text-white rounded-md items-center cursor-pointer border"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {'>'}
+          </button>
+          <button
+            className="p-2 px-3 text-base text-white rounded-md items-center cursor-pointer border"
+            onClick={() => table.lastPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {'>>'}
+          </button>
+          <div className="inline-block text-base ml-2">
+            <span className="items-center gap-1">
+              Page
+              <strong>
+                {table.getState().pagination.pageIndex + 1} of{' '}
+                {table.getPageCount().toLocaleString()}
+              </strong>
+            </span>
+            <span className="items-center gap-1">
+              | Go to page:
+              <input
+                type="number"
+                min="1"
+                max={table.getPageCount()}
+                defaultValue={table.getState().pagination.pageIndex + 1}
+                onChange={(e) => {
+                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                  table.setPageIndex(page);
+                }}
+                className="placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+              />
+            </span>
+          </div>
+        </div>
+
+        <div className="w-1/6 inline-block text-base align-top text-right">
+          <select
+            className="h-10 px-4 pr-10 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+            value={table.getState().pagination.pageSize}
+            onChange={(e) => {
+              table.setPageSize(Number(e.target.value));
+            }}
+          >
+            {[10, 20, 30, 40, 50].map((pageSize) => (
+              <option key={pageSize} value={pageSize}>
+                Show {pageSize}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      <div className="w-full mt-2">
+        <div className="text-base">
+          <p>
+            Showing {table.getRowModel().rows.length.toLocaleString()} of{' '}
+            {table.getRowCount().toLocaleString()} Rows
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
