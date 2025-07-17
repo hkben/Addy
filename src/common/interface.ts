@@ -126,6 +126,7 @@ export interface IViewingOption {
   sortBy: SortingState;
   timeDisplay: number;
   imageSearchEngine: number;
+  pageSize: number;
 }
 
 //Sync Setting

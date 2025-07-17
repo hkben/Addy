@@ -58,7 +58,7 @@ function CollectionViewerTable({ data }: Prop) {
 
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 20,
+    pageSize: setting!.viewingOption.pageSize || 20,
   });
 
   let removeCollectionItem = useCollectionStore(
@@ -315,6 +315,23 @@ function CollectionViewerTable({ data }: Prop) {
 
     updateSorting();
   }, [sorting]);
+
+  useEffect(() => {
+    let updatePagination = async () => {
+      let viewingOption = { ...setting!.viewingOption };
+
+      // If new page size is equal to the current page size, do nothing
+      if (viewingOption.pageSize === pagination.pageSize) {
+        return;
+      }
+
+      viewingOption.pageSize = pagination.pageSize;
+
+      await updateSetting({ viewingOption });
+    };
+
+    updatePagination();
+  }, [pagination]);
 
   return (
     <div className="">

@@ -20,6 +20,7 @@ class Setting {
         sortBy: [],
         timeDisplay: 0,
         imageSearchEngine: 0,
+        pageSize: 20, // Default page size
       },
       debugMode: false,
     };
