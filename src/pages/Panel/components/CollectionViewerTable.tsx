@@ -133,7 +133,9 @@ function CollectionViewerTable({ data }: Prop) {
           className: 'text-center w-36 whitespace-nowrap',
         },
         accessorFn: (row) => {
-          let _fromNow = formatDistanceToNow(row.createTime);
+          let _fromNow = formatDistanceToNow(row.createTime, {
+            addSuffix: true,
+          });
           let _24Hour = format(row.createTime, 'yyyy-MM-dd HH:mm');
           let _12Hour = format(row.createTime, 'yyyy-MM-dd hh:mm a');
 
@@ -177,7 +179,9 @@ function CollectionViewerTable({ data }: Prop) {
           className: 'text-center w-36 whitespace-nowrap',
         },
         accessorFn: (row) => {
-          let _fromNow = formatDistanceToNow(row.modifyTime);
+          let _fromNow = formatDistanceToNow(row.modifyTime, {
+            addSuffix: true,
+          });
           let _24Hour = format(row.modifyTime, 'yyyy-MM-dd HH:mm');
           let _12Hour = format(row.modifyTime, 'yyyy-MM-dd hh:mm a');
 

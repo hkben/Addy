@@ -173,7 +173,11 @@ function SyncSettings() {
           <div className="w-1/3 my-auto text-center">
             {syncSetting.lastSyncTime ? (
               <span>
-                <p>{formatDistanceToNow(syncSetting.lastSyncTime) + ' ago'}</p>
+                <p>
+                  {formatDistanceToNow(syncSetting.lastSyncTime, {
+                    addSuffix: true,
+                  })}
+                </p>
                 <p>{formatISO(syncSetting.lastSyncTime)}</p>
               </span>
             ) : (
