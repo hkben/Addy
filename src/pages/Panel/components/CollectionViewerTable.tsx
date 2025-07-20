@@ -9,6 +9,7 @@ import {
   VisibilityState,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
@@ -60,6 +61,8 @@ function CollectionViewerTable({ data }: Prop) {
     pageIndex: 0,
     pageSize: setting!.viewingOption.pageSize || 20,
   });
+
+  const [globalFilter, setGlobalFilter] = React.useState('');
 
   let removeCollectionItem = useCollectionStore(
     (state) => state.removeCollectionItem
@@ -122,6 +125,7 @@ function CollectionViewerTable({ data }: Prop) {
           className: 'text-center',
         },
         accessorFn: (row) => row.type,
+        enableGlobalFilter: false,
       },
       {
         header: 'Created Time',
@@ -165,6 +169,7 @@ function CollectionViewerTable({ data }: Prop) {
             return -1;
           }
         },
+        enableGlobalFilter: false,
       },
       {
         header: 'Last Modified',
@@ -208,6 +213,7 @@ function CollectionViewerTable({ data }: Prop) {
             return -1;
           }
         },
+        enableGlobalFilter: false,
       },
       {
         header: 'Source',
@@ -244,6 +250,7 @@ function CollectionViewerTable({ data }: Prop) {
             <XCircleIcon className="h-6 w-6" strokeWidth={2} />
           </button>
         ),
+        enableGlobalFilter: false,
       },
     ],
     [collectionId, removeCollectionItem, setting!.viewingOption?.timeDisplay]
@@ -269,10 +276,13 @@ function CollectionViewerTable({ data }: Prop) {
     onSortingChange: setSorting,
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
+    getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: 'includesString',
     state: {
       columnVisibility,
       sorting,
       pagination,
+      globalFilter,
     },
   });
 
@@ -367,6 +377,15 @@ function CollectionViewerTable({ data }: Prop) {
             <option value="compact">Compact</option>
           </select>
         </div>
+      </div>
+
+      <div className="w-full">
+        <input
+          className="w-2/6 p-2 mt-2 mb-4 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          placeholder="Search Rows..."
+        />
       </div>
 
       <Tooltip
