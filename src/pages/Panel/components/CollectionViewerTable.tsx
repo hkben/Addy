@@ -464,8 +464,8 @@ function CollectionViewerTable({ data }: Prop) {
         </tbody>
       </table>
 
-      <div className="w-full mt-4">
-        <div className="w-5/6 inline-block gap-2">
+      <div className="w-full flex mt-4">
+        <div className="w-5/6 flex gap-2">
           <button
             className="p-2 px-3 text-base text-white rounded-md items-center cursor-pointer border"
             onClick={() => table.firstPage()}
@@ -502,24 +502,22 @@ function CollectionViewerTable({ data }: Prop) {
                 {table.getPageCount().toLocaleString()}
               </strong>
             </span>
-            <span className="items-center gap-1">
-              | Go to page:
-              <input
-                type="number"
-                min="1"
-                max={table.getPageCount()}
-                defaultValue={table.getState().pagination.pageIndex + 1}
-                onChange={(e) => {
-                  const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                  table.setPageIndex(page);
-                }}
-                className="placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-              />
-            </span>
+            <span className="items-center">| Go to page:</span>
+            <input
+              type="number"
+              min="1"
+              max={table.getPageCount()}
+              defaultValue={table.getState().pagination.pageIndex + 1}
+              onChange={(e) => {
+                const page = e.target.value ? Number(e.target.value) - 1 : 0;
+                table.setPageIndex(page);
+              }}
+              className="placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800 ml-2"
+            />
           </div>
         </div>
 
-        <div className="w-1/6 inline-block text-base align-top text-right">
+        <div className="w-1/6 text-base align-top text-right">
           <select
             className="h-10 px-4 pr-10 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
             value={table.getState().pagination.pageSize}
