@@ -1,58 +1,39 @@
-import React, { Fragment, useEffect } from 'react';
-import Browser from 'webextension-polyfill';
-import { BrowserMessageAction, IBrowserMessage } from '@/common/interface';
+import React, { Fragment } from 'react';
+import { BrowserMessageAction } from '@/common/interface';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import log from 'loglevel';
+import { SyncState, useSyncStore } from '@/common/store/useSyncStore';
 
-interface Prop {
-  callbackAfterSync: () => Promise<void>;
-}
+function SyncDeleteButton() {
+  const syncingState = useSyncStore((state) => state.syncingState);
 
-function SyncDeleteButton({ callbackAfterSync }: Prop) {
-  const [syncingState, setSyncingState] = React.useState<number>(0);
+  const startSyncAction = useSyncStore((state) => state.startSyncAction);
 
-  const resetSyncingState = () => {
-    setSyncingState(0);
-  };
+  const action = useSyncStore((state) => state.action);
 
-  const handleBackgroundSyncDelete = async () => {
-    if (syncingState != 0) {
-      return;
-    }
+  const handleOnClick = async () => {
+    const confirmBox = window.confirm(
+      'Do you really want to delete remote data?'
+    );
 
-    Browser.runtime.sendMessage({
-      action: BrowserMessageAction.SyncFileDeletion,
-    } as IBrowserMessage);
-
-    setSyncingState(1); //Syncing
-  };
-
-  const onMessageListener = (packet: IBrowserMessage, sender: any) => {
-    log.debug('onMessageListener');
-
-    if (packet.action == BrowserMessageAction.SyncFileDeletionCompleted) {
-      if (packet.result) {
-        setSyncingState(2); //Completed
-        callbackAfterSync().catch(log.error);
-      } else {
-        setSyncingState(3); //Error
-      }
-      setTimeout(resetSyncingState, 5000);
+    if (confirmBox === true) {
+      startSyncAction(BrowserMessageAction.SyncBackgroundRun);
     }
   };
 
-  useEffect(() => {
-    Browser.runtime.onMessage.addListener(onMessageListener);
-    return () => {
-      Browser.runtime.onMessage.addListener(onMessageListener);
-    };
-  }, []);
+  const defaultContent = () => {
+    return <span>Delete Remote Data</span>;
+  };
 
   const renderText = () => {
+    if (action !== BrowserMessageAction.SyncBackgroundRun) {
+      return defaultContent();
+    }
+
     switch (syncingState) {
-      case 0:
-        return <span>Delete Remote Data</span>;
-      case 1:
+      case SyncState.Idle:
+        return defaultContent();
+      case SyncState.Running:
         return (
           <Fragment>
             <ArrowPathIcon
@@ -62,9 +43,9 @@ function SyncDeleteButton({ callbackAfterSync }: Prop) {
             <span>Deleting...</span>
           </Fragment>
         );
-      case 2:
+      case SyncState.Completed:
         return <span>Deletion Completed!</span>;
-      case 3:
+      case SyncState.Error:
         return <span>Deletion Error</span>;
       default:
         return '';
@@ -74,14 +55,7 @@ function SyncDeleteButton({ callbackAfterSync }: Prop) {
   return (
     <button
       className="flex mx-auto p-2 px-5 text-base text-white bg-red-500 hover:bg-red-700 rounded-md items-center"
-      onClick={() => {
-        const confirmBox = window.confirm(
-          'Do you really want to delete remote data?'
-        );
-        if (confirmBox === true) {
-          handleBackgroundSyncDelete();
-        }
-      }}
+      onClick={handleOnClick}
     >
       {renderText()}
     </button>

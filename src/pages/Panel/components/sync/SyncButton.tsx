@@ -1,58 +1,33 @@
-import React, { Fragment, useEffect } from 'react';
-import Browser from 'webextension-polyfill';
-import { BrowserMessageAction, IBrowserMessage } from '@/common/interface';
+import React, { Fragment } from 'react';
+import { BrowserMessageAction } from '@/common/interface';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { SyncState, useSyncStore } from '@/common/store/useSyncStore';
 import log from 'loglevel';
 
-interface Prop {
-  callbackAfterSync: () => Promise<void>;
-}
+function SyncButton() {
+  const syncingState = useSyncStore((state) => state.syncingState);
 
-function SyncButton({ callbackAfterSync }: Prop) {
-  const [syncingState, setSyncingState] = React.useState<number>(0);
+  const startSyncAction = useSyncStore((state) => state.startSyncAction);
 
-  const resetSyncingState = () => {
-    setSyncingState(0);
+  const action = useSyncStore((state) => state.action);
+
+  const handleOnClick = async () => {
+    startSyncAction(BrowserMessageAction.SyncBackgroundRun);
   };
 
-  const handleBackgroundSync = async () => {
-    if (syncingState != 0) {
-      return;
-    }
-
-    Browser.runtime.sendMessage({
-      action: BrowserMessageAction.SyncBackgroundRun,
-    } as IBrowserMessage);
-
-    setSyncingState(1); //Syncing
+  const defaultContent = () => {
+    return <span>Sync Now</span>;
   };
-
-  const onMessageListener = (packet: IBrowserMessage, sender: any) => {
-    log.debug('onMessageListener');
-
-    if (packet.action == BrowserMessageAction.SyncCompleted) {
-      if (packet.result) {
-        setSyncingState(2); //Completed
-        callbackAfterSync().catch(log.error);
-      } else {
-        setSyncingState(3); //Error
-      }
-      setTimeout(resetSyncingState, 5000);
-    }
-  };
-
-  useEffect(() => {
-    Browser.runtime.onMessage.addListener(onMessageListener);
-    return () => {
-      Browser.runtime.onMessage.addListener(onMessageListener);
-    };
-  }, []);
 
   const renderText = () => {
+    if (action !== BrowserMessageAction.SyncBackgroundRun) {
+      return defaultContent();
+    }
+
     switch (syncingState) {
-      case 0:
-        return <span>Sync Now</span>;
-      case 1:
+      case SyncState.Idle:
+        return defaultContent();
+      case SyncState.Running:
         return (
           <Fragment>
             <ArrowPathIcon
@@ -62,9 +37,9 @@ function SyncButton({ callbackAfterSync }: Prop) {
             <span>Syncing...</span>
           </Fragment>
         );
-      case 2:
+      case SyncState.Completed:
         return <span>Sync Completed!</span>;
-      case 3:
+      case SyncState.Error:
         return <span>Sync Error</span>;
       default:
         return '';
@@ -74,7 +49,7 @@ function SyncButton({ callbackAfterSync }: Prop) {
   return (
     <button
       className="flex mx-auto p-2 px-5 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
-      onClick={handleBackgroundSync}
+      onClick={handleOnClick}
     >
       {renderText()}
     </button>

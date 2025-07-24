@@ -8,8 +8,11 @@ import SyncButton from './SyncButton';
 import SyncDeleteButton from './SyncDeleteButton';
 import SyncConnectionTestButton from './SyncTestConnectionButton';
 import log from 'loglevel';
+import { useSyncStore } from '@/common/store/useSyncStore';
 
 function SyncSettings() {
+  const lastSyncTime = useSyncStore((state) => state.lastSyncTime);
+
   const [syncSetting, setSyncSetting] = React.useState<ISyncSetting>(
     SyncSetting.init() as ISyncSetting
   );
@@ -141,7 +144,7 @@ function SyncSettings() {
             <p className="text-base font-bold">Background Sync</p>
           </div>
           <div className="w-1/3 my-auto text-center">
-            <SyncButton callbackAfterSync={getSyncSetting} />
+            <SyncButton />
           </div>
         </div>
 
@@ -171,14 +174,14 @@ function SyncSettings() {
             <p className="text-base font-bold">Last Sync Time</p>
           </div>
           <div className="w-1/3 my-auto text-center">
-            {syncSetting.lastSyncTime ? (
+            {lastSyncTime ? (
               <span>
                 <p>
-                  {formatDistanceToNow(syncSetting.lastSyncTime, {
+                  {formatDistanceToNow(lastSyncTime, {
                     addSuffix: true,
                   })}
                 </p>
-                <p>{formatISO(syncSetting.lastSyncTime)}</p>
+                <p>{formatISO(lastSyncTime)}</p>
               </span>
             ) : (
               <span>None</span>
@@ -230,7 +233,7 @@ function SyncSettings() {
             <p className="text-base font-bold">Delete Sync File on Server</p>
           </div>
           <div className="w-1/3 my-auto text-center">
-            <SyncDeleteButton callbackAfterSync={getSyncSetting} />
+            <SyncDeleteButton />
           </div>
         </div>
       </div>

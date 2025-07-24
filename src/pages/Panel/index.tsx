@@ -6,10 +6,12 @@ import './index.scss';
 import Panel from './Panel';
 import useSettingStore from '@/common/store/useSettingStore';
 import log from 'loglevel';
+import { useSyncStore } from '@/common/store/useSyncStore';
 
 async function initializeApp() {
   log.debug('[Addy] Initializing...');
   await useSettingStore.getState().fetch();
+  await useSyncStore.getState().fetch();
   log.debug('[Addy] Settings fetched:', useSettingStore.getState().setting);
 }
 
