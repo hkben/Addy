@@ -1,4 +1,4 @@
-import { ArrowDownAZ, ArrowUpAZ, Search, X } from 'lucide-react';
+import { ArrowDownAZ, ArrowUpAZ, Plus, Search, X } from 'lucide-react';
 
 import {
   SidebarContent,
@@ -29,8 +29,6 @@ import CollectionsListItem from '../../components/viewer/CollectionsListItem';
 export function AppSidebar() {
   const { setting } = useSettingStore();
 
-  const newCollectionInput = useRef<HTMLInputElement>(null);
-
   const collections = useCollectionsListStore((state) => state.summary);
 
   const fetchCollectionsList = useCollectionsListStore(
@@ -53,19 +51,13 @@ export function AppSidebar() {
     fetchCollectionsList();
   }, [fetchCollectionsList]);
 
-  const newCollectionSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
-
-    let inputValue = newCollectionInput.current?.value || '';
-
-    if (inputValue == '') {
+  const newCollectionSubmit = async () => {
+    if (searchKeyword === '') {
       return;
     }
 
-    await Collection.create(inputValue);
-    inputValue = '';
+    await Collection.create(searchKeyword);
+    setSearchKeyword('');
 
     fetchCollectionsList();
   };
@@ -93,6 +85,27 @@ export function AppSidebar() {
   const searchCollection = (event: React.ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value;
     setSearchKeyword(value);
+  };
+
+  const renderNewCollectionButton = () => {
+    if (searchKeyword === '') {
+      return null;
+    }
+
+    return (
+      <SidebarGroup className="py-0">
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <Button className="w-full py-8" onClick={newCollectionSubmit}>
+                <Plus />
+                <span>New Collection</span>
+              </Button>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    );
   };
 
   return (
@@ -147,6 +160,8 @@ export function AppSidebar() {
             <Search className="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 opacity-50 select-none" />
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {renderNewCollectionButton()}
       </SidebarHeader>
 
       <SidebarContent className="mb-4">
