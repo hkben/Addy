@@ -14,8 +14,10 @@ export const useDarkMode = () => {
 
     if (darkMode) {
       root.setAttribute('data-theme', 'dark');
+      root.classList.add('dark');
     } else {
       root.setAttribute('data-theme', 'light');
+      root.classList.remove('dark');
     }
   }, [darkMode]);
 
