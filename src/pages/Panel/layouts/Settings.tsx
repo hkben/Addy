@@ -1,39 +1,28 @@
+import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
+import { Separator } from '@/components/ui/separator';
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 class Settings extends React.Component<{}> {
   render() {
     return (
-      <div className="xl:container w-full flex flex-wrap mx-auto p-2">
-        <div className="w-1/5 lg:px-6 text-xl text-gray-800 leading-normal dark:text-gray-50">
-          <p className="font-bold underline underline-offset-auto">Settings</p>
-
-          <ul className="py-5">
-            <li className="py-1">
-              <Link to="general">General</Link>
-            </li>
-            <li className="py-1">
-              <Link to="sync">Sync</Link>
-            </li>
-            <li className="py-1">
-              <Link to="export">Export</Link>
-            </li>
-            <li className="py-1">
-              <Link to="import">Import</Link>
-            </li>
-            <li className="py-1">
-              <Link to="welcome">Welcome Page</Link>
-            </li>
-            <li className="py-1">
-              <Link to="information">Information</Link>
-            </li>
-          </ul>
+      <SidebarInset>
+        <header className="flex sticky top-0 h-14 shrink-0 items-center gap-2 bg-background border-b">
+          <div className="flex flex-1 items-center gap-2 px-3">
+            <SidebarTrigger />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+            <h1 className="text-lg font-semibold">Settings</h1>
+          </div>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 px-4 py-5">
+          <div className="bg-muted/50 mx-auto h-full w-full max-w-5xl rounded-xl p-8">
+            <Outlet />
+          </div>
         </div>
-
-        <div className="w-4/5 p-8 text-gray-900 leading-normal bg-white border border-gray-400 dark:text-gray-50 dark:bg-gray-800 dark:border-gray-400">
-          <Outlet />
-        </div>
-      </div>
+      </SidebarInset>
     );
   }
 }

@@ -1,14 +1,10 @@
 import React from 'react';
 import { useDrop } from 'react-dnd';
-import {
-  ICollectionItem,
-  ICollectionSummary,
-} from '@/common/interface';
+import { ICollectionSummary } from '@/common/interface';
 import { Row } from '@tanstack/react-table';
 import { Link, useParams } from 'react-router-dom';
-import CollectionItem from '@/common/storage/collectionItem';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
-import { stat } from 'fs';
+import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 
 interface Prop {
   collection: ICollectionSummary;
@@ -43,15 +39,10 @@ function CollectionsListItem({ collection }: Prop) {
   const isActive = canDrop && isOver;
 
   return (
-    <li
-      className={`py-1 px-2 cursor-pointer rounded ${
-        isActive ? 'bg-slate-200 dark:bg-slate-600' : ''
-      }`}
-      ref={dropRef}
-    >
-      <Link to={`/${collection.id}`}>
-        <p>
-          {collection.name}
+    <SidebarMenuItem className="">
+      <SidebarMenuButton asChild isActive={isActive}>
+        <Link to={`/${collection.id}`} ref={dropRef}>
+          <span className="text-lg">{collection.name}</span>
           <span className="text-sm"> ({collection.items})</span>
           {collection.color != null && collection.color != 0 ? (
             <span
@@ -60,9 +51,9 @@ function CollectionsListItem({ collection }: Prop) {
           ) : (
             ''
           )}
-        </p>
-      </Link>
-    </li>
+        </Link>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
   );
 }
 

@@ -1,25 +1,40 @@
 import _ from 'lodash';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import SideBar from '@Panel/components/viewer/SideBar';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { SidebarInset, SidebarTrigger } from '@/components/ui/sidebar';
+import { Button } from '@/components/ui/button';
+import { Ellipsis, Star } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 function Home() {
   return (
-    <DndProvider backend={HTML5Backend}>
-      <div className="xl:container w-full flex flex-wrap mx-auto px-2">
-        <div className="w-1/5 text-xl text-gray-800 leading-normal dark:text-gray-50 relative">
-          <div className="sticky top-0 h-screen overflow-auto">
-            <SideBar />
+    <SidebarInset>
+      <header className="flex sticky top-0 h-14 shrink-0 items-center gap-2 bg-background border-b">
+        <div className="flex flex-1 items-center gap-2 px-3">
+          <SidebarTrigger />
+          <Separator
+            orientation="vertical"
+            className="mr-2 data-[orientation=vertical]:h-4"
+          />
+          <h1 className="text-lg font-semibold">Addy</h1>
+        </div>
+        <div className="ml-auto px-3">
+          <div className="flex items-center gap-2 text-sm">
+            <div className="text-muted-foreground hidden font-medium md:inline-block">
+              Placehoder
+            </div>
+            <Button variant="ghost" size="icon" className="h-7 w-7">
+              <Ellipsis />
+            </Button>
           </div>
         </div>
-
-        <div className="w-4/5 p-8 text-gray-900 bg-white border border-gray-400 dark:text-gray-50 dark:bg-gray-800 dark:border-gray-400">
+      </header>
+      <div className="flex flex-1 flex-col gap-4 px-4 py-5">
+        <div className="bg-muted/50 mx-auto h-full w-full max-w-5xl rounded-xl p-8">
           <Outlet />
         </div>
       </div>
-    </DndProvider>
+    </SidebarInset>
   );
 }
 

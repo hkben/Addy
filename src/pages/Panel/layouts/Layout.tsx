@@ -1,67 +1,85 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
-import {
-  HashRouter,
-  Link,
-  Route,
-  RouterProvider,
-  Routes,
-  createHashRouter,
-  createRoutesFromElements,
-} from 'react-router-dom';
-import { MoonIcon } from '@heroicons/react/24/solid';
 import { useDarkMode } from '@/common/hooks/useDarkMode';
+import {
+  Sidebar,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarHeader,
+  SidebarProvider,
+} from '@/components/ui/sidebar';
+import { AppSidebar } from '../components/sidebar/AppSidebar';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import { SettingSidebar } from '../components/sidebar/SettingSidebar';
+import { Button } from '@/components/ui/button';
+import { List, Moon, SettingsIcon, Sun } from 'lucide-react';
 
 function Layout() {
   const [darkMode, setDarkMode] = useDarkMode();
 
-  const toggleDarkMode = async (event: React.MouseEvent<HTMLDivElement>) => {
+  const toggleDarkMode = async () => {
     let _darkMode = darkMode ? false : true;
 
     setDarkMode(_darkMode);
   };
 
+  const location = useLocation();
+
+  const isSettingPage = location.pathname.startsWith('/setting');
+
+  const renderSettingsNavButton = () => {
+    if (isSettingPage) {
+      return (
+        <Button variant="ghost" size="icon" asChild>
+          <Link to="/">
+            <List />
+          </Link>
+        </Button>
+      );
+    } else {
+      return (
+        <Button variant="ghost" size="icon" asChild>
+          <Link to="/setting">
+            <SettingsIcon />
+          </Link>
+        </Button>
+      );
+    }
+  };
+
+  const renderSidebarContent = () => {
+    return isSettingPage ? <SettingSidebar /> : <AppSidebar />;
+  };
+
   return (
-    <div>
-      <nav className="flex items-center justify-between max-w-3xl p-4 mx-auto h-16">
-        <a
-          className="inline-flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg dark:bg-gray-700"
-          href="#"
-        >
-          <img src="icon-34.png" />
-        </a>
+    <DndProvider backend={HTML5Backend}>
+      <SidebarProvider>
+        <Sidebar>
+          <SidebarHeader className="py-0">
+            <SidebarGroup>
+              <SidebarGroupContent className="flex items-center justify-between">
+                <Link
+                  className="inline-flex items-center justify-center w-10 h-10 bg-gray-100 rounded-lg dark:bg-gray-700"
+                  to="/"
+                >
+                  <img src="icon-34.png" alt="Addy" />
+                </Link>
 
-        <ul className="flex items-center space-x-2 text-sm font-semibold text-gray-500 dark:text-gray-50">
-          <li>
-            <Link to="/" className="px-3 py-2 rounded-lg cursor-pointer">
-              Home
-            </Link>
-          </li>
-
-          <li>
-            <Link
-              to="/setting/sync"
-              className="px-3 py-2 rounded-lg cursor-pointer"
-            >
-              Sync
-            </Link>
-          </li>
-
-          <li>
-            <Link to="/setting" className="px-3 py-2 rounded-lg cursor-pointer">
-              Settings
-            </Link>
-          </li>
-
-          <li>
-            <div className="cursor-pointer mx-auto" onClick={toggleDarkMode}>
-              <MoonIcon className="h-4 w-4" strokeWidth={2} />
-            </div>
-          </li>
-        </ul>
-      </nav>
-      <Outlet />
-    </div>
+                <div className="flex">
+                  <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
+                    {darkMode ? <Sun /> : <Moon />}
+                  </Button>
+                  {renderSettingsNavButton()}
+                </div>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </SidebarHeader>
+          {renderSidebarContent()}
+        </Sidebar>
+        <Outlet />
+      </SidebarProvider>
+    </DndProvider>
   );
 }
 
