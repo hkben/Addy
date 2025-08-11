@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {
   HashRouter,
   Link,
+  Navigate,
   Route,
   RouterProvider,
   Routes,
@@ -33,7 +34,7 @@ const router = createHashRouter(
     <Route path="/" element={<Layout />}>
       <Route path="/" element={<Welcome />} />
       <Route path="/:collectionId" element={<Viewer />} loader={loader}>
-        <Route index element={<CollectionViewerTable />} />
+        <Route index element={<Navigate to="all" />} />
         <Route path="all" element={<CollectionViewerTable />} />
         <Route path="text" element={<CollectionViewerTable type="text" />} />
         <Route path="image" element={<CollectionViewerImage />} />
