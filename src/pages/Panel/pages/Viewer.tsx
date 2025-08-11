@@ -29,6 +29,7 @@ import log from 'loglevel';
 import useSettingStore from '@/common/store/useSettingStore';
 import { SidebarInset } from '@/components/ui/sidebar';
 import Header from '../layouts/Header';
+import TypeSelector from '../components/viewer/TypeSelector';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   var result = await useCollectionStore
@@ -47,15 +48,6 @@ function Viewer() {
 
   const [collectionName, setCollectionName] = React.useState('');
 
-  const [collectionType, setCollectionType] = React.useState(0);
-
-  const [itemCount, setItemCount] = React.useState({
-    all: 0,
-    text: 0,
-    image: 0,
-    bookmark: 0,
-  });
-
   let fetchCollectionsList = useCollectionsListStore(
     (state) => state.fetchList
   );
@@ -69,34 +61,6 @@ function Viewer() {
   let changeCollectionColor = useCollectionStore(
     (state) => state.changeCollectionColor
   );
-
-  const data = React.useMemo(() => {
-    if (collection.items == null) {
-      return [];
-    }
-
-    setItemCount({
-      all: collection.items.length,
-      text: collection.items.filter((o) => o.type == 'text').length || 0,
-      image: collection.items.filter((o) => o.type == 'image').length || 0,
-      bookmark:
-        collection.items.filter((o) => o.type == 'bookmark').length || 0,
-    });
-
-    if (collectionType == 1) {
-      return collection.items.filter((o) => o.type == 'text') || [];
-    }
-
-    if (collectionType == 2) {
-      return collection.items.filter((o) => o.type == 'image') || [];
-    }
-
-    if (collectionType == 3) {
-      return collection.items.filter((o) => o.type == 'bookmark') || [];
-    }
-
-    return collection.items || [];
-  }, [collection, collectionType]);
 
   useEffect(() => {
     setCollectionName(loaderData.name);
@@ -234,67 +198,7 @@ function Viewer() {
             ></div>
           </div>
 
-          <div className="w-2/3 items-center text-xs rounded-md">
-            <button
-              className={`${
-                collectionType == 0
-                  ? 'bg-gray-200 dark:bg-gray-600'
-                  : 'bg-white dark:bg-gray-800'
-              } w-1/4 px-5 py-3 font-semibold border rounded-l-lg border-gray-300`}
-              type="button"
-              onClick={() => {
-                setCollectionType(0);
-                navigate(`/${collection.id}`);
-              }}
-            >
-              📕 All ({itemCount.all})
-            </button>
-
-            <button
-              className={`${
-                collectionType == 1
-                  ? 'bg-gray-200 dark:bg-gray-600'
-                  : 'bg-white dark:bg-gray-800'
-              } w-1/4 px-5 py-3 font-semibold border-y border-r border-gray-300`}
-              type="button"
-              onClick={() => {
-                setCollectionType(1);
-                navigate(`/${collection.id}/text`);
-              }}
-            >
-              📝 Text ({itemCount.text})
-            </button>
-
-            <button
-              className={`${
-                collectionType == 2
-                  ? 'bg-gray-200 dark:bg-gray-600'
-                  : 'bg-white dark:bg-gray-800'
-              } w-1/4 px-5 py-3 font-semibold border-y border-r border-gray-300`}
-              type="button"
-              onClick={() => {
-                setCollectionType(2);
-                navigate(`/${collection.id}/image`);
-              }}
-            >
-              🖼️ Image ({itemCount.image})
-            </button>
-
-            <button
-              className={`${
-                collectionType == 3
-                  ? 'bg-gray-200 dark:bg-gray-600'
-                  : 'bg-white dark:bg-gray-800'
-              } w-1/4 px-5 py-3 font-semibold border-r border-y rounded-r-lg border-gray-300`}
-              type="button"
-              onClick={() => {
-                setCollectionType(3);
-                navigate(`/${collection.id}/bookmark`);
-              }}
-            >
-              🔖 Bookmark ({itemCount.bookmark})
-            </button>
-          </div>
+          <TypeSelector />
 
           <div className="py-8">
             <Outlet />
