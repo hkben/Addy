@@ -14,7 +14,6 @@ import {
   Storage,
 } from '../../common/storage';
 import Common from '@/common/common';
-import Settings from '@Panel/layouts/Settings';
 import _ from 'lodash';
 import { useSortCollections } from '@/common/hooks/useSortCollections';
 import { useDarkMode } from '@/common/hooks/useDarkMode';

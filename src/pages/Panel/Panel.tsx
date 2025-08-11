@@ -12,7 +12,7 @@ import { ISetting } from '@/common/interface';
 import Export from './pages/settings/Export';
 import General from './pages/settings/General';
 import Import from './pages/settings/Import';
-import Settings from './layouts/Settings';
+import Settings from './pages/Settings';
 import { Setting, Storage } from '@/common/storage';
 import { useDarkMode } from '@/common/hooks/useDarkMode';
 import Info from './pages/settings/Information';
