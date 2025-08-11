@@ -25,12 +25,23 @@ import Layout from './layouts/Layout';
 import log from 'loglevel';
 import Common from '@/common/common';
 import useSettingStore from '@/common/store/useSettingStore';
+import CollectionViewerTable from './components/CollectionViewerTable';
+import CollectionViewerImage from './components/CollectionViewerImage';
 
 const router = createHashRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
       <Route path="/" element={<Welcome />} />
-      <Route path="/:collectionId" element={<Viewer />} loader={loader}></Route>
+      <Route path="/:collectionId" element={<Viewer />} loader={loader}>
+        <Route index element={<CollectionViewerTable />} />
+        <Route path="all" element={<CollectionViewerTable />} />
+        <Route path="text" element={<CollectionViewerTable type="text" />} />
+        <Route path="image" element={<CollectionViewerImage />} />
+        <Route
+          path="bookmark"
+          element={<CollectionViewerTable type="bookmark" />}
+        />
+      </Route>
       <Route path="setting" element={<Settings />}>
         <Route index element={<General />} />
         <Route path="general" element={<General />} />

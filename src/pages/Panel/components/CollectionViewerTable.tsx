@@ -32,10 +32,20 @@ import { useParams } from 'react-router-dom';
 import useSettingStore from '@/common/store/useSettingStore';
 
 interface Prop {
-  data: Array<ICollectionItem>;
+  type?: 'image' | 'text' | 'bookmark';
 }
 
-function CollectionViewerTable({ data }: Prop) {
+function CollectionViewerTable({ type }: Prop) {
+  let collection = useCollectionStore((state) => state.collection);
+
+  let data = useMemo(() => {
+    if (type === undefined) {
+      return collection?.items || [];
+    }
+
+    return collection?.items.filter((item) => item.type === type) || [];
+  }, [collection, type]);
+
   let { collectionId } = useParams();
 
   const { setting, updateSetting } = useSettingStore();

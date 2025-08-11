@@ -19,12 +19,15 @@ import ImageItem from '@Panel/components/viewer/ImageItem';
 import log from 'loglevel';
 import useSettingStore from '@/common/store/useSettingStore';
 
-interface Prop {
-  data: Array<ICollectionItem>;
-  collectionName: string;
-}
+function CollectionViewerImage() {
+  let collection = useCollectionStore((state) => state.collection);
 
-function CollectionViewerImage({ data, collectionName }: Prop) {
+  let data = useMemo(() => {
+    return collection?.items.filter((item) => item.type === 'image') || [];
+  }, [collection]);
+
+  let collectionName = collection?.name || 'Collection';
+
   const { setting, updateSetting } = useSettingStore();
 
   const columns = setting!.viewingOption.imageColumns ?? 3;

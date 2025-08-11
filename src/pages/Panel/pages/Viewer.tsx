@@ -9,7 +9,10 @@ import CollectionViewerTable from '@Panel/components/CollectionViewerTable';
 import _ from 'lodash';
 import CollectionImageViewer from '@Panel/components/CollectionViewerImage';
 import {
+  Link,
   LoaderFunctionArgs,
+  Navigate,
+  Outlet,
   redirect,
   useLoaderData,
   useNavigate,
@@ -96,9 +99,7 @@ function Viewer() {
   }, [collection, collectionType]);
 
   useEffect(() => {
-    setCollection(loaderData);
     setCollectionName(loaderData.name);
-    setCollectionType(0);
   }, [loaderData]);
 
   const removeCollection = async () => {
@@ -123,20 +124,6 @@ function Viewer() {
     setEditCollectionName(false);
     fetchCollectionsList();
   };
-
-  const changeType = (_type: number) => {
-    setCollectionType(_type);
-  };
-
-  let viewer = useMemo(() => {
-    return <CollectionViewerTable data={data} />;
-  }, [data]);
-
-  let imageViewer = useMemo(() => {
-    return (
-      <CollectionImageViewer data={data} collectionName={collection.name} />
-    );
-  }, [data]);
 
   return (
     <SidebarInset>
@@ -255,7 +242,10 @@ function Viewer() {
                   : 'bg-white dark:bg-gray-800'
               } w-1/4 px-5 py-3 font-semibold border rounded-l-lg border-gray-300`}
               type="button"
-              onClick={() => changeType(0)}
+              onClick={() => {
+                setCollectionType(0);
+                navigate(`/${collection.id}`);
+              }}
             >
               📕 All ({itemCount.all})
             </button>
@@ -267,7 +257,10 @@ function Viewer() {
                   : 'bg-white dark:bg-gray-800'
               } w-1/4 px-5 py-3 font-semibold border-y border-r border-gray-300`}
               type="button"
-              onClick={() => changeType(1)}
+              onClick={() => {
+                setCollectionType(1);
+                navigate(`/${collection.id}/text`);
+              }}
             >
               📝 Text ({itemCount.text})
             </button>
@@ -279,7 +272,10 @@ function Viewer() {
                   : 'bg-white dark:bg-gray-800'
               } w-1/4 px-5 py-3 font-semibold border-y border-r border-gray-300`}
               type="button"
-              onClick={() => changeType(2)}
+              onClick={() => {
+                setCollectionType(2);
+                navigate(`/${collection.id}/image`);
+              }}
             >
               🖼️ Image ({itemCount.image})
             </button>
@@ -291,14 +287,17 @@ function Viewer() {
                   : 'bg-white dark:bg-gray-800'
               } w-1/4 px-5 py-3 font-semibold border-r border-y rounded-r-lg border-gray-300`}
               type="button"
-              onClick={() => changeType(3)}
+              onClick={() => {
+                setCollectionType(3);
+                navigate(`/${collection.id}/bookmark`);
+              }}
             >
               🔖 Bookmark ({itemCount.bookmark})
             </button>
           </div>
 
           <div className="py-8">
-            {collectionType == 2 ? imageViewer : viewer}
+            <Outlet />
           </div>
         </div>
       </div>
