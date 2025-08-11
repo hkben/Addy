@@ -1,7 +1,7 @@
 import { SidebarInset } from '@/components/ui/sidebar';
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './Header';
+import Header from '../layouts/Header';
 
 class Settings extends React.Component<{}> {
   render() {
