@@ -3,9 +3,11 @@ import { ICollection } from '../interface';
 import { Collection, CollectionItem } from '../storage';
 import useCollectionsListStore from './useCollectionsListStore';
 import { immer } from 'zustand/middleware/immer';
+import log from 'loglevel';
 
 interface Store {
   collection: ICollection;
+  fetchCollection: (collectionId: string) => Promise<boolean>;
   setCollection: (collection: ICollection) => void;
   removeCollectionItem: (_collectionId: string, _item: string) => void;
   editCollectionItem: (
@@ -27,6 +29,20 @@ const useCollectionStore = create<Store>()(
     collection: {} as ICollection,
     setCollection: (_collection) => {
       set({ collection: _collection });
+    },
+    fetchCollection: async (collectionId: string) => {
+      try {
+        const collection = await Collection.fetch(collectionId);
+
+        log.debug(`Loading ${collectionId}`);
+        log.debug(`Name: ${collection.name} Items: ${collection.items.length}`);
+
+        set({ collection });
+        return true;
+      } catch (error) {
+        log.error(`Failed to fetch collection: ${error}`);
+        return false;
+      }
     },
     removeCollectionItem: async (_collectionId, _item) => {
       let result = await CollectionItem.delete(_collectionId, _item);

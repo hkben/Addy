@@ -26,16 +26,15 @@ import log from 'loglevel';
 import useSettingStore from '@/common/store/useSettingStore';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
-  let collection = await Collection.fetch(params.collectionId!);
+  var result = await useCollectionStore
+    .getState()
+    .fetchCollection(params.collectionId!);
 
-  log.debug(`Loading ${params.collectionId}`);
-
-  log.debug(`Name:${collection.name} Items:${collection.items.length}`);
-  return collection;
+  return result;
 }
 
 function CollectionViewer() {
-  const loaderData = useLoaderData() as ICollection;
+  const loaderData = useCollectionStore((state) => state.collection);
 
   const navigate = useNavigate();
 
