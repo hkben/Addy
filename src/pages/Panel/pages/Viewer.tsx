@@ -35,7 +35,7 @@ export async function loader({ params }: LoaderFunctionArgs<any>) {
   return result;
 }
 
-function CollectionViewer() {
+function Viewer() {
   const loaderData = useCollectionStore((state) => state.collection);
 
   const navigate = useNavigate();
@@ -306,4 +306,4 @@ function CollectionViewer() {
   );
 }
 
-export default CollectionViewer;
+export default Viewer;

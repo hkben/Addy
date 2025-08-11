@@ -20,7 +20,7 @@ import Info from './pages/settings/Information';
 import Information from './pages/settings/Information';
 import Welcome from './pages/Welcome';
 import SyncSettings from './components/sync/SyncSettings';
-import CollectionViewer, { loader } from './pages/CollectionViewer';
+import Viewer, { loader } from './pages/Viewer';
 import { MoonIcon } from '@heroicons/react/24/solid';
 import Layout from './layouts/Layout';
 import log from 'loglevel';
@@ -32,11 +32,7 @@ const router = createHashRouter(
     <Route path="/" element={<Layout />}>
       <Route path="/" element={<Home />}>
         <Route index element={<Welcome />} />
-        <Route
-          path="/:collectionId"
-          loader={loader}
-          element={<CollectionViewer />}
-        />
+        <Route path="/:collectionId" loader={loader} element={<Viewer />} />
       </Route>
       <Route path="setting" element={<Settings />}>
         <Route index element={<General />} />
