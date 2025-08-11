@@ -11,7 +11,6 @@ import {
 import { ISetting } from '@/common/interface';
 import Export from './pages/settings/Export';
 import General from './pages/settings/General';
-import Home from './layouts/Home';
 import Import from './pages/settings/Import';
 import Settings from './layouts/Settings';
 import { Setting, Storage } from '@/common/storage';
@@ -30,10 +29,8 @@ import useSettingStore from '@/common/store/useSettingStore';
 const router = createHashRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
-      <Route path="/" element={<Home />}>
-        <Route index element={<Welcome />} />
-        <Route path="/:collectionId" loader={loader} element={<Viewer />} />
-      </Route>
+      <Route path="/" element={<Welcome />} />
+      <Route path="/:collectionId" element={<Viewer />} loader={loader}></Route>
       <Route path="setting" element={<Settings />}>
         <Route index element={<General />} />
         <Route path="general" element={<General />} />
