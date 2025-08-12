@@ -28,6 +28,7 @@ import useSettingStore from '@/common/store/useSettingStore';
 import { SidebarInset } from '@/components/ui/sidebar';
 import Header from '../layouts/Header';
 import TypeSelector from '../components/viewer/TypeSelector';
+import ColorSelector from '../components/viewer/ColorSelector';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   var result = await useCollectionStore
@@ -150,50 +151,7 @@ function Viewer() {
               <TrashIcon className="h-6 w-6 m-auto" strokeWidth={2} />
             </button>
 
-            <div
-              className={`${
-                collection.color == 0 || collection.color == null
-                  ? ''
-                  : 'border-dotted '
-              } rounded-full my-auto h-6 w-6 cursor-pointer bg-transparent border-2 border-gray-700 dark:border-white`}
-              onClick={() => changeCollectionColor(collection.id, 0)}
-            ></div>
-            <div
-              className={`${
-                collection.color == 1 ? 'active-color' : ''
-              } rounded-full my-auto h-6 w-6 cursor-pointer color-1`}
-              onClick={() => changeCollectionColor(collection.id, 1)}
-            ></div>
-            <div
-              className={`${
-                collection.color == 2 ? 'active-color' : ''
-              } rounded-full my-auto h-6 w-6 cursor-pointer color-2`}
-              onClick={() => changeCollectionColor(collection.id, 2)}
-            ></div>
-            <div
-              className={`${
-                collection.color == 3 ? 'active-color' : ''
-              } rounded-full my-auto h-6 w-6 cursor-pointer color-3`}
-              onClick={() => changeCollectionColor(collection.id, 3)}
-            ></div>
-            <div
-              className={`${
-                collection.color == 4 ? 'active-color' : ''
-              } rounded-full my-auto h-6 w-6 cursor-pointer color-4`}
-              onClick={() => changeCollectionColor(collection.id, 4)}
-            ></div>
-            <div
-              className={`${
-                collection.color == 5 ? 'active-color' : ''
-              } rounded-full my-auto h-6 w-6 cursor-pointer color-5`}
-              onClick={() => changeCollectionColor(collection.id, 5)}
-            ></div>
-            <div
-              className={`${
-                collection.color == 6 ? 'active-color' : ''
-              } rounded-full my-auto h-6 w-6 cursor-pointer color-6`}
-              onClick={() => changeCollectionColor(collection.id, 6)}
-            ></div>
+            <ColorSelector />
           </div>
 
           <TypeSelector />
