@@ -89,7 +89,7 @@ function Viewer() {
 
   return (
     <SidebarInset>
-      <Header title="Addy" />
+      <Header title={collection.name} color={collection.color} />
       <div className="flex flex-1 flex-col gap-4 px-4 py-5">
         <div className="bg-muted/50 mx-auto h-full w-full max-w-5xl rounded-xl p-8">
           <div className="w-full py-5 flex gap-2.5">

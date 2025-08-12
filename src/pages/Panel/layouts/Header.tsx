@@ -4,11 +4,12 @@ import { Separator } from '@/components/ui/separator';
 
 interface Props {
   title: string;
+  color?: number;
   description?: string;
   actions?: React.ReactNode;
 }
 
-function Header({ title, description, actions }: Props) {
+function Header({ title, color, description, actions }: Props) {
   return (
     <header className="flex sticky top-0 h-14 shrink-0 items-center gap-2 bg-background border-b px-3">
       <div className="flex flex-1 items-center gap-2">
@@ -17,14 +18,26 @@ function Header({ title, description, actions }: Props) {
           orientation="vertical"
           className="mr-2 data-[orientation=vertical]:h-4"
         />
-        <h1 className="text-lg font-semibold">{title}</h1>
-        {description && (
-          <span className="text-muted-foreground hidden font-medium md:inline-block ml-2">
-            {description}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          <h1 className="text-lg font-semibold">{title}</h1>
+          {color !== undefined && color !== 0 ? (
+            <span
+              className={`mx-1 rounded-full inline-block h-3 w-3 color-${color}`}
+            ></span>
+          ) : null}
+        </div>
+
+        <div className="ml-auto px-3">
+          <div className="flex items-center gap-2 text-sm">
+            {description && (
+              <span className="text-muted-foreground hidden font-medium md:inline-block ml-2">
+                {description}
+              </span>
+            )}
+            {actions}
+          </div>
+        </div>
       </div>
-      <div className="ml-auto flex items-center gap-2">{actions}</div>
     </header>
   );
 }
