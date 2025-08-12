@@ -19,7 +19,7 @@ import ImageItem from '@Panel/components/viewer/ImageItem';
 import log from 'loglevel';
 import useSettingStore from '@/common/store/useSettingStore';
 
-function CollectionViewerImage() {
+function ViewerImageGrid() {
   let collection = useCollectionStore((state) => state.collection);
 
   let data = useMemo(() => {
@@ -204,4 +204,4 @@ function CollectionViewerImage() {
   );
 }
 
-export default CollectionViewerImage;
+export default ViewerImageGrid;

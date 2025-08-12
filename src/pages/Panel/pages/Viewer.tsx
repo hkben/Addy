@@ -5,9 +5,7 @@ import {
   IViewingOption,
 } from '@/common/interface';
 import { Collection, CollectionItem, Setting, Storage } from '@/common/storage';
-import CollectionViewerTable from '@Panel/components/CollectionViewerTable';
 import _ from 'lodash';
-import CollectionImageViewer from '@Panel/components/CollectionViewerImage';
 import {
   Link,
   LoaderFunctionArgs,

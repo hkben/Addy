@@ -35,7 +35,7 @@ interface Prop {
   type?: 'image' | 'text' | 'bookmark';
 }
 
-function CollectionViewerTable({ type }: Prop) {
+function ViewerTable({ type }: Prop) {
   let collection = useCollectionStore((state) => state.collection);
 
   let data = useMemo(() => {
@@ -556,4 +556,4 @@ function CollectionViewerTable({ type }: Prop) {
   );
 }
 
-export default CollectionViewerTable;
+export default ViewerTable;
