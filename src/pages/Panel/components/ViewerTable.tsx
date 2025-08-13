@@ -30,6 +30,7 @@ import RowItem from '@Panel/components/viewer/RowItem';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
 import { useParams } from 'react-router-dom';
 import useSettingStore from '@/common/store/useSettingStore';
+import TableOption from './viewer/table/TableOption';
 
 interface Prop {
   type?: 'image' | 'text' | 'bookmark';
@@ -77,17 +78,6 @@ function ViewerTable({ type }: Prop) {
   let removeCollectionItem = useCollectionStore(
     (state) => state.removeCollectionItem
   );
-
-  const handleSpacingSelection = async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    let value = event.target.value;
-
-    let viewingOption = { ...setting!.viewingOption };
-    viewingOption.spacing = value;
-
-    await updateSetting({ viewingOption });
-  };
 
   const columns: ColumnDef<ICollectionItem>[] = useMemo(
     () => [
@@ -359,46 +349,10 @@ function ViewerTable({ type }: Prop) {
 
   return (
     <div className="">
-      <div className="w-full">
-        <div className="w-4/6 inline-block">
-          {table.getAllLeafColumns().map((column) => (
-            <div key={column.id} className="inline-block text-base p-2">
-              <input
-                type="checkbox"
-                className="w-4 h-4 border border-gray-200 rounded-md"
-                {...{
-                  checked: column.getIsVisible(),
-                  onChange: column.getToggleVisibilityHandler(),
-                }}
-              />
-              <span className="ml-3 font-semibold">{column.id}</span>
-            </div>
-          ))}
-        </div>
-
-        <div className="w-2/6 inline-block text-base ml-auto my-auto align-top text-right">
-          <label className="px-4" htmlFor="spaceing">
-            Spacing
-          </label>
-
-          <select
-            className="h-10 px-4 pr-10 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-            id="spaceing"
-            value={setting!.viewingOption?.spacing ?? 'normal'}
-            onChange={handleSpacingSelection}
-          >
-            <option value="normal">Normal</option>
-            <option value="compact">Compact</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="w-full">
-        <input
-          className="w-2/6 p-2 mt-2 mb-4 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-          value={globalFilter}
-          onChange={(e) => setGlobalFilter(e.target.value)}
-          placeholder="Search Rows..."
+      <div className="w-full mb-4">
+        <TableOption
+          table={table}
+          onKeywordChange={(value) => setGlobalFilter(value)}
         />
       </div>
 
