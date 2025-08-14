@@ -20,18 +20,22 @@ import _ from 'lodash';
 import { Tooltip } from 'react-tooltip';
 import TableEditableCell from './TableEditableCell';
 import ImageTooltip from './ImageTooltip';
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  ArrowTopRightOnSquareIcon,
-  XCircleIcon,
-} from '@heroicons/react/24/outline';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import RowItem from '@Panel/components/viewer/RowItem';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
 import { useParams } from 'react-router-dom';
 import useSettingStore from '@/common/store/useSettingStore';
 import TableOption from './viewer/table/TableOption';
 import TablePagination from './viewer/table/TablePagination';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { LinkIcon, MoreHorizontal, Trash2Icon } from 'lucide-react';
 
 interface Prop {
   type?: 'image' | 'text' | 'bookmark';
@@ -221,40 +225,54 @@ function ViewerTable({ type }: Prop) {
         enableGlobalFilter: false,
       },
       {
-        header: 'Source',
-        meta: {
-          className: 'text-center w-20',
+        id: 'action',
+        enableSorting: false,
+        enableHiding: false,
+        cell: ({ row }) => {
+          return (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0">
+                  <MoreHorizontal />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-[150px]" align="end">
+                {/* <DropdownMenuItem
+                 className="cursor-pointer"
+                 >
+                  <FileCodeIcon />
+                  <span>Edit</span>
+                </DropdownMenuItem> */}
+                <DropdownMenuItem className="cursor-pointer" asChild>
+                  <a
+                    href={row.original.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <LinkIcon />
+                    <span>View Source</span>
+                  </a>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  variant="destructive"
+                  className="cursor-pointer"
+                  onClick={() => {
+                    const confirmBox = window.confirm(
+                      'Do you really want to delete this item?'
+                    );
+                    if (confirmBox === true && collectionId != null) {
+                      removeCollectionItem(collectionId, row.original.id);
+                    }
+                  }}
+                >
+                  <Trash2Icon />
+                  <span>Delete</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          );
         },
-        accessorFn: (row) => (
-          <a
-            className="inline-block align-middle"
-            href={row.source}
-            target="_blank"
-          >
-            <ArrowTopRightOnSquareIcon className="h-6 w-6" strokeWidth={2} />
-          </a>
-        ),
-      },
-      {
-        header: 'Delete',
-        meta: {
-          className: 'text-center w-20',
-        },
-        accessorFn: (row) => (
-          <button
-            className="inline-block align-middle"
-            onClick={() => {
-              const confirmBox = window.confirm(
-                'Do you really want to delete this item?'
-              );
-              if (confirmBox === true && collectionId != null) {
-                removeCollectionItem(collectionId, row.id);
-              }
-            }}
-          >
-            <XCircleIcon className="h-6 w-6" strokeWidth={2} />
-          </button>
-        ),
         enableGlobalFilter: false,
       },
     ],
