@@ -91,7 +91,7 @@ function ViewerTable({ type }: Prop) {
         enableSorting: false,
         enableHiding: false,
         meta: {
-          className: 'cursor-pointer select-none px-2',
+          className: 'w-10 cursor-pointer select-none px-2',
         },
         cell: ({ row }) => {
           return <MenuIcon className="size-5" />;
@@ -238,6 +238,9 @@ function ViewerTable({ type }: Prop) {
       },
       {
         id: 'action',
+        meta: {
+          className: 'w-10',
+        },
         enableSorting: false,
         enableHiding: false,
         cell: ({ row }) => {
