@@ -29,14 +29,12 @@ function RowItem({ row }: Prop) {
       key={row.id}
       ref={previewRef}
     >
-      <td ref={dragRef} className="w-1 cursor-pointer">
-        <Bars3Icon className="w-5 h-5" strokeWidth={2} />
-      </td>
       {row.getVisibleCells().map((cell) => {
         return (
           <td
             className={`${cell.column.columnDef.meta?.className ?? ''}`}
             key={cell.id}
+            ref={cell.column.id === 'drag' ? dragRef : undefined}
           >
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
           </td>

@@ -35,7 +35,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { LinkIcon, MoreHorizontal, Trash2Icon } from 'lucide-react';
+import { LinkIcon, MenuIcon, MoreHorizontal, Trash2Icon } from 'lucide-react';
 
 interface Prop {
   type?: 'image' | 'text' | 'bookmark';
@@ -86,6 +86,18 @@ function ViewerTable({ type }: Prop) {
 
   const columns: ColumnDef<ICollectionItem>[] = useMemo(
     () => [
+      {
+        id: 'drag',
+        enableSorting: false,
+        enableHiding: false,
+        meta: {
+          className: 'cursor-pointer select-none px-2',
+        },
+        cell: ({ row }) => {
+          return <MenuIcon className="size-5" />;
+        },
+        enableGlobalFilter: false,
+      },
       {
         header: 'Content',
         meta: {
@@ -399,7 +411,6 @@ function ViewerTable({ type }: Prop) {
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              <th className="h-16 py-4 text-md whitespace-pre"></th>
               {headerGroup.headers.map((header) => (
                 <th
                   className="h-16 py-4 text-md whitespace-pre"
