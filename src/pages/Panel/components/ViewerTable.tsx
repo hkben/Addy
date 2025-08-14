@@ -35,7 +35,21 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { LinkIcon, MenuIcon, MoreHorizontal, Trash2Icon } from 'lucide-react';
+import {
+  ArrowUpAZIcon,
+  ArrowDownAZIcon,
+  LinkIcon,
+  MenuIcon,
+  MoreHorizontal,
+  Trash2Icon,
+} from 'lucide-react';
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 interface Prop {
   type?: 'image' | 'text' | 'bookmark';
@@ -404,62 +418,52 @@ function ViewerTable({ type }: Prop) {
         }}
       />
 
-      <table
-        className={`table-auto w-full max-w-full text-base divide-y-2 divide-gray-200 dark:divide-gray-500 ${
-          setting!.viewingOption?.spacing == 'normal'
-            ? 'table-td-y-4'
-            : 'table-td-y-1'
-        }`}
-      >
-        <thead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th
-                  className="h-16 py-4 text-md whitespace-pre"
-                  key={header.id}
-                  colSpan={header.colSpan}
-                >
-                  <div
-                    {...{
-                      className: header.column.getCanSort()
+      <div className="rounded-md border">
+        <Table
+          className={`table-auto ${
+            setting!.viewingOption?.spacing == 'normal'
+              ? 'table-td-y-4'
+              : 'table-td-y-1'
+          }`}
+        >
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    className={`h-16 py-4 whitespace-pre ${
+                      header.column.getCanSort()
                         ? 'cursor-pointer select-none'
-                        : '',
-                      onClick: header.column.getToggleSortingHandler(),
-                    }}
+                        : ''
+                    }`}
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    onClick={header.column.getToggleSortingHandler()}
                   >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                    <span>
-                      {{
-                        asc: (
-                          <ChevronDownIcon
-                            className="h-6 w-6 inline ml-2"
-                            strokeWidth={2}
-                          />
-                        ),
-                        desc: (
-                          <ChevronUpIcon
-                            className="h-6 w-6 inline ml-2"
-                            strokeWidth={2}
-                          />
-                        ),
-                      }[header.column.getIsSorted() as string] ?? null}
-                    </span>
-                  </div>
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody className="divide-y divide-gray-200 dark:divide-gray-500">
-          {table.getRowModel().rows.map((row) => (
-            <RowItem key={row.id} row={row} />
-          ))}
-        </tbody>
-      </table>
+                    <div className="flex items-center justify-center gap-2">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                      <span>
+                        {{
+                          asc: <ArrowUpAZIcon className="size-6" />,
+                          desc: <ArrowDownAZIcon className="size-6" />,
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </span>
+                    </div>
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <RowItem key={row.id} row={row} />
+            ))}
+          </TableBody>
+        </Table>
+      </div>
 
       <div className="w-full mt-8">
         <TablePagination table={table} />
