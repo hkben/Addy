@@ -31,6 +31,7 @@ import useCollectionStore from '@/common/hooks/useCollectionStore';
 import { useParams } from 'react-router-dom';
 import useSettingStore from '@/common/store/useSettingStore';
 import TableOption from './viewer/table/TableOption';
+import TablePagination from './viewer/table/TablePagination';
 
 interface Prop {
   type?: 'image' | 'text' | 'bookmark';
@@ -348,7 +349,7 @@ function ViewerTable({ type }: Prop) {
   }, [pagination]);
 
   return (
-    <div className="">
+    <div className="w-full">
       <div className="w-full mb-4">
         <TableOption
           table={table}
@@ -428,83 +429,8 @@ function ViewerTable({ type }: Prop) {
         </tbody>
       </table>
 
-      <div className="w-full flex mt-4">
-        <div className="w-5/6 flex gap-2">
-          <button
-            className="p-2 px-3 text-base text-white rounded-md items-center cursor-pointer border"
-            onClick={() => table.firstPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            {'<<'}
-          </button>
-          <button
-            className="p-2 px-3 text-base text-white rounded-md items-center cursor-pointer border"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            {'<'}
-          </button>
-          <button
-            className="p-2 px-3 text-base text-white rounded-md items-center cursor-pointer border"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            {'>'}
-          </button>
-          <button
-            className="p-2 px-3 text-base text-white rounded-md items-center cursor-pointer border"
-            onClick={() => table.lastPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            {'>>'}
-          </button>
-          <div className="inline-block text-base ml-2">
-            <span className="items-center gap-1">
-              Page
-              <strong>
-                {table.getState().pagination.pageIndex + 1} of{' '}
-                {table.getPageCount().toLocaleString()}
-              </strong>
-            </span>
-            <span className="items-center">| Go to page:</span>
-            <input
-              type="number"
-              min="1"
-              max={table.getPageCount()}
-              defaultValue={table.getState().pagination.pageIndex + 1}
-              onChange={(e) => {
-                const page = e.target.value ? Number(e.target.value) - 1 : 0;
-                table.setPageIndex(page);
-              }}
-              className="placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800 ml-2"
-            />
-          </div>
-        </div>
-
-        <div className="w-1/6 text-base align-top text-right">
-          <select
-            className="h-10 px-4 pr-10 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-            value={table.getState().pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
-            }}
-          >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                Show {pageSize}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div className="w-full mt-2">
-        <div className="text-base">
-          <p>
-            Showing {table.getRowModel().rows.length.toLocaleString()} of{' '}
-            {table.getRowCount().toLocaleString()} Rows
-          </p>
-        </div>
+      <div className="w-full mt-8">
+        <TablePagination table={table} />
       </div>
     </div>
   );
