@@ -1,16 +1,24 @@
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { ICollectionItem } from '@/common/interface';
-import {
-  MagnifyingGlassIcon,
-  ArrowTopRightOnSquareIcon,
-  XCircleIcon,
-} from '@heroicons/react/24/outline';
-import { format } from 'date-fns';
-import { Bars3Icon } from '@heroicons/react/24/solid';
 import { useParams } from 'react-router-dom';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
 import useSettingStore from '@/common/store/useSettingStore';
+import {
+  LinkIcon,
+  MenuIcon,
+  MoreHorizontal,
+  ScanSearchIcon,
+  Trash2Icon,
+} from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
 
 interface Prop {
   item: ICollectionItem;
@@ -60,58 +68,71 @@ function ImageItem({ item }: Prop) {
   return (
     <div
       key={item.id}
-      className={`flex flex-col p-2 bg-gray-200 dark:bg-gray-700 rounded-md box-content
+      className={`rounded-md border grid overflow-hidden
       ${isDragging ? 'opacity-50' : ''}
       `}
       ref={previewRef}
     >
-      <div className="flex py-2 justify-start text-base font-bold">
-        <span ref={dragRef} className="cursor-pointer">
-          <Bars3Icon className="w-6 h-6" strokeWidth={2} />
-        </span>
+      <div className="w-full h-10 flex justify-between items-center text-base font-bold">
+        <div ref={dragRef} className="w-10 cursor-pointer select-none px-2">
+          <MenuIcon className="size-5" />
+        </div>
 
-        <span>{format(item.createTime, 'yyyy-MM-dd hh:mm a')}</span>
-        <span className="flex ml-auto">
-          <a
-            className="inline-block align-middle m-auto"
-            href={imageSearchURL()}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <MagnifyingGlassIcon className="w-6 h-6" strokeWidth={2} />
-          </a>
-          <a
-            className="inline-block align-middle m-auto"
-            href={item.source}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <ArrowTopRightOnSquareIcon className="w-6 h-6" strokeWidth={2} />
-          </a>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <MoreHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-[150px]" align="end">
+            {/* <DropdownMenuItem
+                 className="cursor-pointer"
+                 >
+                  <FileCodeIcon />
+                  <span>Edit</span>
+                </DropdownMenuItem> */}
+            <DropdownMenuItem className="cursor-pointer" asChild>
+              <a href={item.source} target="_blank" rel="noopener noreferrer">
+                <LinkIcon />
+                <span>View Source</span>
+              </a>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="cursor-pointer" asChild>
+              <a
+                href={imageSearchURL()}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ScanSearchIcon />
+                <span>Image Search</span>
+              </a>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              variant="destructive"
+              className="cursor-pointer"
+              onClick={() => {
+                const confirmBox = window.confirm(
+                  'Do you really want to delete this item?'
+                );
+                if (confirmBox === true && collectionId != null) {
+                  removeCollectionItem(collectionId, item.id);
+                }
+              }}
+            >
+              <Trash2Icon />
+              <span>Delete</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
 
-          <button
-            className="inline-block align-middle m-auto"
-            onClick={() => {
-              const confirmBox = window.confirm(
-                'Do you really want to delete this item?'
-              );
-              if (confirmBox === true && collectionId != null) {
-                removeCollectionItem(collectionId, item.id);
-              }
-            }}
-          >
-            <XCircleIcon className="w-6 h-6" strokeWidth={2} />
-          </button>
-        </span>
-      </div>
-      <div className="h-full flex items-center">
-        <img
-          className="self-center"
-          src={item.content}
-          loading="lazy"
-          alt={item.id}
-        />
-      </div>
+      <img
+        className="mx-auto overflow-hidden"
+        src={item.content}
+        loading="lazy"
+        alt={item.id}
+      />
     </div>
   );
 }

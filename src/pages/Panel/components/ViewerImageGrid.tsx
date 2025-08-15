@@ -1,23 +1,25 @@
 import React, { useEffect, useMemo } from 'react';
 import { ICollectionItem } from '@/common/interface';
-import { format } from 'date-fns';
-import jsZip from 'jszip';
-import Common from '@/common/common';
-import { Setting } from '@/common/storage';
+import { isBefore, isEqual } from 'date-fns';
 import _ from 'lodash';
-import Browser from 'webextension-polyfill';
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-  MagnifyingGlassIcon,
-  ArrowTopRightOnSquareIcon,
-  XCircleIcon,
-} from '@heroicons/react/24/outline';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
-import { useParams } from 'react-router-dom';
 import ImageItem from '@Panel/components/viewer/ImageItem';
-import log from 'loglevel';
 import useSettingStore from '@/common/store/useSettingStore';
+import {
+  ColumnDef,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  PaginationState,
+  Row,
+  SortingState,
+  useReactTable,
+  VisibilityState,
+} from '@tanstack/react-table';
+import GridOption from './viewer/grid/GridOption';
+import TablePagination from './viewer/table/TablePagination';
+
 
 function ViewerImageGrid() {
   let collection = useCollectionStore((state) => state.collection);
@@ -26,179 +28,172 @@ function ViewerImageGrid() {
     return collection?.items.filter((item) => item.type === 'image') || [];
   }, [collection]);
 
-  let collectionName = collection?.name || 'Collection';
-
   const { setting, updateSetting } = useSettingStore();
 
-  const columns = setting!.viewingOption.imageColumns ?? 3;
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>(() => {
+      // Initialize column visibility on component mount
+      const _columnVisibility: VisibilityState = {};
 
-  const [isDownloading, setIsDownloading] = React.useState(false);
+      setting!.viewingOption.hiddenColumns.forEach((value: string) => {
+        _columnVisibility[value] = false;
+      });
 
-  const [downloadingItem, setDownloadingItem] = React.useState(0);
+      return _columnVisibility;
+    });
 
-  const [isSortedDesc, setIsSortedDesc] = React.useState(true);
+  const [sorting, setSorting] = React.useState<SortingState>(() => {
+    // Initialize sorting state on component mount
+    return setting!.viewingOption.sortBy || [];
+  });
 
-  const [sortedData, setSortedData] = React.useState(
-    [] as Array<ICollectionItem>
+  const [pagination, setPagination] = React.useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: setting!.viewingOption.pageSize || 20,
+  });
+
+  const [globalFilter, setGlobalFilter] = React.useState('');
+
+  const numberOfItems = setting!.viewingOption.imageColumns ?? 3;
+
+  const columns: ColumnDef<ICollectionItem>[] = useMemo(
+    () => [
+      {
+        header: 'Content',
+        accessorFn: (row) => {
+          return row.content;
+        },
+      },
+      {
+        header: 'Created Time',
+        accessorFn: (row) => {
+          return row.createTime;
+        },
+        sortingFn: (a: Row<ICollectionItem>, b: Row<ICollectionItem>) => {
+          var _a = a.original.createTime;
+          var _b = b.original.createTime;
+          if (isBefore(_a, _b) || isEqual(_a, _b)) {
+            return 1;
+          } else {
+            return -1;
+          }
+        },
+        enableGlobalFilter: false,
+      },
+      {
+        header: 'Last Modified',
+        accessorFn: (row) => {
+          return row.modifyTime;
+        },
+        sortingFn: (a: Row<ICollectionItem>, b: Row<ICollectionItem>) => {
+          var _a = a.original.modifyTime;
+          var _b = b.original.modifyTime;
+          if (isBefore(_a, _b) || isEqual(_a, _b)) {
+            return 1;
+          } else {
+            return -1;
+          }
+        },
+        enableGlobalFilter: false,
+      },
+    ],
+    []
   );
 
-  const handleColumnsSelection = async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    let value = event.target.value;
-
-    let viewingOption = { ...setting!.viewingOption };
-    viewingOption.imageColumns = parseInt(value);
-
-    await updateSetting({ viewingOption });
-  };
+  const table = useReactTable<ICollectionItem>({
+    columns,
+    data,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onSortingChange: setSorting,
+    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: setPagination,
+    getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: 'includesString',
+    state: {
+      columnVisibility,
+      sorting,
+      pagination,
+      globalFilter,
+    },
+  });
 
   useEffect(() => {
-    sortData();
-  }, [data, isSortedDesc]);
+    let updateHiddenColumns = async () => {
+      let _hiddenColumnsKeys = _.keys(
+        _.pickBy(columnVisibility, (value) => value == false)
+      );
 
-  const downloadAllImages = async () => {
-    if (isDownloading) {
-      return;
-    }
+      let viewingOption = { ...setting!.viewingOption };
 
-    setIsDownloading(true);
-
-    let zip = new jsZip();
-
-    for (const item of data) {
-      try {
-        let pathFileName = new URL(item.content).pathname
-          .split('/')
-          .pop()
-          ?.split('.');
-
-        let createTime = `${format(item.createTime, 'YYYY-MM-DD-HH-mm-ss')}`;
-
-        let name = `${createTime}`;
-
-        if (pathFileName != null && pathFileName.length > 1) {
-          name = `${pathFileName[0]}-${createTime}`;
-        }
-
-        let res = await fetch(item.content);
-        let blob = await res.blob();
-        let extension = Common.getExtensionByContentType(blob.type);
-        zip.file(`${name}${extension}`, blob, { base64: true });
-
-        setDownloadingItem((prev) => prev + 1);
-      } catch (error) {
-        log.error(error);
+      // If new hidden columns are equal to the current hidden columns, do nothing
+      if (_.isEqual(viewingOption.hiddenColumns, _hiddenColumnsKeys)) {
+        return;
       }
-    }
 
-    const content = await zip.generateAsync({ type: 'blob' });
-    const fileName = `${collectionName}-${format(
-      Date.now(),
-      'yyyy-MM-dd-HH-mm-ss'
-    )}`;
+      viewingOption.hiddenColumns = _hiddenColumnsKeys;
 
-    const href = await URL.createObjectURL(content);
-    const link = document.createElement('a');
-    link.href = href;
-    link.download = fileName + '.zip';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      await updateSetting({ viewingOption });
+    };
 
-    setIsDownloading(false);
-    setDownloadingItem(0);
-  };
+    updateHiddenColumns();
+  }, [columnVisibility]);
 
-  const changeSorting = () => {
-    let _isSortedDesc = isSortedDesc ? false : true;
-    setIsSortedDesc(_isSortedDesc);
-  };
+  useEffect(() => {
+    let updateSorting = async () => {
+      let _sorting = sorting || [];
 
-  const sortData = () => {
-    let _data = data;
+      let viewingOption = { ...setting!.viewingOption };
 
-    _data = _.sortBy(_data, (o) => o.createTime);
+      // If new sorting is equal to the current sorting, do nothing
+      if (_.isEqual(viewingOption.sortBy, _sorting)) {
+        return;
+      }
 
-    if (isSortedDesc == true) {
-      _data = _.reverse(_data);
-    }
+      viewingOption.sortBy = _sorting;
 
-    setSortedData(_data);
-  };
+      await updateSetting({ viewingOption });
+    };
 
+    updateSorting();
+  }, [sorting]);
+
+  useEffect(() => {
+    let updatePagination = async () => {
+      let viewingOption = { ...setting!.viewingOption };
+
+      // If new page size is equal to the current page size, do nothing
+      if (viewingOption.pageSize === pagination.pageSize) {
+        return;
+      }
+
+      viewingOption.pageSize = pagination.pageSize;
+
+      await updateSetting({ viewingOption });
+    };
+
+    updatePagination();
+  }, [pagination]);
   return (
-    <div>
-      <div className="w-full flex">
-        <div className="inline text-base mr-auto my-auto">
-          <label className="px-4" htmlFor="columns">
-            Columns
-          </label>
+    <div className="w-full">
+      <div className="w-full mb-4">
+        <GridOption
+          table={table}
+          onKeywordChange={(value) => setGlobalFilter(value)}
+        />
+      </div>
 
-          <select
-            className="h-10 px-4 pr-10 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-            id="columns"
-            value={columns}
-            onChange={handleColumnsSelection}
-          >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-            <option value="7">7</option>
-            <option value="8">8</option>
-          </select>
-        </div>
-
-        <div className="inline text-base ml-auto my-auto">
-          {data.length > 0 ? (
-            <button
-              className="p-2 px-10 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
-              onClick={() => {
-                const isFirefox = Browser.runtime
-                  .getURL('')
-                  .startsWith('moz-extension://');
-
-                if (isFirefox) {
-                  window.confirm(
-                    `Some images may not be downloaded in Firefox due to Firefox's CORS security policy.\n We suggest download images on Chrome.`
-                  );
-                }
-
-                downloadAllImages();
-              }}
-            >
-              {isDownloading
-                ? `${downloadingItem} / ${data.length} Items`
-                : 'Download All'}
-            </button>
-          ) : (
-            ''
-          )}
+      <div>
+        <div className={`py-3 grid gap-2 grid-cols-${numberOfItems}`}>
+          {table.getRowModel().rows.map((row) => (
+            <ImageItem key={row.id} item={row.original} />
+          ))}
         </div>
       </div>
 
-      <div className="w-full my-2 items-center text-xs rounded-md">
-        <button
-          className="w-1/4 px-5 py-3 font-semibold border rounded-lg border-gray-300"
-          type="button"
-          onClick={changeSorting}
-        >
-          Sort
-          {isSortedDesc == false ? (
-            <ChevronUpIcon className="h-4 w-4 inline mx-2" strokeWidth={2} />
-          ) : (
-            <ChevronDownIcon className="h-4 w-4 inline mx-2" strokeWidth={2} />
-          )}
-        </button>
-      </div>
-
-      <div className={`py-3 grid gap-2 grid-cols-${columns}`}>
-        {sortedData.map((item) => (
-          <ImageItem key={item.id} item={item} />
-        ))}
+      <div className="w-full mt-8">
+        <TablePagination table={table} />
       </div>
     </div>
   );
