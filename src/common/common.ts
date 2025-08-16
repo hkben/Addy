@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import log from 'loglevel';
 import Browser from 'webextension-polyfill';
 
@@ -73,6 +74,25 @@ class Common {
   static setLogLevel(debugMode: boolean) {
     log.setLevel(debugMode ? log.levels.TRACE : log.levels.INFO);
     log.debug('[Addy] Debug Mode:', debugMode);
+  }
+
+  static getChangedProps<T extends object>(
+    newData: T,
+    originalData: T
+  ): Partial<T> {
+    //get changed props
+    let changesPropKeys: string[] = [];
+
+    for (const key of Object.keys(newData)) {
+      let i = key as keyof T;
+      if (newData[i] !== originalData[i]) {
+        changesPropKeys.push(key);
+      }
+    }
+
+    let changes = _.pick(newData, changesPropKeys);
+
+    return changes;
   }
 }
 
