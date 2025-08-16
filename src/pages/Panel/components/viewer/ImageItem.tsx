@@ -4,6 +4,7 @@ import { ICollectionItem } from '@/common/interface';
 import { useParams } from 'react-router-dom';
 import useSettingStore from '@/common/store/useSettingStore';
 import {
+  FileCodeIcon,
   LinkIcon,
   MenuIcon,
   MoreHorizontal,
@@ -74,6 +75,14 @@ function ImageItem({ item }: Prop) {
     });
   };
 
+  const handleEditItem = () => {
+    setDialogEvent({
+      type: DialogEventType.Edit,
+      collectionId: collectionId,
+      itemId: item.id,
+    });
+  };
+
   return (
     <div
       key={item.id}
@@ -94,12 +103,13 @@ function ImageItem({ item }: Prop) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[150px]" align="end">
-            {/* <DropdownMenuItem
-                 className="cursor-pointer"
-                 >
-                  <FileCodeIcon />
-                  <span>Edit</span>
-                </DropdownMenuItem> */}
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={handleEditItem}
+            >
+              <FileCodeIcon />
+              <span>Edit</span>
+            </DropdownMenuItem>
             <DropdownMenuItem className="cursor-pointer" asChild>
               <a href={item.source} target="_blank" rel="noopener noreferrer">
                 <LinkIcon />

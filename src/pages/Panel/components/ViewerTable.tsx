@@ -41,6 +41,7 @@ import {
   MenuIcon,
   MoreHorizontal,
   Trash2Icon,
+  FileCodeIcon,
 } from 'lucide-react';
 import {
   Table,
@@ -106,6 +107,18 @@ function ViewerTable({ type }: Prop) {
 
     setDialogEvent({
       type: DialogEventType.Delete,
+      collectionId: collectionId,
+      itemId: itemId,
+    });
+  };
+
+  const handleEditItem = (itemId: string) => {
+    if (collectionId == null) {
+      return;
+    }
+
+    setDialogEvent({
+      type: DialogEventType.Edit,
       collectionId: collectionId,
       itemId: itemId,
     });
@@ -283,12 +296,15 @@ function ViewerTable({ type }: Prop) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[150px]" align="end">
-                {/* <DropdownMenuItem
-                 className="cursor-pointer"
-                 >
+                <DropdownMenuItem
+                  className="cursor-pointer"
+                  onClick={() => {
+                    handleEditItem(row.original.id);
+                  }}
+                >
                   <FileCodeIcon />
                   <span>Edit</span>
-                </DropdownMenuItem> */}
+                </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer" asChild>
                   <a
                     href={row.original.source}
@@ -317,7 +333,7 @@ function ViewerTable({ type }: Prop) {
         enableGlobalFilter: false,
       },
     ],
-    [handleDeleteItem, setting!.viewingOption?.timeDisplay]
+    [handleDeleteItem, handleEditItem, setting!.viewingOption?.timeDisplay]
   );
 
   const table = useReactTable<ICollectionItem>({
