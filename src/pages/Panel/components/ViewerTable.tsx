@@ -50,6 +50,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  useDialogEventStore,
+  DialogEventType,
+} from '@/common/store/useDialogEventStore';
 
 interface Prop {
   type?: 'image' | 'text' | 'bookmark';
@@ -57,6 +61,8 @@ interface Prop {
 
 function ViewerTable({ type }: Prop) {
   let collection = useCollectionStore((state) => state.collection);
+
+  const setDialogEvent = useDialogEventStore((state) => state.setDialogEvent);
 
   let data = useMemo(() => {
     if (type === undefined) {
@@ -94,9 +100,17 @@ function ViewerTable({ type }: Prop) {
 
   const [globalFilter, setGlobalFilter] = React.useState('');
 
-  let removeCollectionItem = useCollectionStore(
-    (state) => state.removeCollectionItem
-  );
+  const handleDeleteItem = (itemId: string) => {
+    if (collectionId == null) {
+      return;
+    }
+
+    setDialogEvent({
+      type: DialogEventType.Delete,
+      collectionId: collectionId,
+      itemId: itemId,
+    });
+  };
 
   const columns: ColumnDef<ICollectionItem>[] = useMemo(
     () => [
@@ -287,12 +301,7 @@ function ViewerTable({ type }: Prop) {
                   variant="destructive"
                   className="cursor-pointer"
                   onClick={() => {
-                    const confirmBox = window.confirm(
-                      'Do you really want to delete this item?'
-                    );
-                    if (confirmBox === true && collectionId != null) {
-                      removeCollectionItem(collectionId, row.original.id);
-                    }
+                    handleDeleteItem(row.original.id);
                   }}
                 >
                   <Trash2Icon />
@@ -305,7 +314,7 @@ function ViewerTable({ type }: Prop) {
         enableGlobalFilter: false,
       },
     ],
-    [collectionId, removeCollectionItem, setting!.viewingOption?.timeDisplay]
+    [handleDeleteItem, setting!.viewingOption?.timeDisplay]
   );
 
   const defaultColumn: Partial<ColumnDef<ICollectionItem>> = {

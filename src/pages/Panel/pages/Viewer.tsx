@@ -29,6 +29,7 @@ import { SidebarInset } from '@/components/ui/sidebar';
 import Header from '../layouts/Header';
 import TypeSelector from '../components/viewer/TypeSelector';
 import ColorSelector from '../components/viewer/ColorSelector';
+import DeleteItemDialog from '../components/viewer/dialog/DeleteItemDialog';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   var result = await useCollectionStore
@@ -90,6 +91,7 @@ function Viewer() {
 
   return (
     <SidebarInset>
+      <DeleteItemDialog />
       <Header title={collection.name} color={collection.color} />
       <div className="flex flex-1 flex-col gap-4 px-4 py-5">
         <div className="bg-muted/50 mx-auto h-full w-full max-w-5xl rounded-xl p-8">

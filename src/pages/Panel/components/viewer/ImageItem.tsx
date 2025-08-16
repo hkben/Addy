@@ -2,7 +2,6 @@ import React from 'react';
 import { useDrag } from 'react-dnd';
 import { ICollectionItem } from '@/common/interface';
 import { useParams } from 'react-router-dom';
-import useCollectionStore from '@/common/hooks/useCollectionStore';
 import useSettingStore from '@/common/store/useSettingStore';
 import {
   LinkIcon,
@@ -19,6 +18,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
+import {
+  useDialogEventStore,
+  DialogEventType,
+} from '@/common/store/useDialogEventStore';
 
 interface Prop {
   item: ICollectionItem;
@@ -29,9 +32,7 @@ function ImageItem({ item }: Prop) {
 
   const { setting } = useSettingStore();
 
-  let removeCollectionItem = useCollectionStore(
-    (state) => state.removeCollectionItem
-  );
+  const setDialogEvent = useDialogEventStore((state) => state.setDialogEvent);
 
   const [{ isDragging }, dragRef, previewRef] = useDrag({
     type: 'row',
@@ -63,6 +64,14 @@ function ImageItem({ item }: Prop) {
 
     //Google
     return `https://lens.google.com/uploadbyurl?url=${item.content}`;
+  };
+
+  const handleDeleteItem = () => {
+    setDialogEvent({
+      type: DialogEventType.Delete,
+      collectionId: collectionId,
+      itemId: item.id,
+    });
   };
 
   return (
@@ -111,14 +120,7 @@ function ImageItem({ item }: Prop) {
             <DropdownMenuItem
               variant="destructive"
               className="cursor-pointer"
-              onClick={() => {
-                const confirmBox = window.confirm(
-                  'Do you really want to delete this item?'
-                );
-                if (confirmBox === true && collectionId != null) {
-                  removeCollectionItem(collectionId, item.id);
-                }
-              }}
+              onClick={handleDeleteItem}
             >
               <Trash2Icon />
               <span>Delete</span>
