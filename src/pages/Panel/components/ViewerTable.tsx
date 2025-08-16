@@ -18,7 +18,6 @@ import { isBefore, isEqual, formatDistanceToNow, format } from 'date-fns';
 import { Setting } from '../../../common/storage';
 import _ from 'lodash';
 import { Tooltip } from 'react-tooltip';
-import TableEditableCell from './TableEditableCell';
 import ImageTooltip from './ImageTooltip';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import RowItem from '@Panel/components/viewer/RowItem';
@@ -163,6 +162,7 @@ function ViewerTable({ type }: Prop) {
 
           return row.content;
         },
+        cell: (info) => info.getValue(),
       },
       {
         header: 'Type',
@@ -170,6 +170,7 @@ function ViewerTable({ type }: Prop) {
           className: 'text-center',
         },
         accessorFn: (row) => row.type,
+        cell: (info) => info.getValue(),
         enableGlobalFilter: false,
       },
       {
@@ -216,6 +217,7 @@ function ViewerTable({ type }: Prop) {
             return -1;
           }
         },
+        cell: (info) => info.getValue(),
         enableGlobalFilter: false,
       },
       {
@@ -262,6 +264,7 @@ function ViewerTable({ type }: Prop) {
             return -1;
           }
         },
+        cell: (info) => info.getValue(),
         enableGlobalFilter: false,
       },
       {
@@ -317,20 +320,9 @@ function ViewerTable({ type }: Prop) {
     [handleDeleteItem, setting!.viewingOption?.timeDisplay]
   );
 
-  const defaultColumn: Partial<ColumnDef<ICollectionItem>> = {
-    cell: (props) => (
-      <TableEditableCell
-        value={props.getValue()}
-        row={props.row}
-        column={props.column.columnDef}
-      />
-    ),
-  };
-
   const table = useReactTable<ICollectionItem>({
     columns,
     data,
-    defaultColumn,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
