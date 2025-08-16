@@ -336,6 +336,7 @@ function ViewerTable({ type }: Prop) {
       pagination,
       globalFilter,
     },
+    autoResetPageIndex: false,
   });
 
   useEffect(() => {
@@ -394,6 +395,10 @@ function ViewerTable({ type }: Prop) {
 
     updatePagination();
   }, [pagination]);
+
+  useEffect(() => {
+    table.setPageIndex(0);
+  }, [table, type]);
 
   return (
     <div className="w-full">

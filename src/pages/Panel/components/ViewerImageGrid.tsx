@@ -117,6 +117,7 @@ function ViewerImageGrid() {
       pagination,
       globalFilter,
     },
+    autoResetPageIndex: false,
   });
 
   useEffect(() => {
@@ -175,6 +176,11 @@ function ViewerImageGrid() {
 
     updatePagination();
   }, [pagination]);
+
+  useEffect(() => {
+    table.setPageIndex(0);
+  }, [table]);
+
   return (
     <div className="w-full">
       <div className="w-full mb-4">
