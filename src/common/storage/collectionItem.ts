@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
-import { ICollection } from '../interface';
+import { ICollection, ICollectionItem } from '../interface';
 import Collections from './collections';
 import Storage from './storage';
 import { v4 as uuidv4 } from 'uuid';
@@ -36,7 +36,7 @@ class CollectionItem {
   static async updateContent(
     _collectionId: string,
     _itemId: string,
-    _content: string
+    _changes: Partial<ICollectionItem>
   ) {
     const collections = await Collections.fetch();
 
@@ -52,7 +52,8 @@ class CollectionItem {
 
     let datetime = new Date().toISOString();
 
-    collections[collectionIndex].items[itemIndex].content = _content;
+    Object.assign(collections[collectionIndex].items[itemIndex], _changes);
+
     collections[collectionIndex].items[itemIndex].modifyTime = datetime;
     collections[collectionIndex].modifyTime = datetime;
 

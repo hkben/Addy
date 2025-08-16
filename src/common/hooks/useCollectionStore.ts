@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { ICollection } from '../interface';
+import { ICollection, ICollectionItem } from '../interface';
 import { Collection, CollectionItem } from '../storage';
 import useCollectionsListStore from './useCollectionsListStore';
 import { immer } from 'zustand/middleware/immer';
@@ -13,7 +13,7 @@ interface Store {
   editCollectionItem: (
     _collectionId: string,
     _item: string,
-    _content: string
+    _changes: Partial<ICollectionItem>
   ) => void;
   removeAllItems: (_collectionId: string) => void;
   changeCollectionColor: (_collectionId: string, _color: number) => void;
@@ -66,11 +66,11 @@ const useCollectionStore = create<Store>()(
       //refresh collection list
       fetchCollectionsList();
     },
-    editCollectionItem: async (_collectionId, _itemId, _content) => {
+    editCollectionItem: async (_collectionId, _itemId, _changes) => {
       let { result, datetime } = await CollectionItem.updateContent(
         _collectionId,
         _itemId,
-        _content
+        _changes
       );
 
       if (result) {
@@ -80,7 +80,8 @@ const useCollectionStore = create<Store>()(
           );
 
           if (index >= 0) {
-            state.collection.items[index].content = _content;
+            Object.assign(state.collection.items[index], _changes);
+
             state.collection.items[index].modifyTime = datetime;
           }
         });
