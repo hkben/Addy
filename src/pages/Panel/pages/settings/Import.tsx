@@ -55,7 +55,14 @@ function Import() {
 
   return (
     <div>
-      <p className="text-3xl py-2">Import</p>
+      <div className="grid gap-1 mb-4">
+        <p className="text-3xl font-bold py-2">Import</p>
+        <p className="text-muted-foreground">
+          Import your collections from a JSON file. Make sure the JSON format is
+          correct.
+        </p>
+      </div>
+
       <div className="w-full py-2">
         <textarea
           className="w-full h-64 p-2 border border-gray-500 rounded-md dark:bg-gray-800"

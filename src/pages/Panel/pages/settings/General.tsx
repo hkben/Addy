@@ -8,6 +8,7 @@ import {
 import { Collection, Collections, Setting, Storage } from '@/common/storage';
 import log from 'loglevel';
 import useSettingStore from '@/common/store/useSettingStore';
+import SettingItem from '../../components/settings/SettingItem';
 
 function General() {
   let { setting, updateSetting } = useSettingStore();
@@ -104,187 +105,162 @@ function General() {
 
   return (
     <div>
-      <p className="text-3xl py-2">General</p>
+      <div className="grid gap-1 mb-4">
+        <p className="text-3xl font-bold py-2">General</p>
+        <p className="text-muted-foreground">
+          General settings for the application
+        </p>
+      </div>
+
       <div className="w-full text-sm divide-y">
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Collections Ordering</p>
-          </div>
-          <div className="w-1/3 my-auto">
-            <select
-              className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-              id="spaceing"
-              value={
-                setting!.collectionsOrdering
-                  ? setting!.collectionsOrdering.type
-                  : 0
+        <SettingItem
+          title="Collections Ordering"
+          description="Choose how collections are ordered in the app."
+        >
+          <select
+            className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+            id="spaceing"
+            value={
+              setting!.collectionsOrdering
+                ? setting!.collectionsOrdering.type
+                : 0
+            }
+            onChange={handleOrderingSelection}
+          >
+            <option value="0">Default</option>
+            <option value="1">Alphabetic</option>
+            <option value="2">Created Time</option>
+            <option value="3">Last Modify Time</option>
+            <option value="4">Items Count</option>
+          </select>
+        </SettingItem>
+
+        <SettingItem title="Descending Order">
+          <input
+            type="checkbox"
+            className="w-6 h-6 border border-gray-200 rounded-lg"
+            checked={
+              setting!.collectionsOrdering
+                ? setting!.collectionsOrdering.descending
+                : false
+            }
+            onChange={handleDescendingCheckbox}
+          />
+        </SettingItem>
+
+        <SettingItem
+          title="Quick Search"
+          description="Auto Focus on Search Box when opening Bookmark Popup"
+        >
+          <input
+            type="checkbox"
+            className="w-6 h-6 border border-gray-200 rounded-lg"
+            checked={setting!.quickSearch}
+            onChange={handleQuickSearchCheckbox}
+          />
+        </SettingItem>
+
+        <SettingItem title="Time Display">
+          <select
+            className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+            id="spaceing"
+            value={
+              setting!.viewingOption ? setting!.viewingOption.timeDisplay : 0
+            }
+            onChange={handleTimeDisplaySelection}
+          >
+            <option value="0">12-hour clock</option>
+            <option value="1">24-hour clock</option>
+            <option value="2">Relative Time</option>
+          </select>
+        </SettingItem>
+
+        <SettingItem title="Image Search Engine">
+          <select
+            className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+            id="spaceing"
+            value={
+              setting!.viewingOption
+                ? setting!.viewingOption.imageSearchEngine
+                : 0
+            }
+            onChange={handleImageSearchEngineSelection}
+          >
+            <option value="0">Google Lens</option>
+            <option value="1">Bing</option>
+            <option value="2">Yandex</option>
+            <option value="3">TinEye</option>
+          </select>
+        </SettingItem>
+
+        <SettingItem
+          title="Debug Mode"
+          description="Display debug information in the console"
+        >
+          <input
+            type="checkbox"
+            className="w-6 h-6 border border-gray-200 rounded-lg"
+            checked={setting!.debugMode}
+            onChange={handleDebugModeCheckbox}
+          />
+        </SettingItem>
+
+        <SettingItem
+          title="Restore Deleted"
+          description="Restore content that deleted in last 30 days"
+        >
+          <button
+            className="px-5 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+            onClick={() => {
+              const confirmBox = window.confirm(
+                'Do you really want to restore all deleted collections and items?'
+              );
+              if (confirmBox === true) {
+                restoreDeleted();
               }
-              onChange={handleOrderingSelection}
-            >
-              <option value="0">Default</option>
-              <option value="1">Alphabetic</option>
-              <option value="2">Created Time</option>
-              <option value="3">Last Modify Time</option>
-              <option value="4">Items Count</option>
-            </select>
-          </div>
-        </div>
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Descending Order</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <input
-              type="checkbox"
-              className="w-6 h-6 border border-gray-200 rounded-lg"
-              checked={
-                setting!.collectionsOrdering
-                  ? setting!.collectionsOrdering.descending
-                  : false
+            }}
+          >
+            Restore Deleted
+          </button>
+        </SettingItem>
+
+        <SettingItem
+          title="Remove Deleted Content"
+          description="This will only remove content on local. If the content exists in sync file, the deleted content will re-import to the database."
+        >
+          <button
+            className="px-5 py-2 text-white bg-amber-500 hover:bg-amber-700 rounded-md items-center"
+            onClick={() => {
+              const confirmBox = window.confirm(
+                'Do you really want to delete all deleted contnet permanently?'
+              );
+              if (confirmBox === true) {
+                removeDeleted();
               }
-              onChange={handleDescendingCheckbox}
-            />
-          </div>
-        </div>
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Quick Search</p>
-            Auto Focus on Search Box when opening Bookmark Popup
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <input
-              type="checkbox"
-              className="w-6 h-6 border border-gray-200 rounded-lg"
-              checked={setting!.quickSearch}
-              onChange={handleQuickSearchCheckbox}
-            />
-          </div>
-        </div>
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Time Display</p>
-          </div>
-          <div className="w-1/3 my-auto">
-            <select
-              className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-              id="spaceing"
-              value={
-                setting!.viewingOption ? setting!.viewingOption.timeDisplay : 0
+            }}
+          >
+            Remove Deleted Content
+          </button>
+        </SettingItem>
+
+        <SettingItem
+          title="Clear Data"
+          description="Remove the data and reset it to a clean install"
+        >
+          <button
+            className="px-5 py-2 text-white bg-red-500 hover:bg-red-700 rounded-md items-center"
+            onClick={() => {
+              const confirmBox = window.confirm(
+                'Do you really want to clear all data?'
+              );
+              if (confirmBox === true) {
+                clearData();
               }
-              onChange={handleTimeDisplaySelection}
-            >
-              <option value="0">12-hour clock</option>
-              <option value="1">24-hour clock</option>
-              <option value="2">Relative Time</option>
-            </select>
-          </div>
-        </div>
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Image Search Engine</p>
-          </div>
-          <div className="w-1/3 my-auto">
-            <select
-              className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-              id="spaceing"
-              value={
-                setting!.viewingOption
-                  ? setting!.viewingOption.imageSearchEngine
-                  : 0
-              }
-              onChange={handleImageSearchEngineSelection}
-            >
-              <option value="0">Google Lens</option>
-              <option value="1">Bing</option>
-              <option value="2">Yandex</option>
-              <option value="3">TinEye</option>
-            </select>
-          </div>
-        </div>
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Debug Mode</p>
-            Display debug information in the console
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <input
-              type="checkbox"
-              className="w-6 h-6 border border-gray-200 rounded-lg"
-              checked={setting!.debugMode}
-              onChange={handleDebugModeCheckbox}
-            />
-          </div>
-        </div>
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Restore Deleted</p>
-            <p>Restore content that deleted in last 30 days</p>
-            <p>
-              (Deleted content will be delete permanently after 30 days
-              automatically)
-            </p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <button
-              className="px-5 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
-              onClick={() => {
-                const confirmBox = window.confirm(
-                  'Do you really want to restore all deleted collections and items?'
-                );
-                if (confirmBox === true) {
-                  restoreDeleted();
-                }
-              }}
-            >
-              Restore Deleted
-            </button>
-          </div>
-        </div>
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Remove Deleted Content</p>
-            <p>
-              This will only remove content on local. If the content exists in
-              sync file, the deleted content will re-import to the database.
-            </p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <button
-              className="px-5 py-2 text-white bg-amber-500 hover:bg-amber-700 rounded-md items-center"
-              onClick={() => {
-                const confirmBox = window.confirm(
-                  'Do you really want to delete all deleted contnet permanently?'
-                );
-                if (confirmBox === true) {
-                  removeDeleted();
-                }
-              }}
-            >
-              Remove Deleted Content
-            </button>
-          </div>
-        </div>
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Clear Data</p>
-            Remove the data and reset it to a clean install
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <button
-              className="px-5 py-2 text-white bg-red-500 hover:bg-red-700 rounded-md items-center"
-              onClick={() => {
-                const confirmBox = window.confirm(
-                  'Do you really want to clear all data?'
-                );
-                if (confirmBox === true) {
-                  clearData();
-                }
-              }}
-            >
-              Clear Data
-            </button>
-          </div>
-        </div>
+            }}
+          >
+            Clear Data
+          </button>
+        </SettingItem>
       </div>
     </div>
   );

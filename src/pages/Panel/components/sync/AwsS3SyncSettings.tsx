@@ -1,5 +1,6 @@
 import React from 'react';
 import { ISyncSetting } from '@/common/interface';
+import SettingItem from '../settings/SettingItem';
 
 interface Prop {
   syncSetting: ISyncSetting;
@@ -11,56 +12,41 @@ interface Prop {
 function AwsS3SyncSettings({ syncSetting, handleInputChange }: Prop) {
   return (
     <React.Fragment>
-      <div className="w-2/3 flex h-28">
-        <div className="w-2/3 my-auto">
-          <p className="text-base font-bold">AWS Region</p>
-          <p>eg: us-east-1</p>
-        </div>
-        <div className="w-1/3 my-auto text-center">
-          <input
-            name="awsS3_Region"
-            className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-            placeholder="Region"
-            value={syncSetting.awsS3_Region || ''}
-            onChange={handleInputChange}
-            onBlur={handleInputChange}
-          />
-        </div>
-      </div>
+      <SettingItem title="AWS Region" description="eg: us-east-1.">
+        <input
+          name="awsS3_Region"
+          className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+          placeholder="Region"
+          value={syncSetting.awsS3_Region || ''}
+          onChange={handleInputChange}
+          onBlur={handleInputChange}
+        />
+      </SettingItem>
 
-      <div className="w-2/3 flex h-28">
-        <div className="w-2/3 my-auto">
-          <p className="text-base font-bold">AWS S3 Bucket Name</p>
-          <p>eg: addy-s3-bucket</p>
-        </div>
-        <div className="w-1/3 my-auto text-center">
-          <input
-            name="awsS3_BucketName"
-            className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-            placeholder="Bucket Name"
-            value={syncSetting.awsS3_BucketName || ''}
-            onChange={handleInputChange}
-            onBlur={handleInputChange}
-          />
-        </div>
-      </div>
+      <SettingItem title="AWS S3 Bucket Name" description="eg: addy-s3-bucket">
+        <input
+          name="awsS3_BucketName"
+          className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+          placeholder="Bucket Name"
+          value={syncSetting.awsS3_BucketName || ''}
+          onChange={handleInputChange}
+          onBlur={handleInputChange}
+        />
+      </SettingItem>
 
-      <div className="w-2/3 flex h-28">
-        <div className="w-2/3 my-auto">
-          <p className="text-base font-bold">AWS Identity Pool Id</p>
-          <p>eg: us-east-1:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx</p>
-        </div>
-        <div className="w-1/3 my-auto text-center">
-          <input
-            name="awsS3_IdentityPoolId"
-            className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-            placeholder="Identity Pool Id"
-            value={syncSetting.awsS3_IdentityPoolId || ''}
-            onChange={handleInputChange}
-            onBlur={handleInputChange}
-          />
-        </div>
-      </div>
+      <SettingItem
+        title="AWS Identity Pool Id"
+        description="eg: us-east-1:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      >
+        <input
+          name="awsS3_IdentityPoolId"
+          className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+          placeholder="Identity Pool Id"
+          value={syncSetting.awsS3_IdentityPoolId || ''}
+          onChange={handleInputChange}
+          onBlur={handleInputChange}
+        />
+      </SettingItem>
     </React.Fragment>
   );
 }

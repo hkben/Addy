@@ -34,7 +34,14 @@ function Export() {
 
   return (
     <div>
-      <p className="text-3xl py-2">Export</p>
+      <div className="grid gap-1 mb-4">
+        <p className="text-3xl font-bold py-2">Export</p>
+        <p className="text-muted-foreground">
+          Export your collections to a JSON file. You can use this file to
+          backup or transfer your data.
+        </p>
+      </div>
+
       <div className="w-full py-2">
         <textarea
           className="w-full h-64 p-2 border border-gray-500 rounded-md dark:bg-gray-800"

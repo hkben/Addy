@@ -9,6 +9,7 @@ import SyncDeleteButton from './SyncDeleteButton';
 import SyncConnectionTestButton from './SyncTestConnectionButton';
 import log from 'loglevel';
 import { useSyncStore } from '@/common/store/useSyncStore';
+import SettingItem from '../settings/SettingItem';
 
 function SyncSettings() {
   const lastSyncTime = useSyncStore((state) => state.lastSyncTime);
@@ -123,76 +124,64 @@ function SyncSettings() {
 
   return (
     <div>
-      <p className="text-3xl py-2">Syncing</p>
+      <div className="grid gap-1 mb-4">
+        <p className="text-3xl font-bold py-2">Syncing</p>
+        <p className="text-muted-foreground">
+          Syncing settings for the application
+        </p>
+      </div>
+
       <div className="w-full text-sm divide-y">
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Enable Syncing</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <input
-              type="checkbox"
-              className="w-6 h-6 border border-gray-200 rounded-lg"
-              checked={syncSetting.enable ? true : false}
-              onChange={handleSyncingCheckbox}
-            />
-          </div>
-        </div>
+        <SettingItem
+          title="Syncing"
+          description="Enable or disable syncing of collections and items."
+        >
+          <input
+            type="checkbox"
+            className="w-6 h-6 border border-gray-200 rounded-lg"
+            checked={syncSetting.enable ? true : false}
+            onChange={handleSyncingCheckbox}
+          />
+        </SettingItem>
 
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Background Sync</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <SyncButton />
-          </div>
-        </div>
+        <SettingItem title="Background Sync">
+          <SyncButton />
+        </SettingItem>
 
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">
-              Auto Sync Interval From Last Sync (Minutes)
-            </p>
-            <p>0 = Disable</p>
-            <p>Background checking only runs every 10 minutes.</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <input
-              name="autoSyncInterval"
-              type="number"
-              className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-              placeholder="Minutes"
-              value={syncSetting.autoSyncInterval || 0}
-              onChange={handleInputChange}
-              onBlur={handleInputChange}
-            />
-          </div>
-        </div>
+        <SettingItem
+          title=" Auto Sync Interval From Last Sync (Minutes)"
+          description="0 = Disable , Background checking only runs every 10 minutes."
+        >
+          <input
+            name="autoSyncInterval"
+            type="number"
+            className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+            placeholder="Minutes"
+            value={syncSetting.autoSyncInterval || 0}
+            onChange={handleInputChange}
+            onBlur={handleInputChange}
+          />
+        </SettingItem>
 
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Last Sync Time</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            {lastSyncTime ? (
-              <span>
-                <p>
-                  {formatDistanceToNow(lastSyncTime, {
-                    addSuffix: true,
-                  })}
-                </p>
-                <p>{formatISO(lastSyncTime)}</p>
-              </span>
-            ) : (
-              <span>None</span>
-            )}
-          </div>
-        </div>
+        <SettingItem title="Last Sync Time">
+          {lastSyncTime ? (
+            <span>
+              <p>
+                {formatDistanceToNow(lastSyncTime, {
+                  addSuffix: true,
+                })}
+              </p>
+              <p>{formatISO(lastSyncTime)}</p>
+            </span>
+          ) : (
+            <span>None</span>
+          )}
+        </SettingItem>
 
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Provider</p>
-            <p>
+        <SettingItem
+          title="Provider"
+          description={
+            <span>
               Please read{' '}
               <a
                 className="underline"
@@ -201,41 +190,30 @@ function SyncSettings() {
                 wiki
               </a>{' '}
               for more information
-            </p>
-          </div>
-          <div className="w-1/3 my-auto">
-            <select
-              className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-              id="spaceing"
-              value={syncSetting.provider ? syncSetting.provider : 0}
-              onChange={handleProviderSelection}
-            >
-              <option value="">----</option>
-              <option value="googleDrive">Google Drive</option>
-              <option value="awsS3">AWS S3</option>
-            </select>
-          </div>
-        </div>
+            </span>
+          }
+        >
+          <select
+            className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
+            id="spaceing"
+            value={syncSetting.provider ? syncSetting.provider : 0}
+            onChange={handleProviderSelection}
+          >
+            <option value="">----</option>
+            <option value="googleDrive">Google Drive</option>
+            <option value="awsS3">AWS S3</option>
+          </select>
+        </SettingItem>
 
         {syncProviderSetting()}
 
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Connection Test</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <SyncConnectionTestButton />
-          </div>
-        </div>
+        <SettingItem title="Connection Test">
+          <SyncConnectionTestButton />
+        </SettingItem>
 
-        <div className="w-2/3 flex h-28">
-          <div className="w-2/3 my-auto">
-            <p className="text-base font-bold">Delete Sync File on Server</p>
-          </div>
-          <div className="w-1/3 my-auto text-center">
-            <SyncDeleteButton />
-          </div>
-        </div>
+        <SettingItem title="Delete Sync File on Server">
+          <SyncDeleteButton />
+        </SettingItem>
       </div>
     </div>
   );

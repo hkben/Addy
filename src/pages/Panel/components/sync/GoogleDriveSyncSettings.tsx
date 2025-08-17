@@ -3,6 +3,7 @@ import GoogleOAuth from '@/common/auth/googleOAuth';
 import { ISyncSetting } from '@/common/interface';
 import SyncSetting from '@/common/storage/syncSetting';
 import log from 'loglevel';
+import SettingItem from '../settings/SettingItem';
 
 interface Prop {
   syncSetting: ISyncSetting;
@@ -67,27 +68,22 @@ function GoogleDriveSyncSettings({ syncSetting, handleInputChange }: Prop) {
 
   return (
     <Fragment>
-      <div className="w-2/3 flex h-28">
-        <div className="w-2/3 my-auto">
-          <p className="text-base font-bold">Google Login</p>
-        </div>
-        <div className="w-1/3 my-auto">
-          {settingState.google_email ? (
-            <span className="text-center">
-              <p>{syncSetting.google_email}</p>
-              <p>
-                <a className="underline cursor-pointer" onClick={handelLogout}>
-                  Logout
-                </a>
-              </p>
-            </span>
-          ) : (
-            <a className="cursor-pointer m-auto" onClick={handelLogin}>
-              <img className="m-auto" src="../img/sign_in_with_google.png" />
-            </a>
-          )}
-        </div>
-      </div>
+      <SettingItem title="Google Login">
+        {settingState.google_email ? (
+          <span className="text-center">
+            <p>{syncSetting.google_email}</p>
+            <p>
+              <a className="underline cursor-pointer" onClick={handelLogout}>
+                Logout
+              </a>
+            </p>
+          </span>
+        ) : (
+          <a className="cursor-pointer m-auto" onClick={handelLogin}>
+            <img className="m-auto" src="../img/sign_in_with_google.png" />
+          </a>
+        )}
+      </SettingItem>
     </Fragment>
   );
 }
