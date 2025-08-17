@@ -9,72 +9,71 @@ import { Collection, Collections, Setting, Storage } from '@/common/storage';
 import log from 'loglevel';
 import useSettingStore from '@/common/store/useSettingStore';
 import SettingItem from '../../components/settings/SettingItem';
+import { Switch } from '@/components/ui/switch';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { ArchiveRestoreIcon, ShredderIcon, Trash2Icon } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 function General() {
   let { setting, updateSetting } = useSettingStore();
 
-  const handleOrderingSelection = async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    let value = parseInt(event.currentTarget.value);
-
+  const handleOrderingSelection = async (value: string) => {
     let collectionsOrdering = { ...setting!.collectionsOrdering };
-    collectionsOrdering.type = value;
+    collectionsOrdering.type = Number(value);
 
     await updateSetting({ collectionsOrdering });
   };
 
-  const handleDescendingCheckbox = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    let value = event.currentTarget.checked;
-
+  const handleDescendingCheckbox = async (value: boolean) => {
     let collectionsOrdering = { ...setting!.collectionsOrdering };
     collectionsOrdering.descending = value;
 
     await updateSetting({ collectionsOrdering });
   };
 
-  const handleQuickSearchCheckbox = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    let value = event.currentTarget.checked;
-
+  const handleQuickSearchCheckbox = async (value: boolean) => {
     let quickSearch = setting!.quickSearch;
     quickSearch = value;
 
     await updateSetting({ quickSearch });
   };
 
-  const handleTimeDisplaySelection = async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    let value = parseInt(event.currentTarget.value);
-
+  const handleTimeDisplaySelection = async (value: string) => {
     let viewingOption = { ...setting!.viewingOption };
-    viewingOption.timeDisplay = value;
+    viewingOption.timeDisplay = Number(value);
 
     await updateSetting({ viewingOption });
   };
 
-  const handleImageSearchEngineSelection = async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    let value = parseInt(event.currentTarget.value);
-
+  const handleImageSearchEngineSelection = async (value: string) => {
     let viewingOption = { ...setting!.viewingOption };
-    viewingOption.imageSearchEngine = value;
+    viewingOption.imageSearchEngine = Number(value);
 
     await updateSetting({ viewingOption });
   };
 
-  const handleDebugModeCheckbox = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    let value = event.currentTarget.checked;
-
+  const handleDebugModeCheckbox = async (value: boolean) => {
     let debugMode = setting!.debugMode;
-    debugMode = value ? true : false;
+    debugMode = value;
 
     await updateSetting({ debugMode });
   };
@@ -117,34 +116,38 @@ function General() {
           title="Collections Ordering"
           description="Choose how collections are ordered in the app."
         >
-          <select
-            className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-            id="spaceing"
+          <Select
             value={
               setting!.collectionsOrdering
-                ? setting!.collectionsOrdering.type
-                : 0
+                ? String(setting!.collectionsOrdering.type)
+                : '0'
             }
-            onChange={handleOrderingSelection}
+            onValueChange={handleOrderingSelection}
           >
-            <option value="0">Default</option>
-            <option value="1">Alphabetic</option>
-            <option value="2">Created Time</option>
-            <option value="3">Last Modify Time</option>
-            <option value="4">Items Count</option>
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Ordering" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Ordering</SelectLabel>
+                <SelectItem value="0">Default</SelectItem>
+                <SelectItem value="1">Alphabetic</SelectItem>
+                <SelectItem value="2">Created Time</SelectItem>
+                <SelectItem value="3">Last Modify Time</SelectItem>
+                <SelectItem value="4">Items Count</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </SettingItem>
 
         <SettingItem title="Descending Order">
-          <input
-            type="checkbox"
-            className="w-6 h-6 border border-gray-200 rounded-lg"
+          <Switch
             checked={
               setting!.collectionsOrdering
                 ? setting!.collectionsOrdering.descending
                 : false
             }
-            onChange={handleDescendingCheckbox}
+            onCheckedChange={handleDescendingCheckbox}
           />
         </SettingItem>
 
@@ -152,56 +155,66 @@ function General() {
           title="Quick Search"
           description="Auto Focus on Search Box when opening Bookmark Popup"
         >
-          <input
-            type="checkbox"
-            className="w-6 h-6 border border-gray-200 rounded-lg"
+          <Switch
             checked={setting!.quickSearch}
-            onChange={handleQuickSearchCheckbox}
+            onCheckedChange={handleQuickSearchCheckbox}
           />
         </SettingItem>
 
         <SettingItem title="Time Display">
-          <select
-            className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-            id="spaceing"
+          <Select
             value={
-              setting!.viewingOption ? setting!.viewingOption.timeDisplay : 0
+              setting!.viewingOption
+                ? String(setting!.viewingOption.timeDisplay)
+                : '0'
             }
-            onChange={handleTimeDisplaySelection}
+            onValueChange={handleTimeDisplaySelection}
           >
-            <option value="0">12-hour clock</option>
-            <option value="1">24-hour clock</option>
-            <option value="2">Relative Time</option>
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Time Display" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Time Display</SelectLabel>
+                <SelectItem value="0">12-hour clock</SelectItem>
+                <SelectItem value="1">24-hour clock</SelectItem>
+                <SelectItem value="2">Relative Time</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </SettingItem>
 
         <SettingItem title="Image Search Engine">
-          <select
-            className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-            id="spaceing"
+          <Select
             value={
               setting!.viewingOption
-                ? setting!.viewingOption.imageSearchEngine
-                : 0
+                ? String(setting!.viewingOption.imageSearchEngine)
+                : '0'
             }
-            onChange={handleImageSearchEngineSelection}
+            onValueChange={handleImageSearchEngineSelection}
           >
-            <option value="0">Google Lens</option>
-            <option value="1">Bing</option>
-            <option value="2">Yandex</option>
-            <option value="3">TinEye</option>
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Image Search Engine" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Image Search Engine</SelectLabel>
+                <SelectItem value="0">Google Lens</SelectItem>
+                <SelectItem value="1">Bing</SelectItem>
+                <SelectItem value="2">Yandex</SelectItem>
+                <SelectItem value="3">TinEye</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </SettingItem>
 
         <SettingItem
           title="Debug Mode"
           description="Display debug information in the console"
         >
-          <input
-            type="checkbox"
-            className="w-6 h-6 border border-gray-200 rounded-lg"
+          <Switch
             checked={setting!.debugMode}
-            onChange={handleDebugModeCheckbox}
+            onCheckedChange={handleDebugModeCheckbox}
           />
         </SettingItem>
 
@@ -209,57 +222,99 @@ function General() {
           title="Restore Deleted"
           description="Restore content that deleted in last 30 days"
         >
-          <button
-            className="px-5 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
-            onClick={() => {
-              const confirmBox = window.confirm(
-                'Do you really want to restore all deleted collections and items?'
-              );
-              if (confirmBox === true) {
-                restoreDeleted();
-              }
-            }}
-          >
-            Restore Deleted
-          </button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="outline">
+                <ArchiveRestoreIcon />
+                Restore Deleted
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Restore Deleted Content</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action will restore all content deleted in the last 30
+                  days. Do you really want to restore all deleted collections
+                  and items?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={restoreDeleted}>
+                  <ArchiveRestoreIcon />
+                  <span>Continue</span>
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </SettingItem>
 
         <SettingItem
           title="Remove Deleted Content"
-          description="This will only remove content on local. If the content exists in sync file, the deleted content will re-import to the database."
+          description="This will permanently remove deleted content from your device. If the content is still present in a synced file, it may be restored during future syncs."
         >
-          <button
-            className="px-5 py-2 text-white bg-amber-500 hover:bg-amber-700 rounded-md items-center"
-            onClick={() => {
-              const confirmBox = window.confirm(
-                'Do you really want to delete all deleted contnet permanently?'
-              );
-              if (confirmBox === true) {
-                removeDeleted();
-              }
-            }}
-          >
-            Remove Deleted Content
-          </button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">
+                <Trash2Icon />
+                Remove Deleted Content
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Remove Deleted Content</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action will permanently remove all content that has been
+                  deleted. Do you really want to remove all deleted collections
+                  and items? This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  className={buttonVariants({ variant: 'destructive' })}
+                  onClick={removeDeleted}
+                >
+                  <Trash2Icon />
+                  <span>Continue</span>
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </SettingItem>
 
         <SettingItem
           title="Clear Data"
           description="Remove the data and reset it to a clean install"
         >
-          <button
-            className="px-5 py-2 text-white bg-red-500 hover:bg-red-700 rounded-md items-center"
-            onClick={() => {
-              const confirmBox = window.confirm(
-                'Do you really want to clear all data?'
-              );
-              if (confirmBox === true) {
-                clearData();
-              }
-            }}
-          >
-            Clear Data
-          </button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">
+                <ShredderIcon />
+                Clear Data
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Clear Data</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action will permanently remove all data and reset it to a
+                  clean install. Do you really want to clear all data? This
+                  action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  className={buttonVariants({ variant: 'destructive' })}
+                  onClick={clearData}
+                >
+                  <ShredderIcon />
+                  <span>Continue</span>
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </SettingItem>
       </div>
     </div>
