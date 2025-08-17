@@ -10,6 +10,17 @@ import SyncConnectionTestButton from './SyncTestConnectionButton';
 import log from 'loglevel';
 import { useSyncStore } from '@/common/store/useSyncStore';
 import SettingItem from '../settings/SettingItem';
+import { Switch } from '@/components/ui/switch';
+import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 function SyncSettings() {
   const lastSyncTime = useSyncStore((state) => state.lastSyncTime);
@@ -27,11 +38,7 @@ function SyncSettings() {
     getSyncSetting().catch(log.error);
   }, []);
 
-  const handleSyncingCheckbox = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    let value = event.currentTarget.checked;
-
+  const handleSyncingCheckbox = async (value: boolean) => {
     let _syncSetting = syncSetting;
     _syncSetting.enable = value;
 
@@ -43,11 +50,7 @@ function SyncSettings() {
     }));
   };
 
-  const handleProviderSelection = async (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    let value = event.currentTarget.value;
-
+  const handleProviderSelection = async (value: string) => {
     let _syncSetting = SyncSetting.init();
     _syncSetting.enable = true;
     _syncSetting.provider = value;
@@ -136,11 +139,9 @@ function SyncSettings() {
           title="Syncing"
           description="Enable or disable syncing of collections and items."
         >
-          <input
-            type="checkbox"
-            className="w-6 h-6 border border-gray-200 rounded-lg"
+          <Switch
             checked={syncSetting.enable ? true : false}
-            onChange={handleSyncingCheckbox}
+            onCheckedChange={handleSyncingCheckbox}
           />
         </SettingItem>
 
@@ -152,10 +153,9 @@ function SyncSettings() {
           title=" Auto Sync Interval From Last Sync (Minutes)"
           description="0 = Disable , Background checking only runs every 10 minutes."
         >
-          <input
+          <Input
             name="autoSyncInterval"
             type="number"
-            className="w-full placeholder:italic p-2 pr-3  border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
             placeholder="Minutes"
             value={syncSetting.autoSyncInterval || 0}
             onChange={handleInputChange}
@@ -193,16 +193,22 @@ function SyncSettings() {
             </span>
           }
         >
-          <select
-            className="h-10 px-4 w-full border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-            id="spaceing"
-            value={syncSetting.provider ? syncSetting.provider : 0}
-            onChange={handleProviderSelection}
+          <Select
+            value={syncSetting.provider ? String(syncSetting.provider) : 'none'}
+            onValueChange={handleProviderSelection}
           >
-            <option value="">----</option>
-            <option value="googleDrive">Google Drive</option>
-            <option value="awsS3">AWS S3</option>
-          </select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Ordering" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Ordering</SelectLabel>
+                <SelectItem value="none">----</SelectItem>
+                <SelectItem value="googleDrive">Google Drive</SelectItem>
+                <SelectItem value="awsS3">AWS S3</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </SettingItem>
 
         {syncProviderSetting()}

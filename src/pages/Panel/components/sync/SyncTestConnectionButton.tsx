@@ -7,6 +7,7 @@ import {
 import log from 'loglevel';
 import { useSyncStore, SyncState } from '@/common/store/useSyncStore';
 import { BrowserMessageAction } from '@/common/interface';
+import { Button } from '@/components/ui/button';
 
 function SyncConnectionTestButton() {
   const syncingState = useSyncStore((state) => state.syncingState);
@@ -62,12 +63,12 @@ function SyncConnectionTestButton() {
   };
 
   return (
-    <button
-      className="flex mx-auto p-2 px-5 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
+    <Button
+      variant="outline"
       onClick={handleOnClick}
     >
       {renderText()}
-    </button>
+    </Button>
   );
 }
 

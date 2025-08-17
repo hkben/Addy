@@ -3,6 +3,7 @@ import { BrowserMessageAction } from '@/common/interface';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import log from 'loglevel';
 import { SyncState, useSyncStore } from '@/common/store/useSyncStore';
+import { Button } from '@/components/ui/button';
 
 function SyncDeleteButton() {
   const syncingState = useSyncStore((state) => state.syncingState);
@@ -53,12 +54,9 @@ function SyncDeleteButton() {
   };
 
   return (
-    <button
-      className="flex mx-auto p-2 px-5 text-base text-white bg-red-500 hover:bg-red-700 rounded-md items-center"
-      onClick={handleOnClick}
-    >
+    <Button variant="destructive" onClick={handleOnClick}>
       {renderText()}
-    </button>
+    </Button>
   );
 }
 
