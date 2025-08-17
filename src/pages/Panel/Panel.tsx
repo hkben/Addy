@@ -19,7 +19,7 @@ import { useDarkMode } from '@/common/hooks/useDarkMode';
 import Info from './pages/settings/Information';
 import Information from './pages/settings/Information';
 import Welcome from './pages/Welcome';
-import SyncSettings from './components/sync/SyncSettings';
+import Sync from './pages/settings/Sync';
 import Viewer, { loader } from './pages/Viewer';
 import { MoonIcon } from '@heroicons/react/24/solid';
 import Layout from './layouts/Layout';
@@ -47,7 +47,7 @@ const router = createHashRouter(
         <Route path="import" element={<Import />} />
         <Route path="welcome" element={<Welcome />} />
         <Route path="information" element={<Information />} />
-        <Route path="sync" element={<SyncSettings />} />
+        <Route path="sync" element={<Sync />} />
       </Route>
     </Route>
   )

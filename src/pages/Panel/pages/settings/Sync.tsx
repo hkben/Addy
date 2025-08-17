@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-function SyncSettings() {
+function Sync() {
   const lastSyncTime = useSyncStore((state) => state.lastSyncTime);
 
   const [syncSetting, setSyncSetting] = React.useState<ISyncSetting>(
@@ -225,4 +225,4 @@ function SyncSettings() {
   );
 }
 
-export default SyncSettings;
+export default Sync;
