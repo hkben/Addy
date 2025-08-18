@@ -2,14 +2,13 @@ import React from 'react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
 
-interface Props {
+interface Props extends React.PropsWithChildren {
   title: string;
   color?: number;
   description?: string;
-  actions?: React.ReactNode;
 }
 
-function Header({ title, color, description, actions }: Props) {
+function Header({ title, color, description, children }: Props) {
   return (
     <header className="flex sticky top-0 h-14 shrink-0 items-center gap-2 bg-background border-b px-3">
       <div className="flex flex-1 items-center gap-2">
@@ -34,7 +33,7 @@ function Header({ title, color, description, actions }: Props) {
                 {description}
               </span>
             )}
-            {actions}
+            {children}
           </div>
         </div>
       </div>
