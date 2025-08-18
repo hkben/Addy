@@ -154,27 +154,37 @@
     @apply bg-transparent border-2 border-gray-700 dark:border-white border-dotted [&.active]:border-solid;
   }
 
-  .color-1 {
+  .collection-color-0 {
+    @apply bg-blue-500 hover:bg-blue-600 active-color;
+  }
+
+  .color-1,
+  .collection-color-1 {
     @apply bg-rose-500 hover:bg-rose-600 active-color;
   }
 
-  .color-2 {
+  .color-2,
+  .collection-color-2 {
     @apply bg-orange-500 hover:bg-orange-600 active-color;
   }
 
-  .color-3 {
+  .color-3,
+  .collection-color-3 {
     @apply bg-yellow-500 hover:bg-yellow-600 active-color;
   }
 
-  .color-4 {
+  .color-4,
+  .collection-color-4 {
     @apply bg-green-500 hover:bg-green-600 active-color;
   }
 
-  .color-5 {
+  .color-5,
+  .collection-color-5 {
     @apply bg-indigo-500 hover:bg-indigo-600 active-color;
   }
 
-  .color-6 {
+  .color-6,
+  .collection-color-6 {
     @apply bg-purple-500 hover:bg-purple-600 active-color;
   }
 

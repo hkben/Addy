@@ -17,10 +17,12 @@ import Common from '@/common/common';
 import _ from 'lodash';
 import { useSortCollections } from '@/common/hooks/useSortCollections';
 import { useDarkMode } from '@/common/hooks/useDarkMode';
-import { HomeIcon, MoonIcon } from '@heroicons/react/24/outline';
-import { PlusIcon } from '@heroicons/react/24/outline';
 import log from 'loglevel';
 import useSettingStore from '@/common/store/useSettingStore';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { LayoutGridIcon, Plus, MoonIcon, SunIcon } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 function Popup() {
   const { setting } = useSettingStore();
@@ -115,7 +117,7 @@ function Popup() {
     setSearchKeyword(value);
   };
 
-  const toggleDarkMode = async (event: React.MouseEvent<HTMLDivElement>) => {
+  const toggleDarkMode = async () => {
     let _darkMode = darkMode ? false : true;
 
     setDarkMode(_darkMode);
@@ -131,74 +133,64 @@ function Popup() {
 
   return (
     <div className="overflow-hidden">
-      <div className="flex justify-between py-2 text-base font-bold text-center bg-blue-500 text-white">
-        <div
-          className="inline-flex px-2 cursor-pointer hover:text-gray-300"
-          onClick={openTab}
-        >
-          <HomeIcon className="h-6 w-6" strokeWidth={2} />
-        </div>
-        <div className="inline-flex my-auto">Addy</div>
-        <div
-          className="inline-flex px-2 cursor-pointer hover:text-gray-300"
-          onClick={toggleDarkMode}
-        >
-          <MoonIcon className="h-6 w-6" strokeWidth={2} />
-        </div>
+      <div className="flex justify-between items-center p-1 bg-blue-500 text-white">
+        <Button variant="ghost" size="icon" onClick={openTab}>
+          <LayoutGridIcon className="size-5" />
+        </Button>
+
+        <span className="font-bold">Addy</span>
+
+        <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
+          {darkMode ? (
+            <SunIcon className="size-5" />
+          ) : (
+            <MoonIcon className="size-5" />
+          )}
+        </Button>
       </div>
 
-      <div className="w-full">
-        <label className="sr-only" htmlFor="message">
-          Message
-        </label>
-        <textarea
-          className="w-full p-3 text-sm border border-gray-200 rounded-lg box-border dark:text-white dark:border-slate-400 dark:bg-gray-900"
+      <div className="m-1 grid gap-2 flex-col">
+        <Textarea
           placeholder="Content"
           id="content"
           value={text}
           onChange={handleContentChange}
-        ></textarea>
-      </div>
+        />
 
-      <div className="w-full">
-        <input
-          className="w-full p-2 text-sm border border-gray-200 rounded-lg box-border dark:text-white dark:border-slate-400 dark:bg-gray-900"
+        <Input
           id="search"
           placeholder="Search or Add Collection"
           type="text"
           onChange={searchCollection}
           ref={inputRef}
         />
-      </div>
 
-      {collections.length == 0 && searchKeyword == '' ? (
-        <div className="p-2 text-black text-sm dark:text-white dark:border-slate-400 dark:bg-gray-900">
-          <p>Collections not found !</p>
-          <p>Use the input box above to add to a new collection</p>
+        {collections.length == 0 && searchKeyword == '' ? (
+          <div className="p-2 text-black text-sm dark:text-white dark:border-slate-400 dark:bg-gray-900">
+            <p>Collections not found !</p>
+            <p>Use the input box above to add to a new collection</p>
+          </div>
+        ) : null}
+
+        <div className="flex flex-wrap gap-0.5">
+          {sortedCollections.map((collection, index) => {
+            return (
+              <CollectionButton
+                key={index}
+                collection={collection}
+                onClick={() => saveTextToCollection(collection.id)}
+              />
+            );
+          })}
         </div>
-      ) : null}
 
-      <div className="flex flex-wrap gap-0.5 m-1">
-        {sortedCollections.map((collection, index) => {
-          return (
-            <CollectionButton
-              key={index}
-              collection={collection}
-              onClick={() => saveTextToCollection(collection.id)}
-            />
-          );
-        })}
+        {newCollectionButton ? (
+          <Button className="w-full py-8" onClick={newCollectionAndSave}>
+            <Plus />
+            <span>Add into New Collection</span>
+          </Button>
+        ) : null}
       </div>
-
-      {newCollectionButton ? (
-        <div
-          className="p-2 m-2 rounded-md text-black text-base text-center border cursor-pointer justify-center box-border hover:bg-gray-100 dark:text-white dark:border-slate-400 dark:bg-gray-900"
-          onClick={newCollectionAndSave}
-        >
-          <span>New Collection</span>
-          <PlusIcon className="inline ml-2 h-6 w-6" strokeWidth={2} />
-        </div>
-      ) : null}
     </div>
   );
 }
