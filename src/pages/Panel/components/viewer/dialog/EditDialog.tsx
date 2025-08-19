@@ -113,7 +113,7 @@ function EditDialog() {
     setIsOpen(true);
   }, [event, setInitialItem]);
 
-  if (!item) {
+  if (event == null || event.type !== DialogEventType.Edit || item == null) {
     return null;
   }
 
