@@ -4,7 +4,7 @@ import {
   useDialogEventStore,
   DialogEventType,
 } from '@/common/store/useDialogEventStore';
-import { CopyIcon, RefreshCcwIcon, SaveIcon, UnlinkIcon } from 'lucide-react';
+import { CopyIcon, RefreshCwIcon, SaveIcon, UnlinkIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -256,7 +256,7 @@ function EditDialog() {
             Save changes
           </Button>
           <Button type="button" variant="secondary" onClick={setInitialItem}>
-            <RefreshCcwIcon />
+            <RefreshCwIcon />
             Reset
           </Button>
           <DialogClose asChild>

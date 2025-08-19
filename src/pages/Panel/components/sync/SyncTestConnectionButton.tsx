@@ -7,7 +7,7 @@ import {
   CloudAlertIcon,
   CloudCheckIcon,
   NetworkIcon,
-  RefreshCcwIcon,
+  RefreshCwIcon,
 } from 'lucide-react';
 
 function SyncConnectionTestButton() {
@@ -38,7 +38,7 @@ function SyncConnectionTestButton() {
       case SyncState.Running:
         return (
           <>
-            <RefreshCcwIcon />
+            <RefreshCwIcon />
             <span>Testing...</span>
           </>
         );

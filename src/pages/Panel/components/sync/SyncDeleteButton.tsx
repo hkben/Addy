@@ -7,7 +7,7 @@ import {
   CloudAlertIcon,
   CloudCheckIcon,
   CloudOffIcon,
-  RefreshCcwIcon,
+  RefreshCwIcon,
 } from 'lucide-react';
 import {
   AlertDialog,
@@ -49,7 +49,7 @@ function SyncDeleteButton() {
       case SyncState.Running:
         return (
           <>
-            <RefreshCcwIcon className="animate-spin" />
+            <RefreshCwIcon className="animate-spin" />
             <span>Deleting...</span>
           </>
         );

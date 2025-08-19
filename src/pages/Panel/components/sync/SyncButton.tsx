@@ -3,7 +3,7 @@ import { BrowserMessageAction } from '@/common/interface';
 import { SyncState, useSyncStore } from '@/common/store/useSyncStore';
 import log from 'loglevel';
 import { Button } from '@/components/ui/button';
-import { CloudAlertIcon, CloudCheckIcon, RefreshCcwIcon } from 'lucide-react';
+import { CloudAlertIcon, CloudCheckIcon, RefreshCwIcon } from 'lucide-react';
 
 function SyncButton() {
   const syncingState = useSyncStore((state) => state.syncingState);
@@ -23,7 +23,7 @@ function SyncButton() {
     ) {
       return (
         <>
-          <RefreshCcwIcon />
+          <RefreshCwIcon />
           <span>Sync Now</span>
         </>
       );
@@ -33,7 +33,7 @@ function SyncButton() {
       case SyncState.Running:
         return (
           <>
-            <RefreshCcwIcon className="animate-spin" />
+            <RefreshCwIcon className="animate-spin" />
             <span>Syncing...</span>
           </>
         );
