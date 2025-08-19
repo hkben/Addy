@@ -32,6 +32,7 @@ import ColorSelector from '../components/viewer/ColorSelector';
 import DeleteItemDialog from '../components/viewer/dialog/DeleteItemDialog';
 import EditDialog from '../components/viewer/dialog/EditDialog';
 import HeaderActions from '../components/viewer/HeaderActions';
+import NameUpdatePopover from '../components/viewer/NameUpdatePopover';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   var result = await useCollectionStore
@@ -101,18 +102,9 @@ function Viewer() {
       <div className="flex flex-1 flex-col gap-4 px-4 py-5">
         <div className="bg-muted/50 mx-auto h-full w-full max-w-5xl rounded-xl p-8">
           <div className="w-full py-5 flex gap-2.5">
-            <p className="text-3xl my-auto">
-              {editCollectionName ? (
-                <input
-                  className="px-2 border-solid border-2 border-grey-600 rounded-lg dark:bg-gray-800"
-                  type="text"
-                  value={collectionName}
-                  onChange={handleCollectionNameChange}
-                />
-              ) : (
-                collectionName
-              )}
-            </p>
+            <p className="text-3xl my-auto">{collection.name}</p>
+
+            <NameUpdatePopover />
 
             <button
               className="h-10 w-10 p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
