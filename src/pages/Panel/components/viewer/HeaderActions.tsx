@@ -29,13 +29,7 @@ function HeaderActions() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="data-[state=open]:bg-accent h-7 w-7"
-          >
-            <MoreHorizontal />
-          </Button>
+          <MoreHorizontal />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[250px]" align="end">
