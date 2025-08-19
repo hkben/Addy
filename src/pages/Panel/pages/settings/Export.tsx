@@ -2,6 +2,9 @@ import { format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { Collections } from '@/common/storage';
 import log from 'loglevel';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { DownloadIcon } from 'lucide-react';
 
 interface State {
   json: string;
@@ -42,19 +45,13 @@ function Export() {
         </p>
       </div>
 
-      <div className="w-full py-2">
-        <textarea
-          className="w-full h-64 p-2 border border-gray-500 rounded-md dark:bg-gray-800"
-          value={json}
-          readOnly
-        />
+      <div className="w-full py-2 grid gap-4">
+        <Textarea className="w-full h-64 p-2" value={json} readOnly />
 
-        <button
-          className="my-2 p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
-          onClick={downloadJson}
-        >
-          Download
-        </button>
+        <Button variant="outline" onClick={downloadJson}>
+          <DownloadIcon />
+          <span>Download</span>
+        </Button>
       </div>
     </div>
   );

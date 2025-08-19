@@ -1,6 +1,11 @@
 import React from 'react';
 import { ICollection, IStorage } from '@/common/interface';
 import { Collections, Storage } from '@/common/storage';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { UploadIcon } from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 function Import() {
   const [json, setJson] = React.useState<string>('');
@@ -23,10 +28,8 @@ function Import() {
     updateCollections(collections);
   };
 
-  const handleReplaceChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setIsReplace(event.target.checked);
+  const handleReplaceChange = async (value: boolean) => {
+    setIsReplace(value);
   };
 
   const updateCollections = async (_collections: ICollection[]) => {
@@ -63,29 +66,26 @@ function Import() {
         </p>
       </div>
 
-      <div className="w-full py-2">
-        <textarea
-          className="w-full h-64 p-2 border border-gray-500 rounded-md dark:bg-gray-800"
+      <div className="w-full py-2 grid gap-4">
+        <Textarea
+          className="w-full h-64 p-2"
           value={json}
           onChange={handleChange}
         />
 
-        <button
-          className="my-2 p-2 px-3 text-base text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
-          onClick={handleImport}
-        >
-          Import
-        </button>
-
-        <div className="inline text-base p-4">
-          <input
-            type="checkbox"
-            className="w-4 h-4 border border-gray-200 rounded-md"
+        <div className="flex gap-2">
+          <Switch
+            id="replace"
             checked={isReplace}
-            onChange={handleReplaceChange}
+            onCheckedChange={handleReplaceChange}
           />
-          <span className="ml-3 font-semibold">Replace</span>
+          <Label htmlFor="replace">Replace Existing Collections</Label>
         </div>
+
+        <Button variant="outline" onClick={handleImport}>
+          <UploadIcon />
+          <span>Import</span>
+        </Button>
       </div>
     </div>
   );
