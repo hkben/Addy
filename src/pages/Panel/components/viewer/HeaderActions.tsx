@@ -51,7 +51,12 @@ function HeaderActions() {
         <DropdownMenuItem
           className="cursor-pointer"
           variant="destructive"
-          onClick={() => {}}
+          onClick={() => {
+            setDialogEvent({
+              type: DialogEventType.EmptyCollection,
+              collectionId: collection.id,
+            });
+          }}
         >
           <BrushCleaningIcon />
           <span>Empty Collection</span>
@@ -59,7 +64,12 @@ function HeaderActions() {
         <DropdownMenuItem
           className="cursor-pointer"
           variant="destructive"
-          onClick={() => {}}
+          onClick={() => {
+            setDialogEvent({
+              type: DialogEventType.DeleteCollection,
+              collectionId: collection.id,
+            });
+          }}
         >
           <TrashIcon />
           <span>Delete Collection</span>

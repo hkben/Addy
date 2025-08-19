@@ -5,6 +5,8 @@ import log from 'loglevel';
 enum DialogEventType {
   Delete,
   Edit,
+  DeleteCollection,
+  EmptyCollection,
 }
 
 interface DialogEvent {
