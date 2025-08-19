@@ -29,12 +29,12 @@ function SyncDeleteButton() {
   const action = useSyncStore((state) => state.action);
 
   const handleOnClick = async () => {
-    startSyncAction(BrowserMessageAction.SyncBackgroundRun);
+    startSyncAction(BrowserMessageAction.SyncFileDeletion);
   };
 
   const renderText = () => {
     if (
-      action !== BrowserMessageAction.SyncBackgroundRun ||
+      action !== BrowserMessageAction.SyncFileDeletion ||
       syncingState === SyncState.Idle
     ) {
       return (
