@@ -19,7 +19,6 @@ import { Setting } from '../../../common/storage';
 import _ from 'lodash';
 import { Tooltip } from 'react-tooltip';
 import ImageTooltip from './ImageTooltip';
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import RowItem from '@Panel/components/viewer/RowItem';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
 import { useParams } from 'react-router-dom';

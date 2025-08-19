@@ -17,7 +17,6 @@
     "@aws-sdk/client-s3": "^3.75.0",
     "@aws-sdk/credential-provider-cognito-identity": "^3.75.0",
     "@babel/runtime": "^7.15.4",
-    "@heroicons/react": "^2.0.18",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.15",
     "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-dialog": "^1.1.14",
