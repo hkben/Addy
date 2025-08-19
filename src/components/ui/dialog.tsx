@@ -64,6 +64,10 @@ function DialogContent({
           className
         )}
         {...props}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          document.body.style.pointerEvents = '';
+        }}
       >
         {children}
         {showCloseButton && (

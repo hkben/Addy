@@ -58,6 +58,10 @@ function AlertDialogContent({
           className
         )}
         {...props}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          document.body.style.pointerEvents = '';
+        }}
       />
     </AlertDialogPortal>
   );
