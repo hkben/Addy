@@ -16,10 +16,10 @@ import { SidebarInset } from '@/components/ui/sidebar';
 import Header from '../layouts/Header';
 import TypeSelector from '../components/viewer/TypeSelector';
 import ColorSelector from '../components/viewer/ColorSelector';
-import DeleteItemDialog from '../components/viewer/dialog/DeleteItemDialog';
 import EditDialog from '../components/viewer/dialog/EditDialog';
 import HeaderActions from '../components/viewer/HeaderActions';
 import NameUpdatePopover from '../components/viewer/NameUpdatePopover';
+import EventDialog from '../components/viewer/dialog/EventDialog';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   var result = await useCollectionStore
@@ -34,7 +34,7 @@ function Viewer() {
 
   return (
     <SidebarInset>
-      <DeleteItemDialog />
+      <EventDialog />
       <EditDialog />
       <Header title={collection.name} color={collection.color}>
         <HeaderActions />
