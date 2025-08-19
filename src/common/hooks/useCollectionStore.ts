@@ -9,6 +9,7 @@ interface Store {
   collection: ICollection;
   fetchCollection: (collectionId: string) => Promise<boolean>;
   setCollection: (collection: ICollection) => void;
+  removeCollection: (_collectionId: string) => void;
   removeCollectionItem: (_collectionId: string, _item: string) => void;
   editCollectionItem: (
     _collectionId: string,
@@ -44,6 +45,18 @@ const useCollectionStore = create<Store>()(
         log.error(`Failed to fetch collection: ${error}`);
         return false;
       }
+    },
+    removeCollection: async (_collectionId) => {
+      let result = await Collection.delete(_collectionId);
+
+      if (result == false) {
+        return;
+      }
+
+      let fetchCollectionsList = useCollectionsListStore.getState().fetchList;
+
+      //refresh collection list
+      fetchCollectionsList();
     },
     removeCollectionItem: async (_collectionId, _item) => {
       let result = await CollectionItem.delete(_collectionId, _item);
