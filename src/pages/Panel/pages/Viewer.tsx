@@ -106,50 +106,6 @@ function Viewer() {
 
             <NameUpdatePopover />
 
-            <button
-              className="h-10 w-10 p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
-              title="Edit Name"
-              onClick={() => {
-                if (editCollectionName == false) {
-                  setEditCollectionName(true);
-                } else {
-                  handleCollectionNameSubmbit();
-                }
-              }}
-            >
-              <PencilIcon className="h-6 w-6 m-auto" strokeWidth={2} />
-            </button>
-
-            <button
-              className="h-10 w-10 p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
-              title="Empty Collection"
-              onClick={() => {
-                const confirmBox = window.confirm(
-                  'Do you really want to delete all items in this collection?'
-                );
-                if (confirmBox === true) {
-                  removeAllItems(collection.id);
-                }
-              }}
-            >
-              <DocumentMinusIcon className="h-6 w-6 m-auto" strokeWidth={2} />
-            </button>
-
-            <button
-              className="h-10 w-10 p-1 px-1.5 text-white bg-blue-500 hover:bg-blue-700 rounded-md items-center"
-              title="Delete Collection"
-              onClick={() => {
-                const confirmBox = window.confirm(
-                  'Do you really want to delete this collection?'
-                );
-                if (confirmBox === true) {
-                  removeCollection();
-                }
-              }}
-            >
-              <TrashIcon className="h-6 w-6 m-auto" strokeWidth={2} />
-            </button>
-
             <ColorSelector />
           </div>
 
