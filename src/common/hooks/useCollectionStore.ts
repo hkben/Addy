@@ -17,6 +17,7 @@ interface Store {
   ) => void;
   removeAllItems: (_collectionId: string) => void;
   changeCollectionColor: (_collectionId: string, _color: number) => void;
+  changeCollectionName: (_collectionId: string, _name: string) => void;
   moveCollectionItem: (
     _collectionId: string,
     _itemId: string,
@@ -113,6 +114,22 @@ const useCollectionStore = create<Store>()(
 
       set((state) => {
         state.collection.color = _color;
+      });
+
+      //refresh collection list
+      fetchCollectionsList();
+    },
+    changeCollectionName: async (_collectionId, _name) => {
+      let result = await Collection.updateName(_collectionId, _name);
+
+      if (result == false) {
+        return;
+      }
+
+      let fetchCollectionsList = useCollectionsListStore.getState().fetchList;
+
+      set((state) => {
+        state.collection.name = _name;
       });
 
       //refresh collection list
