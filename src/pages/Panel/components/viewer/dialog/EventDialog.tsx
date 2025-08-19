@@ -96,10 +96,17 @@ function EventDialog() {
     }
 
     setIsOpen(false);
-    resetDialogEvent();
 
     if (event.type === DialogEventType.DeleteCollection) {
       navigate('/');
+    }
+  };
+
+  const handleonOpenChange = (open: boolean) => {
+    setIsOpen(open);
+
+    if (!open) {
+      resetDialogEvent();
     }
   };
 
@@ -118,18 +125,12 @@ function EventDialog() {
     }
   }, [event]);
 
-  useEffect(() => {
-    if (isOpen === false) {
-      resetDialogEvent();
-    }
-  }, [isOpen, resetDialogEvent]);
-
   if (event == null) {
     return null;
   }
 
   return (
-    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+    <AlertDialog open={isOpen} onOpenChange={handleonOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{stateMap[event.type]!.title}</AlertDialogTitle>

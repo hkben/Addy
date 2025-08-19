@@ -75,7 +75,14 @@ function EditDialog() {
     editCollectionItem(collection.id, item.id, changes);
 
     setIsOpen(false);
-    resetDialogEvent();
+  };
+
+  const handleonOpenChange = (open: boolean) => {
+    setIsOpen(open);
+
+    if (!open) {
+      resetDialogEvent();
+    }
   };
 
   const setInitialItem = useCallback(() => {
@@ -106,18 +113,12 @@ function EditDialog() {
     setIsOpen(true);
   }, [event, setInitialItem]);
 
-  useEffect(() => {
-    if (isOpen === false) {
-      resetDialogEvent();
-    }
-  }, [isOpen, resetDialogEvent]);
-
   if (!item) {
     return null;
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={isOpen} onOpenChange={handleonOpenChange}>
       <DialogContent className="w-full max-w-2xl">
         <DialogHeader>
           <DialogTitle>Edit Item</DialogTitle>
