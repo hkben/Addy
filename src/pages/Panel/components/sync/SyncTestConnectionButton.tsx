@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react';
-import {
-  ArrowPathIcon,
-  CheckCircleIcon,
-  XCircleIcon,
-} from '@heroicons/react/24/outline';
 import log from 'loglevel';
 import { useSyncStore, SyncState } from '@/common/store/useSyncStore';
 import { BrowserMessageAction } from '@/common/interface';
 import { Button } from '@/components/ui/button';
+import {
+  CloudAlertIcon,
+  CloudCheckIcon,
+  NetworkIcon,
+  RefreshCcwIcon,
+} from 'lucide-react';
 
 function SyncConnectionTestButton() {
   const syncingState = useSyncStore((state) => state.syncingState);
@@ -20,51 +21,50 @@ function SyncConnectionTestButton() {
     startSyncAction(BrowserMessageAction.SyncConnectionTest);
   };
 
-  const defaultContent = () => {
-    return <span>Connection Test</span>;
-  };
-
   const renderText = () => {
-    if (action !== BrowserMessageAction.SyncConnectionTest) {
-      return defaultContent();
+    if (
+      action !== BrowserMessageAction.SyncConnectionTest ||
+      syncingState === SyncState.Idle
+    ) {
+      return (
+        <>
+          <NetworkIcon />
+          <span>Connection Test</span>
+        </>
+      );
     }
 
     switch (syncingState) {
-      case SyncState.Idle:
-        return defaultContent();
       case SyncState.Running:
         return (
-          <Fragment>
-            <ArrowPathIcon
-              className="animate-spin h-5 w-5 inline mr-1"
-              strokeWidth={3}
-            />
+          <>
+            <RefreshCcwIcon />
             <span>Testing...</span>
-          </Fragment>
+          </>
         );
       case SyncState.Completed:
         return (
-          <Fragment>
-            <CheckCircleIcon className="h-6 w-6 mr-1" strokeWidth={2} />
-            <span>Connected!</span>
-          </Fragment>
+          <>
+            <CloudCheckIcon />
+            <span>Success</span>
+          </>
         );
       case SyncState.Error:
         return (
-          <Fragment>
-            <XCircleIcon className="h-6 w-6 mr-1" strokeWidth={2} />
-
+          <>
+            <CloudAlertIcon />
             <span>Unauthorized</span>
-          </Fragment>
+          </>
         );
       default:
-        return '';
+        return null;
     }
   };
 
   return (
     <Button
       variant="outline"
+      disabled={syncingState === SyncState.Running}
       onClick={handleOnClick}
     >
       {renderText()}

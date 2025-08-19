@@ -1,9 +1,9 @@
 import React, { Fragment } from 'react';
 import { BrowserMessageAction } from '@/common/interface';
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import { SyncState, useSyncStore } from '@/common/store/useSyncStore';
 import log from 'loglevel';
 import { Button } from '@/components/ui/button';
+import { CloudAlertIcon, CloudCheckIcon, RefreshCcwIcon } from 'lucide-react';
 
 function SyncButton() {
   const syncingState = useSyncStore((state) => state.syncingState);
@@ -16,39 +16,52 @@ function SyncButton() {
     startSyncAction(BrowserMessageAction.SyncBackgroundRun);
   };
 
-  const defaultContent = () => {
-    return <span>Sync Now</span>;
-  };
-
   const renderText = () => {
-    if (action !== BrowserMessageAction.SyncBackgroundRun) {
-      return defaultContent();
+    if (
+      action !== BrowserMessageAction.SyncBackgroundRun ||
+      syncingState === SyncState.Idle
+    ) {
+      return (
+        <>
+          <RefreshCcwIcon />
+          <span>Sync Now</span>
+        </>
+      );
     }
 
     switch (syncingState) {
-      case SyncState.Idle:
-        return defaultContent();
       case SyncState.Running:
         return (
-          <Fragment>
-            <ArrowPathIcon
-              className="animate-spin h-5 w-5 inline mr-1"
-              strokeWidth={3}
-            />
+          <>
+            <RefreshCcwIcon className="animate-spin" />
             <span>Syncing...</span>
-          </Fragment>
+          </>
         );
       case SyncState.Completed:
-        return <span>Sync Completed!</span>;
+        return (
+          <>
+            <CloudCheckIcon />
+            <span>Sync Completed!</span>
+          </>
+        );
       case SyncState.Error:
-        return <span>Sync Error</span>;
+        return (
+          <>
+            <CloudAlertIcon />
+            <span>Error</span>
+          </>
+        );
       default:
-        return '';
+        return null;
     }
   };
 
   return (
-    <Button variant="outline" onClick={handleOnClick}>
+    <Button
+      variant="outline"
+      disabled={syncingState === SyncState.Running}
+      onClick={handleOnClick}
+    >
       {renderText()}
     </Button>
   );

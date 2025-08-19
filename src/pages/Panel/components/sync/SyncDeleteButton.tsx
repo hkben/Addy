@@ -1,9 +1,25 @@
 import React, { Fragment } from 'react';
 import { BrowserMessageAction } from '@/common/interface';
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
 import log from 'loglevel';
 import { SyncState, useSyncStore } from '@/common/store/useSyncStore';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
+import {
+  CloudAlertIcon,
+  CloudCheckIcon,
+  CloudOffIcon,
+  RefreshCcwIcon,
+} from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 function SyncDeleteButton() {
   const syncingState = useSyncStore((state) => state.syncingState);
@@ -13,50 +29,79 @@ function SyncDeleteButton() {
   const action = useSyncStore((state) => state.action);
 
   const handleOnClick = async () => {
-    const confirmBox = window.confirm(
-      'Do you really want to delete remote data?'
-    );
-
-    if (confirmBox === true) {
-      startSyncAction(BrowserMessageAction.SyncBackgroundRun);
-    }
-  };
-
-  const defaultContent = () => {
-    return <span>Delete Remote Data</span>;
+    startSyncAction(BrowserMessageAction.SyncBackgroundRun);
   };
 
   const renderText = () => {
-    if (action !== BrowserMessageAction.SyncBackgroundRun) {
-      return defaultContent();
+    if (
+      action !== BrowserMessageAction.SyncBackgroundRun ||
+      syncingState === SyncState.Idle
+    ) {
+      return (
+        <>
+          <CloudOffIcon />
+          <span>Delete Remote Data</span>
+        </>
+      );
     }
 
     switch (syncingState) {
-      case SyncState.Idle:
-        return defaultContent();
       case SyncState.Running:
         return (
-          <Fragment>
-            <ArrowPathIcon
-              className="animate-spin h-5 w-5 inline mr-1"
-              strokeWidth={3}
-            />
+          <>
+            <RefreshCcwIcon className="animate-spin" />
             <span>Deleting...</span>
-          </Fragment>
+          </>
         );
       case SyncState.Completed:
-        return <span>Deletion Completed!</span>;
+        return (
+          <>
+            <CloudCheckIcon />
+            <span>Deletion Completed</span>
+          </>
+        );
       case SyncState.Error:
-        return <span>Deletion Error</span>;
+        return (
+          <>
+            <CloudAlertIcon />
+            <span>Error</span>
+          </>
+        );
       default:
         return '';
     }
   };
 
   return (
-    <Button variant="destructive" onClick={handleOnClick}>
-      {renderText()}
-    </Button>
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button
+          variant="destructive"
+          disabled={syncingState === SyncState.Running}
+        >
+          {renderText()}
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete Remote Data</AlertDialogTitle>
+          <AlertDialogDescription>
+            Are you sure you want to delete all remote data? This action cannot
+            be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            className={buttonVariants({ variant: 'destructive' })}
+            onClick={handleOnClick}
+          >
+            <CloudOffIcon />
+            <span>Delete</span>
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }
 
