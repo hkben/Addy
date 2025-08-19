@@ -413,7 +413,11 @@ function ViewerTable({ type }: Prop) {
   }, [pagination]);
 
   useEffect(() => {
-    table.setPageIndex(0);
+    // Prevent state updates during initial render
+    // Also helps avoid tooltip display issues caused by state changes on first render
+    if (table.getState().pagination.pageIndex !== 0) {
+      table.setPageIndex(0);
+    }
   }, [table, type]);
 
   return (
