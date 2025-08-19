@@ -1,6 +1,6 @@
 import React from 'react';
 import { ICollectionSummary } from '@/common/interface';
-import { CheckIcon } from '@heroicons/react/24/outline';
+import { CheckIcon } from 'lucide-react';
 
 interface Prop {
   collection: ICollectionSummary;
@@ -16,9 +16,7 @@ function CollectionButton(props: Prop) {
       onClick={props.onClick}
     >
       <span className="drop-shadow-lg">{props.collection.name}</span>
-      {props.collection.isExists == true ? (
-        <CheckIcon className="h-6 w-6" strokeWidth={2} />
-      ) : null}
+      {props.collection.isExists == true ? <CheckIcon /> : null}
     </div>
   );
 }

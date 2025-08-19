@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import { RefreshCwIcon } from 'lucide-react';
 
 interface Prop {
   imageSrc: string;
@@ -24,10 +24,7 @@ function ImageTooltip(props: Prop) {
       />
 
       <div className={`${isLoad ? 'hidden' : 'block'} w-32 text-center py-16`}>
-        <ArrowPathIcon
-          className="animate-spin h-5 w-5 inline mr-1"
-          strokeWidth={3}
-        />
+        <RefreshCwIcon className="m-auto animate-spin" />
       </div>
     </div>
   );

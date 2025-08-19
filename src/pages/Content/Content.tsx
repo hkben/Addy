@@ -13,8 +13,8 @@ import CollectionButton from './components/CollectionButton';
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
 import { useSortCollections } from '@/common/hooks/useSortCollections';
-import { XMarkIcon, PlusIcon } from '@heroicons/react/24/outline';
 import log from 'loglevel';
+import { PlusIcon, XIcon } from 'lucide-react';
 
 function Content(props: ISetting) {
   const [selection, setSelection] = React.useState({
@@ -270,7 +270,7 @@ function Content(props: ISetting) {
               {selection.type == 'bookmark' ? `🔖 : ${selection.content}` : ''}
             </p>
             <div className="bp-header-close-btn" onClick={toggleBox}>
-              <XMarkIcon className="h-5 w-5" strokeWidth={2} />
+              <XIcon />
             </div>
           </div>
 
@@ -306,7 +306,7 @@ function Content(props: ISetting) {
             {newCollectionButton ? (
               <div className="add-btn" onClick={newCollectionAndSave}>
                 <span>New Collection</span>
-                <PlusIcon className="h-5 w-5" strokeWidth={2} />
+                <PlusIcon />
               </div>
             ) : null}
           </div>
