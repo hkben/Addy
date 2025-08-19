@@ -9,12 +9,12 @@ import {
 } from '@/components/ui/sidebar';
 import {
   BookOpenIcon,
-  FolderInput,
-  FolderOutput,
-  FolderSync,
-  Info,
-  Settings2,
-  Star,
+  FolderInputIcon,
+  FolderOutputIcon,
+  FolderSyncIcon,
+  InfoIcon,
+  Settings2Icon,
+  StarIcon,
 } from 'lucide-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -30,7 +30,7 @@ export function SettingSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link to="/setting/general">
-                    <Settings2 />
+                    <Settings2Icon />
                     <span>General</span>
                   </Link>
                 </SidebarMenuButton>
@@ -38,7 +38,7 @@ export function SettingSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link to="/setting/sync">
-                    <FolderSync />
+                    <FolderSyncIcon />
                     <span>Sync</span>
                   </Link>
                 </SidebarMenuButton>
@@ -46,7 +46,7 @@ export function SettingSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link to="/setting/export">
-                    <FolderOutput />
+                    <FolderOutputIcon />
                     <span>Export</span>
                   </Link>
                 </SidebarMenuButton>
@@ -54,7 +54,7 @@ export function SettingSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link to="/setting/import">
-                    <FolderInput />
+                    <FolderInputIcon />
                     <span>Import</span>
                   </Link>
                 </SidebarMenuButton>
@@ -70,7 +70,7 @@ export function SettingSidebar() {
               <SidebarMenuItem>
                 <SidebarMenuButton asChild>
                   <Link to="/setting/information">
-                    <Info />
+                    <InfoIcon />
                     <span>Information</span>
                   </Link>
                 </SidebarMenuButton>

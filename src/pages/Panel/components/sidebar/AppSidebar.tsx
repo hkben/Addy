@@ -1,4 +1,10 @@
-import { ArrowDownAZ, ArrowUpAZ, Plus, Search, X } from 'lucide-react';
+import {
+  ArrowDownAZIcon,
+  ArrowUpAZIcon,
+  PlusIcon,
+  SearchIcon,
+  XIcon,
+} from 'lucide-react';
 
 import {
   SidebarContent,
@@ -98,7 +104,7 @@ export function AppSidebar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <Button className="w-full py-8" onClick={newCollectionSubmit}>
-                <Plus />
+                <PlusIcon />
                 <span>New Collection</span>
               </Button>
             </SidebarMenuItem>
@@ -130,7 +136,7 @@ export function AppSidebar() {
               </SelectContent>
             </Select>
             <Button variant="secondary" onClick={handleDescendingOption}>
-              {ordering.descending ? <ArrowUpAZ /> : <ArrowDownAZ />}
+              {ordering.descending ? <ArrowUpAZIcon /> : <ArrowDownAZIcon />}
             </Button>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -154,10 +160,10 @@ export function AppSidebar() {
                   setSearchKeyword('');
                 }}
               >
-                <X />
+                <XIcon />
               </Button>
             </div>
-            <Search className="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 opacity-50 select-none" />
+            <SearchIcon className="pointer-events-none absolute top-1/2 left-2 size-4 -translate-y-1/2 opacity-50 select-none" />
           </SidebarGroupContent>
         </SidebarGroup>
 

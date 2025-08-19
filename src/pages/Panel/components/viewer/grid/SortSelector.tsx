@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ArrowDownAZ, ArrowUpAZ } from 'lucide-react';
+import { ArrowDownAZIcon, ArrowUpAZIcon } from 'lucide-react';
 
 interface Props<TData> {
   table: Table<TData>;
@@ -65,9 +65,9 @@ function SortSelector<TData>({ table }: Props<TData>) {
 
       <Button variant="outline" onClick={handleDescendingOption}>
         {sorting.length > 0 && sorting[0].desc ? (
-          <ArrowDownAZ />
+          <ArrowDownAZIcon />
         ) : (
-          <ArrowUpAZ />
+          <ArrowUpAZIcon />
         )}
       </Button>
     </div>

@@ -21,7 +21,7 @@ import log from 'loglevel';
 import useSettingStore from '@/common/store/useSettingStore';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { LayoutGridIcon, Plus, MoonIcon, SunIcon } from 'lucide-react';
+import { LayoutGridIcon, PlusIcon, MoonIcon, SunIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 function Popup() {
@@ -186,7 +186,7 @@ function Popup() {
 
         {newCollectionButton ? (
           <Button className="w-full py-8" onClick={newCollectionAndSave}>
-            <Plus />
+            <PlusIcon />
             <span>Add into New Collection</span>
           </Button>
         ) : null}

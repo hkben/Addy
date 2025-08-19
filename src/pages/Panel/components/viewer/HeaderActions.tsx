@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import {
-  MoreHorizontal,
+  MoreHorizontalIcon,
   BrushCleaningIcon,
   DownloadIcon,
   TrashIcon,
@@ -29,7 +29,7 @@ function HeaderActions() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 p-0">
-          <MoreHorizontal />
+          <MoreHorizontalIcon />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[250px]" align="end">

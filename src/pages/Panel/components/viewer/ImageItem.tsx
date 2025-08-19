@@ -7,7 +7,7 @@ import {
   FileCodeIcon,
   LinkIcon,
   MenuIcon,
-  MoreHorizontal,
+  MoreHorizontalIcon,
   ScanSearchIcon,
   Trash2Icon,
 } from 'lucide-react';
@@ -99,7 +99,7 @@ function ImageItem({ item }: Prop) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
-              <MoreHorizontal />
+              <MoreHorizontalIcon />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[150px]" align="end">

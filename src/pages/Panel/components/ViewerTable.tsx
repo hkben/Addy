@@ -38,7 +38,7 @@ import {
   ArrowDownAZIcon,
   LinkIcon,
   MenuIcon,
-  MoreHorizontal,
+  MoreHorizontalIcon,
   Trash2Icon,
   FileCodeIcon,
 } from 'lucide-react';
@@ -291,7 +291,7 @@ function ViewerTable({ type }: Prop) {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="h-8 w-8 p-0">
-                  <MoreHorizontal />
+                  <MoreHorizontalIcon />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-[150px]" align="end">

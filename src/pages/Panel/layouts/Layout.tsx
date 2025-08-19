@@ -13,7 +13,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { SettingSidebar } from '../components/sidebar/SettingSidebar';
 import { Button } from '@/components/ui/button';
-import { List, Moon, SettingsIcon, Sun } from 'lucide-react';
+import { ListIcon, MoonIcon, SettingsIcon, SunIcon } from 'lucide-react';
 
 function Layout() {
   const [darkMode, setDarkMode] = useDarkMode();
@@ -33,7 +33,7 @@ function Layout() {
       return (
         <Button variant="ghost" size="icon" asChild>
           <Link to="/">
-            <List />
+            <ListIcon />
           </Link>
         </Button>
       );
@@ -68,7 +68,7 @@ function Layout() {
 
                 <div className="flex">
                   <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
-                    {darkMode ? <Sun /> : <Moon />}
+                    {darkMode ? <SunIcon /> : <MoonIcon />}
                   </Button>
                   {renderSettingsNavButton()}
                 </div>
