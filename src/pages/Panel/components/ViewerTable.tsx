@@ -280,6 +280,26 @@ function ViewerTable({ type }: Prop) {
         enableGlobalFilter: false,
       },
       {
+        id: 'source',
+        meta: {
+          className: 'w-10',
+        },
+        enableSorting: false,
+        cell: ({ row }) => {
+          return (
+            <Button variant="ghost" size="icon" asChild>
+              <a
+                href={row.original.source}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <LinkIcon />
+              </a>
+            </Button>
+          );
+        },
+      },
+      {
         id: 'action',
         meta: {
           className: 'w-10',
