@@ -88,7 +88,7 @@ function EditDialog() {
   const setInitialItem = useCallback(() => {
     if (
       event == null ||
-      event.type !== DialogEventType.Edit ||
+      event.type !== DialogEventType.EditItem ||
       event.collectionId == null ||
       event.itemId == null
     ) {
@@ -105,7 +105,7 @@ function EditDialog() {
   }, [event, collection.items]);
 
   useEffect(() => {
-    if (event == null || event.type !== DialogEventType.Edit) {
+    if (event == null || event.type !== DialogEventType.EditItem) {
       return;
     }
 
@@ -113,7 +113,11 @@ function EditDialog() {
     setIsOpen(true);
   }, [event, setInitialItem]);
 
-  if (event == null || event.type !== DialogEventType.Edit || item == null) {
+  if (
+    event == null ||
+    event.type !== DialogEventType.EditItem ||
+    item == null
+  ) {
     return null;
   }
 

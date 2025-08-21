@@ -3,8 +3,8 @@ import { immer } from 'zustand/middleware/immer';
 import log from 'loglevel';
 
 enum DialogEventType {
-  Delete,
-  Edit,
+  DeleteItem,
+  EditItem,
   DeleteCollection,
   EmptyCollection,
   ImagesDownload,

@@ -25,7 +25,7 @@ interface DialogAttributes {
 }
 
 const stateMap: Partial<Record<DialogEventType, DialogAttributes>> = {
-  [DialogEventType.Delete]: {
+  [DialogEventType.DeleteItem]: {
     title: 'Delete Item',
     message: 'Do you really want to delete this item?',
     buttonContent: (
@@ -82,7 +82,7 @@ function EventDialog() {
     }
 
     switch (event.type) {
-      case DialogEventType.Delete:
+      case DialogEventType.DeleteItem:
         removeCollectionItem(event.collectionId, event.itemId!);
         break;
       case DialogEventType.EmptyCollection:
@@ -117,7 +117,7 @@ function EventDialog() {
 
     // Only handle these event types
     if (
-      event.type === DialogEventType.Delete ||
+      event.type === DialogEventType.DeleteItem ||
       event.type === DialogEventType.EmptyCollection ||
       event.type === DialogEventType.DeleteCollection
     ) {

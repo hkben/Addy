@@ -69,7 +69,7 @@ function ImageItem({ item }: Prop) {
 
   const handleDeleteItem = () => {
     setDialogEvent({
-      type: DialogEventType.Delete,
+      type: DialogEventType.DeleteItem,
       collectionId: collectionId,
       itemId: item.id,
     });
@@ -77,7 +77,7 @@ function ImageItem({ item }: Prop) {
 
   const handleEditItem = () => {
     setDialogEvent({
-      type: DialogEventType.Edit,
+      type: DialogEventType.EditItem,
       collectionId: collectionId,
       itemId: item.id,
     });

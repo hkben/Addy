@@ -105,7 +105,7 @@ function ViewerTable({ type }: Prop) {
     }
 
     setDialogEvent({
-      type: DialogEventType.Delete,
+      type: DialogEventType.DeleteItem,
       collectionId: collectionId,
       itemId: itemId,
     });
@@ -117,7 +117,7 @@ function ViewerTable({ type }: Prop) {
     }
 
     setDialogEvent({
-      type: DialogEventType.Edit,
+      type: DialogEventType.EditItem,
       collectionId: collectionId,
       itemId: itemId,
     });
