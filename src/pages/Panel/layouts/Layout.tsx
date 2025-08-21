@@ -54,7 +54,7 @@ function Layout() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <SidebarProvider>
+      <SidebarProvider className="z-10">
         <Sidebar>
           <SidebarHeader className="py-0">
             <SidebarGroup>

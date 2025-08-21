@@ -10,7 +10,7 @@ interface Props extends React.PropsWithChildren {
 
 function Header({ title, color, description, children }: Props) {
   return (
-    <header className="flex sticky top-0 h-14 shrink-0 items-center gap-2 bg-background border-b px-3">
+    <header className="flex sticky top-0 h-14 shrink-0 items-center gap-2 bg-background border-b px-3 z-5">
       <div className="flex flex-1 items-center gap-2">
         <SidebarTrigger />
         <Separator
