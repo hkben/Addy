@@ -20,6 +20,7 @@ import EditDialog from '../components/viewer/dialog/EditDialog';
 import HeaderActions from '../components/viewer/HeaderActions';
 import NameUpdatePopover from '../components/viewer/NameUpdatePopover';
 import EventDialog from '../components/viewer/dialog/EventDialog';
+import ImageDownloadDialog from '../components/viewer/dialog/ImageDownloadDialog';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   var result = await useCollectionStore
@@ -36,6 +37,7 @@ function Viewer() {
     <SidebarInset>
       <EventDialog />
       <EditDialog />
+      <ImageDownloadDialog />
       <Header title={collection.name} color={collection.color}>
         <HeaderActions />
       </Header>
