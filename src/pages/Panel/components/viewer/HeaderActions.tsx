@@ -34,7 +34,12 @@ function HeaderActions() {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[250px]" align="end">
         <DropdownMenuLabel>Action</DropdownMenuLabel>
-        <DropdownMenuItem className="cursor-pointer" onClick={() => {}}>
+        <DropdownMenuItem className="cursor-pointer" onClick={() => {
+          setDialogEvent({
+            type: DialogEventType.ImagesDownload,
+            collectionId: collection.id,
+          });
+        }}>
           <DownloadIcon />
           <span>Download All Images</span>
         </DropdownMenuItem>

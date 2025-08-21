@@ -7,6 +7,7 @@ enum DialogEventType {
   Edit,
   DeleteCollection,
   EmptyCollection,
+  ImagesDownload,
 }
 
 interface DialogEvent {
