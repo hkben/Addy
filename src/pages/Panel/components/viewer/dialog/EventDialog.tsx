@@ -125,7 +125,7 @@ function EventDialog() {
     }
   }, [event]);
 
-  if (event == null) {
+  if (event == null || !stateMap[event.type]) {
     return null;
   }
 
