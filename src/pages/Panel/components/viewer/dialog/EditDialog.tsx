@@ -30,6 +30,7 @@ import {
 import _ from 'lodash';
 import log from 'loglevel';
 import Common from '@/common/common';
+import { format, formatDistanceToNow } from 'date-fns';
 
 function EditDialog() {
   const collection = useCollectionStore((state) => state.collection);
@@ -138,16 +139,30 @@ function EditDialog() {
           <div className="flex w-full items-center gap-3">
             <div className="grid w-full items-center gap-3">
               <Label htmlFor="createTime">Create Time</Label>
-              <span className="text-sm font-medium text-muted-foreground">
-                {new Date(item.createTime).toLocaleString()}
-              </span>
+              <div className="grid items-center gap-1 text-sm font-medium text-muted-foreground">
+                <span>{format(item.createTime, 'yyyy-MM-dd hh:mm a')}</span>
+                <span>
+                  (
+                  {formatDistanceToNow(item.createTime, {
+                    addSuffix: true,
+                  })}
+                  )
+                </span>
+              </div>
             </div>
 
             <div className="grid w-full items-center gap-3">
               <Label htmlFor="modifyTime">Modify Time</Label>
-              <span className="text-sm font-medium text-muted-foreground">
-                {new Date(item.modifyTime).toLocaleString()}
-              </span>
+              <div className="grid items-center gap-1 text-sm font-medium text-muted-foreground">
+                <span>{format(item.modifyTime, 'yyyy-MM-dd hh:mm a')}</span>
+                <span>
+                  (
+                  {formatDistanceToNow(item.modifyTime, {
+                    addSuffix: true,
+                  })}
+                  )
+                </span>
+              </div>
             </div>
           </div>
 
