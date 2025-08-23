@@ -21,6 +21,7 @@ import HeaderActions from '../components/viewer/HeaderActions';
 import NameUpdatePopover from '../components/viewer/NameUpdatePopover';
 import EventDialog from '../components/viewer/dialog/EventDialog';
 import ImageDownloadDialog from '../components/viewer/dialog/ImageDownloadDialog';
+import { format, formatDistanceToNow } from 'date-fns';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   var result = await useCollectionStore
@@ -49,6 +50,17 @@ function Viewer() {
             <NameUpdatePopover />
 
             <ColorSelector />
+          </div>
+
+          <div className="py-2 mb-4">
+            <p className="text-muted-foreground text-sm">
+              Last modified:{' '}
+              {format(collection.modifyTime, 'yyyy-MM-dd hh:mm a')} (
+              {formatDistanceToNow(collection.modifyTime, {
+                addSuffix: true,
+              })}
+              )
+            </p>
           </div>
 
           <TypeSelector />
