@@ -44,7 +44,7 @@ function Viewer() {
       </Header>
       <div className="flex flex-1 flex-col gap-4 px-4 py-5">
         <div className="bg-muted/50 mx-auto h-full w-full max-w-7xl rounded-xl p-8">
-          <div className="w-full py-2 mb-4 flex item-center gap-2.5">
+          <div className="w-full py-2 flex item-center gap-2.5">
             <p className="text-3xl font-bold">{collection.name}</p>
 
             <NameUpdatePopover />
