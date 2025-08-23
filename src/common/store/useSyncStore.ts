@@ -39,6 +39,9 @@ const useSyncStore = create<Store>()(
         case BrowserMessageAction.SyncConnectionTestCompleted:
           onSyncConnectionTestCompleted(packet);
           break;
+        case BrowserMessageAction.SyncFileDeletionCompleted:
+          onSyncFileDeletionCompleted(packet);
+          break;
       }
     };
 
@@ -61,6 +64,19 @@ const useSyncStore = create<Store>()(
       set({
         syncingState: packet.result ? SyncState.Completed : SyncState.Error,
       });
+
+      setTimeout(resetSyncingState, 5000);
+    };
+
+    // Function to handle file deletion completion
+    const onSyncFileDeletionCompleted = (packet: IBrowserMessage) => {
+      if (packet.result) {
+        set({ syncingState: SyncState.Completed });
+        log.debug('Sync file deletion completed successfully');
+      } else {
+        set({ syncingState: SyncState.Error });
+        log.error('Sync file deletion failed');
+      }
 
       setTimeout(resetSyncingState, 5000);
     };
