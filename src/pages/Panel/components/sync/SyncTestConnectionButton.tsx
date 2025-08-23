@@ -17,6 +17,8 @@ function SyncConnectionTestButton() {
 
   const action = useSyncStore((state) => state.action);
 
+  const message = useSyncStore((state) => state.message);
+
   const handleOnClick = () => {
     startSyncAction(BrowserMessageAction.SyncConnectionTest);
   };
@@ -61,14 +63,29 @@ function SyncConnectionTestButton() {
     }
   };
 
+  const messageContent = () => {
+    if (
+      syncingState === SyncState.Error &&
+      action === BrowserMessageAction.SyncConnectionTest
+    )
+      return (
+        <p className="text-destructive text-sm mt-2">
+          {message || 'An error occurred during sync.'}
+        </p>
+      );
+  };
+
   return (
-    <Button
-      variant="outline"
-      disabled={syncingState === SyncState.Running}
-      onClick={handleOnClick}
-    >
-      {renderText()}
-    </Button>
+    <>
+      <Button
+        variant="outline"
+        disabled={syncingState === SyncState.Running}
+        onClick={handleOnClick}
+      >
+        {renderText()}
+      </Button>
+      {messageContent()}
+    </>
   );
 }
 

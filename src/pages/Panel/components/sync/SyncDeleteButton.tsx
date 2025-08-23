@@ -28,6 +28,8 @@ function SyncDeleteButton() {
 
   const action = useSyncStore((state) => state.action);
 
+  const message = useSyncStore((state) => state.message);
+
   const handleOnClick = async () => {
     startSyncAction(BrowserMessageAction.SyncFileDeletion);
   };
@@ -72,36 +74,51 @@ function SyncDeleteButton() {
     }
   };
 
+  const messageContent = () => {
+    if (
+      syncingState === SyncState.Error &&
+      action === BrowserMessageAction.SyncFileDeletion
+    )
+      return (
+        <p className="text-destructive text-sm mt-2">
+          {message || 'An error occurred during sync.'}
+        </p>
+      );
+  };
+
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          variant="destructive"
-          disabled={syncingState === SyncState.Running}
-        >
-          {renderText()}
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Delete Remote Data</AlertDialogTitle>
-          <AlertDialogDescription>
-            Are you sure you want to delete all remote data? This action cannot
-            be undone.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            className={buttonVariants({ variant: 'destructive' })}
-            onClick={handleOnClick}
+    <>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button
+            variant="destructive"
+            disabled={syncingState === SyncState.Running}
           >
-            <CloudOffIcon />
-            <span>Delete</span>
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            {renderText()}
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Remote Data</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete all remote data? This action
+              cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className={buttonVariants({ variant: 'destructive' })}
+              onClick={handleOnClick}
+            >
+              <CloudOffIcon />
+              <span>Delete</span>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      {messageContent()}
+    </>
   );
 }
 

@@ -12,6 +12,8 @@ function SyncButton() {
 
   const action = useSyncStore((state) => state.action);
 
+  const message = useSyncStore((state) => state.message);
+
   const handleOnClick = async () => {
     startSyncAction(BrowserMessageAction.SyncBackgroundRun);
   };
@@ -56,14 +58,29 @@ function SyncButton() {
     }
   };
 
+  const messageContent = () => {
+    if (
+      syncingState === SyncState.Error &&
+      action === BrowserMessageAction.SyncBackgroundRun
+    )
+      return (
+        <p className="text-destructive text-sm mt-2">
+          {message || 'An error occurred during sync.'}
+        </p>
+      );
+  };
+
   return (
-    <Button
-      variant="outline"
-      disabled={syncingState === SyncState.Running}
-      onClick={handleOnClick}
-    >
-      {renderText()}
-    </Button>
+    <>
+      <Button
+        variant="outline"
+        disabled={syncingState === SyncState.Running}
+        onClick={handleOnClick}
+      >
+        {renderText()}
+      </Button>
+      {messageContent()}
+    </>
   );
 }
 
