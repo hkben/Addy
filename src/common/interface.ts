@@ -20,6 +20,7 @@ export interface IBrowserMessage {
   imageSrc?: string;
   linkUrl?: string;
   result?: boolean;
+  message?: string;
 }
 
 //Collectiom

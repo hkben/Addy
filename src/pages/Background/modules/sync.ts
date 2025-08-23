@@ -35,6 +35,11 @@ export const syncBackgroundRun = async () => {
   let _syncSetting = await SyncSetting.fetch();
 
   if (_syncSetting.enable == false) {
+    sendMessage({
+      action: BrowserMessageAction.SyncCompleted,
+      result: false,
+      message: 'Sync is disabled',
+    });
     return;
   }
 
@@ -46,6 +51,7 @@ export const syncBackgroundRun = async () => {
     sendMessage({
       action: BrowserMessageAction.SyncCompleted,
       result: false,
+      message: 'Sync provider is not defined',
     });
 
     return;
@@ -104,6 +110,11 @@ export const syncConnectionTest = async () => {
   let _syncSetting = await SyncSetting.fetch();
 
   if (_syncSetting.enable == false) {
+    sendMessage({
+      action: BrowserMessageAction.SyncCompleted,
+      result: false,
+      message: 'Sync is disabled',
+    });
     return;
   }
 
@@ -151,6 +162,11 @@ export const syncFileDeletion = async () => {
   let _syncSetting = await SyncSetting.fetch();
 
   if (_syncSetting.enable == false) {
+    sendMessage({
+      action: BrowserMessageAction.SyncFileDeletionCompleted,
+      result: false,
+      message: 'Sync is disabled',
+    });
     return;
   }
 
@@ -162,6 +178,7 @@ export const syncFileDeletion = async () => {
     sendMessage({
       action: BrowserMessageAction.SyncFileDeletionCompleted,
       result: false,
+      message: 'Sync provider is not defined',
     });
 
     return;
