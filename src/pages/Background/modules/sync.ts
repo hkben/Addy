@@ -12,6 +12,10 @@ import GoogleDrive from '@/common/sync/googleDrive';
 import SyncProvider from '@/common/sync/syncProvider';
 import log from 'loglevel';
 
+const sendMessage = (message: IBrowserMessage) => {
+  Browser.runtime.sendMessage(message);
+};
+
 export const getSyncProvider = (
   _provider: string
 ): SyncProvider | undefined => {
@@ -39,10 +43,10 @@ export const syncBackgroundRun = async () => {
   if (syncProvider == undefined) {
     log.error('[Sync] Sync Provider is undefined');
 
-    Browser.runtime.sendMessage({
+    sendMessage({
       action: BrowserMessageAction.SyncCompleted,
       result: false,
-    } as IBrowserMessage);
+    });
 
     return;
   }
@@ -87,10 +91,10 @@ export const syncBackgroundRun = async () => {
     log.error('[Sync] Error...');
     log.error(error);
   } finally {
-    Browser.runtime.sendMessage({
+    sendMessage({
       action: BrowserMessageAction.SyncCompleted,
       result: _result,
-    } as IBrowserMessage);
+    });
   }
 };
 
@@ -108,10 +112,10 @@ export const syncConnectionTest = async () => {
   if (syncProvider == undefined) {
     log.error('[Sync] Sync Provider is undefined');
 
-    Browser.runtime.sendMessage({
+    sendMessage({
       action: BrowserMessageAction.SyncConnectionTestCompleted,
       result: false,
-    } as IBrowserMessage);
+    });
 
     return;
   }
@@ -134,10 +138,10 @@ export const syncConnectionTest = async () => {
     log.error('[Sync] Error...');
     log.error(error);
   } finally {
-    Browser.runtime.sendMessage({
+    sendMessage({
       action: BrowserMessageAction.SyncConnectionTestCompleted,
       result: _result,
-    } as IBrowserMessage);
+    });
   }
 };
 
@@ -155,10 +159,10 @@ export const syncFileDeletion = async () => {
   if (syncProvider == undefined) {
     log.error('[Sync] Sync Provider is undefined');
 
-    Browser.runtime.sendMessage({
+    sendMessage({
       action: BrowserMessageAction.SyncFileDeletionCompleted,
       result: false,
-    } as IBrowserMessage);
+    });
 
     return;
   }
@@ -185,10 +189,10 @@ export const syncFileDeletion = async () => {
     log.error('[Sync] Error...');
     log.error(error);
   } finally {
-    Browser.runtime.sendMessage({
+    sendMessage({
       action: BrowserMessageAction.SyncFileDeletionCompleted,
       result: _result,
-    } as IBrowserMessage);
+    });
   }
 };
 
