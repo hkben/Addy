@@ -17,6 +17,7 @@ export interface Store {
   sync: boolean;
   syncingState: SyncState;
   action?: BrowserMessageAction;
+  message?: string;
   lastSyncTime?: Date;
   fetch: () => Promise<boolean>;
   setSyncingState: (state: number) => void;
@@ -53,6 +54,7 @@ const useSyncStore = create<Store>()(
         log.debug('Sync completed successfully');
       } else {
         set({ syncingState: SyncState.Error });
+        set({ message: packet.message || 'Sync failed' });
         log.error('Sync failed');
       }
 
@@ -65,6 +67,11 @@ const useSyncStore = create<Store>()(
         syncingState: packet.result ? SyncState.Completed : SyncState.Error,
       });
 
+      if (!packet.result) {
+        set({ message: packet.message || 'Connection test failed' });
+        log.error('Connection test failed');
+      }
+
       setTimeout(resetSyncingState, 5000);
     };
 
@@ -75,6 +82,7 @@ const useSyncStore = create<Store>()(
         log.debug('Sync file deletion completed successfully');
       } else {
         set({ syncingState: SyncState.Error });
+        set({ message: packet.message || 'Sync file deletion failed' });
         log.error('Sync file deletion failed');
       }
 
@@ -85,6 +93,7 @@ const useSyncStore = create<Store>()(
     const resetSyncingState = () => {
       set({ action: undefined });
       set({ syncingState: SyncState.Idle });
+      set({ message: undefined });
     };
 
     Browser.runtime.onMessage.addListener(onMessageListener);
@@ -93,6 +102,7 @@ const useSyncStore = create<Store>()(
       sync: false,
       syncingState: SyncState.Idle,
       action: undefined,
+      message: undefined,
       lastSyncTime: undefined,
       fetch: async () => {
         log.debug('[useSettingStore] Fetching setting from storage...');
