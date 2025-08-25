@@ -3,7 +3,7 @@ import GoogleOAuth from '@/common/auth/googleOAuth';
 import { ISyncSetting } from '@/common/interface';
 import SyncSetting from '@/common/storage/syncSetting';
 import log from 'loglevel';
-import SettingItem from '../settings/SettingItem';
+import SettingItem from '../SettingItem';
 
 interface Prop {
   syncSetting: ISyncSetting;

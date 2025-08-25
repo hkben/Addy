@@ -1,6 +1,6 @@
 import React from 'react';
 import { ISyncSetting } from '@/common/interface';
-import SettingItem from '../settings/SettingItem';
+import SettingItem from '../SettingItem';
 import { Input } from '@/components/ui/input';
 
 interface Prop {
