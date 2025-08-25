@@ -1,14 +1,51 @@
 import React from 'react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
+import { SyncState, useSyncStore } from '@/common/store/useSyncStore';
+import { Button } from '@/components/ui/button';
+import { RefreshCwIcon } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
+import { BrowserMessageAction } from '@/common/interface';
 
 interface Props extends React.PropsWithChildren {
   title: string;
   color?: number;
-  description?: string;
 }
 
-function Header({ title, color, description, children }: Props) {
+function Header({ title, color, children }: Props) {
+  const sync = useSyncStore((state) => state.sync);
+
+  const lastSyncTime = useSyncStore((state) => state.lastSyncTime);
+
+  const syncingState = useSyncStore((state) => state.syncingState);
+
+  const startSyncAction = useSyncStore((state) => state.startSyncAction);
+
+  const displaySyncInfo = () => {
+    if (sync === false || lastSyncTime === undefined) {
+      return null;
+    }
+
+    return (
+      <>
+        <span className="text-xs text-muted-foreground hidden md:inline-block">
+          Last Sync: {formatDistanceToNow(lastSyncTime, { addSuffix: true })}
+        </span>
+        <Button
+          variant="ghost"
+          className="h-8 w-8 p-0"
+          onClick={() => {
+            startSyncAction(BrowserMessageAction.SyncBackgroundRun);
+          }}
+        >
+          <RefreshCwIcon
+            className={syncingState === SyncState.Running ? 'animate-spin' : ''}
+          />
+        </Button>
+      </>
+    );
+  };
+
   return (
     <header className="flex sticky top-0 h-14 shrink-0 items-center gap-2 bg-background border-b px-3 z-5">
       <div className="flex flex-1 items-center gap-2">
@@ -28,11 +65,8 @@ function Header({ title, color, description, children }: Props) {
 
         <div className="ml-auto px-3">
           <div className="flex items-center gap-2 text-sm">
-            {description && (
-              <span className="text-muted-foreground hidden font-medium md:inline-block ml-2">
-                {description}
-              </span>
-            )}
+            {displaySyncInfo()}
+
             {children}
           </div>
         </div>
