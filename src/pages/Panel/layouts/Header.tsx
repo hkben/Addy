@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
 import { SyncState, useSyncStore } from '@/common/store/useSyncStore';
@@ -21,15 +21,45 @@ function Header({ title, color, children }: Props) {
 
   const startSyncAction = useSyncStore((state) => state.startSyncAction);
 
+  const [formatedLastSyncTime, setFormatedLastSyncTime] =
+    React.useState<string>('');
+
+  const updateLastSyncTime = useCallback(() => {
+    if (lastSyncTime == null) {
+      return;
+    }
+
+    setFormatedLastSyncTime(
+      formatDistanceToNow(lastSyncTime, { addSuffix: true })
+    );
+  }, [lastSyncTime]);
+
+  // timer for update last sync time every minute
+  useEffect(() => {
+    if (lastSyncTime == null) {
+      return;
+    }
+
+    updateLastSyncTime();
+
+    const interval = setInterval(() => {
+      updateLastSyncTime();
+    }, 60000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [lastSyncTime, updateLastSyncTime]);
+
   const displaySyncInfo = () => {
-    if (sync === false || lastSyncTime === undefined) {
+    if (sync === false || lastSyncTime == null || formatedLastSyncTime === '') {
       return null;
     }
 
     return (
       <>
         <span className="text-xs text-muted-foreground hidden md:inline-block">
-          Last Sync: {formatDistanceToNow(lastSyncTime, { addSuffix: true })}
+          Last Sync: {formatedLastSyncTime}
         </span>
         <Button
           variant="ghost"
