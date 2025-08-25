@@ -1,4 +1,5 @@
 import useCollectionStore from '@/common/hooks/useCollectionStore';
+import { cn } from '@/lib/utils';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -16,63 +17,49 @@ function TypeSelector() {
       .length,
   };
 
+  const className = cn(
+    `[.active]:bg-background dark:[.active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-3 rounded-md border border-transparent px-12 py-3 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 [.active]:shadow-sm`
+  );
+
   return (
-    <div className="w-2/3 items-center text-xs rounded-md">
-      <NavLink
-        className={({ isActive }) =>
-          `${
-            isActive
-              ? 'bg-gray-200 dark:bg-gray-600'
-              : 'bg-white dark:bg-gray-800'
-          } inline-block text-center w-1/4 px-5 py-3 font-semibold border-y border-r border-gray-300 rounded-l-lg`
-        }
-        type="button"
-        to={`/${collectionId}/all`}
-      >
-        📕 All ({itemCount.all})
-      </NavLink>
+    <div className="flex flex-col gap-2">
+      <div className="bg-muted text-muted-foreground inline-flex w-fit items-center justify-center rounded-lg p-[3px]">
+        <NavLink
+          className={className}
+          type="button"
+          to={`/${collectionId}/all`}
+        >
+          📕
+          <span>All ({itemCount.all})</span>
+        </NavLink>
 
-      <NavLink
-        className={({ isActive }) =>
-          `${
-            isActive
-              ? 'bg-gray-200 dark:bg-gray-600'
-              : 'bg-white dark:bg-gray-800'
-          } inline-block text-center w-1/4 px-5 py-3 font-semibold border-y border-r border-gray-300`
-        }
-        type="button"
-        to={`/${collectionId}/text`}
-      >
-        📝 Text ({itemCount.text})
-      </NavLink>
+        <NavLink
+          className={className}
+          type="button"
+          to={`/${collectionId}/text`}
+        >
+          📝
+          <span>Text ({itemCount.text})</span>
+        </NavLink>
 
-      <NavLink
-        className={({ isActive }) =>
-          `${
-            isActive
-              ? 'bg-gray-200 dark:bg-gray-600'
-              : 'bg-white dark:bg-gray-800'
-          } inline-block text-center w-1/4 px-5 py-3 font-semibold border-y border-r border-gray-300`
-        }
-        type="button"
-        to={`/${collectionId}/image`}
-      >
-        🖼️ Image ({itemCount.image})
-      </NavLink>
+        <NavLink
+          className={className}
+          type="button"
+          to={`/${collectionId}/image`}
+        >
+          🖼️
+          <span>Image ({itemCount.image})</span>
+        </NavLink>
 
-      <NavLink
-        className={({ isActive }) =>
-          `${
-            isActive
-              ? 'bg-gray-200 dark:bg-gray-600'
-              : 'bg-white dark:bg-gray-800'
-          } inline-block text-center w-1/4 px-5 py-3 font-semibold border-r border-y rounded-r-lg border-gray-300`
-        }
-        type="button"
-        to={`/${collectionId}/bookmark`}
-      >
-        🔖 Bookmark ({itemCount.bookmark})
-      </NavLink>
+        <NavLink
+          className={className}
+          type="button"
+          to={`/${collectionId}/bookmark`}
+        >
+          🔖
+          <span>Bookmark ({itemCount.bookmark})</span>
+        </NavLink>
+      </div>
     </div>
   );
 }
