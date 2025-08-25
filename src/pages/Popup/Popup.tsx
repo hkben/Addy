@@ -21,7 +21,13 @@ import log from 'loglevel';
 import useSettingStore from '@/common/store/useSettingStore';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { LayoutGridIcon, PlusIcon, MoonIcon, SunIcon } from 'lucide-react';
+import {
+  LayoutGridIcon,
+  PlusIcon,
+  MoonIcon,
+  SunIcon,
+  RefreshCwIcon,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 function Popup() {
@@ -39,11 +45,14 @@ function Popup() {
     false
   );
 
+  const [isloading, setIsLoading] = React.useState<boolean>(true);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const getCollectionsSummary = async () => {
     let _collections = (await Collections.fetchSummary()) as ICollectionSummary[];
     setCollections(_collections);
+    setIsLoading(false);
   };
 
   const [darkMode, setDarkMode] = useDarkMode();
@@ -138,7 +147,7 @@ function Popup() {
           <LayoutGridIcon className="size-5" />
         </Button>
 
-        <span className="font-bold">Addy</span>
+        <span className="text-md font-bold">Addy</span>
 
         <Button variant="ghost" size="icon" onClick={toggleDarkMode}>
           {darkMode ? (
@@ -165,10 +174,20 @@ function Popup() {
           ref={inputRef}
         />
 
+        {isloading ? (
+          <div className="flex gap-2 py-5 text-sm items-center justify-center">
+            <RefreshCwIcon className="animate-spin" />
+            <span>Loading...</span>
+          </div>
+        ) : null}
+
         {collections.length == 0 && searchKeyword == '' ? (
-          <div className="p-2 text-black text-sm dark:text-white dark:border-slate-400 dark:bg-gray-900">
-            <p>Collections not found !</p>
-            <p>Use the input box above to add to a new collection</p>
+          <div className="grid py-5 text-sm items-center justify-center text-center">
+            <p>No Collections found!</p>
+            <p>
+              Type a name in the "Search or Add Collection" box above to create
+              a new collection.
+            </p>
           </div>
         ) : null}
 
