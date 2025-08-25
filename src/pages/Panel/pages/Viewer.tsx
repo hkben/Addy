@@ -22,6 +22,7 @@ import NameUpdatePopover from '../components/viewer/NameUpdatePopover';
 import EventDialog from '../components/viewer/dialog/EventDialog';
 import ImageDownloadDialog from '../components/viewer/dialog/ImageDownloadDialog';
 import { format, formatDistanceToNow } from 'date-fns';
+import useSettingStore from '@/common/store/useSettingStore';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   var result = await useCollectionStore
@@ -34,6 +35,8 @@ export async function loader({ params }: LoaderFunctionArgs<any>) {
 function Viewer() {
   let collection = useCollectionStore((state) => state.collection);
 
+  let setting = useSettingStore((state) => state.setting);
+
   return (
     <SidebarInset>
       <EventDialog />
@@ -43,7 +46,12 @@ function Viewer() {
         <HeaderActions />
       </Header>
       <div className="flex flex-1 flex-col gap-4 px-4 py-5">
-        <div className="bg-muted/50 mx-auto h-full w-full max-w-7xl rounded-xl p-8">
+        <div
+          className={
+            'bg-muted/50 mx-auto h-full w-full rounded-xl p-8 ' +
+            (setting?.viewingOption.fullWidth === false ? 'max-w-7xl' : '')
+          }
+        >
           <div className="w-full py-2 flex item-center gap-2.5">
             <p className="text-3xl font-bold">{collection.name}</p>
 

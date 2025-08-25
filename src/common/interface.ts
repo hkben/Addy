@@ -128,6 +128,7 @@ export interface IViewingOption {
   timeDisplay: number;
   imageSearchEngine: number;
   pageSize: number;
+  fullWidth: boolean;
 }
 
 //Sync Setting

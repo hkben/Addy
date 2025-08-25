@@ -57,6 +57,13 @@ function General() {
     await updateSetting({ quickSearch });
   };
 
+  const handleFullWidthCheckbox = async (value: boolean) => {
+    let viewingOption = { ...setting!.viewingOption };
+    viewingOption.fullWidth = value;
+
+    await updateSetting({ viewingOption });
+  };
+
   const handleTimeDisplaySelection = async (value: string) => {
     let viewingOption = { ...setting!.viewingOption };
     viewingOption.timeDisplay = Number(value);
@@ -158,6 +165,16 @@ function General() {
           <Switch
             checked={setting!.quickSearch}
             onCheckedChange={handleQuickSearchCheckbox}
+          />
+        </SettingItem>
+
+        <SettingItem
+          title="Full Width Layout"
+          description="Use the full width of the window to display Viewer Page"
+        >
+          <Switch
+            checked={setting!.viewingOption.fullWidth}
+            onCheckedChange={handleFullWidthCheckbox}
           />
         </SettingItem>
 

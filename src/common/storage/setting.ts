@@ -21,6 +21,7 @@ class Setting {
         timeDisplay: 0,
         imageSearchEngine: 0,
         pageSize: 20, // Default page size
+        fullWidth: false,
       },
       debugMode: false,
     };
