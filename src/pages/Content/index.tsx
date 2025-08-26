@@ -6,7 +6,8 @@ import Content from './Content';
 import { Setting } from '@/common/storage';
 import log from 'loglevel';
 
-import css from '!!css-loader!sass-loader!./index.scss';
+// eslint-disable-next-line import/no-webpack-loader-syntax
+import css from '!!css-loader?{"sourceMap":false,"exportType":"string"}!sass-loader!./index.scss';
 import Common from '@/common/common';
 import useSettingStore from '@/common/store/useSettingStore';
 
