@@ -260,8 +260,8 @@ function Content(props: ISetting) {
   };
 
   return (
-    <div>
-      {isDisplay ? (
+    <>
+      {isDisplay && (
         <div className="bookmark-popup" style={styles}>
           <div className="bp-header">
             <p className="bp-header-text">
@@ -287,8 +287,11 @@ function Content(props: ISetting) {
 
             {collections.length == 0 && searchKeyword == '' ? (
               <div className="bp-no-collections">
-                <p>Collections not found !</p>
-                <p>Use the input box above to add to a new collection</p>
+                <p>No Collections found!</p>
+                <p>
+                  Type a name in the "Search or Add Collection" box above to
+                  create a new collection.
+                </p>
               </div>
             ) : null}
 
@@ -305,14 +308,14 @@ function Content(props: ISetting) {
             </div>
             {newCollectionButton ? (
               <div className="add-btn" onClick={newCollectionAndSave}>
-                <span>New Collection</span>
                 <PlusIcon />
+                <span>Add into New Collection</span>
               </div>
             ) : null}
           </div>
         </div>
-      ) : null}
-    </div>
+      )}
+    </>
   );
 }
 
