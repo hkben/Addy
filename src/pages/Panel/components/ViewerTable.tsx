@@ -322,7 +322,7 @@ function ViewerTable({ type }: Prop) {
                   }}
                 >
                   <FileCodeIcon />
-                  <span>Edit</span>
+                  <span>Edit Item</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer" asChild>
                   <a
