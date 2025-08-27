@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Popover,
   PopoverContent,
@@ -39,6 +39,10 @@ function NameUpdatePopover() {
 
     setIsPopoverOpen(false);
   };
+
+  useEffect(() => {
+    setName(collection.name);
+  }, [collection.name]);
 
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
