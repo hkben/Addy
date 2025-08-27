@@ -58,7 +58,7 @@ function Header({ title, color, children }: Props) {
 
     return (
       <>
-        <span className="text-xs text-muted-foreground hidden md:inline-block">
+        <span className="text-muted-foreground hidden md:inline-block">
           Last Sync: {formatedLastSyncTime}
         </span>
         <Button
