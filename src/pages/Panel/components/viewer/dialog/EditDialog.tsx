@@ -45,6 +45,8 @@ function EditDialog() {
     (state) => state.resetDialogEvent
   );
 
+  const setDialogEvent = useDialogEventStore((state) => state.setDialogEvent);
+
   const [item, setItem] = React.useState<ICollectionItem>();
 
   const [isOpen, setIsOpen] = React.useState(false);
@@ -86,6 +88,20 @@ function EditDialog() {
     }
   };
 
+  const handleDeleteItem = () => {
+    if (event == null || event.collectionId == null || event.itemId == null) {
+      return;
+    }
+
+    resetDialogEvent();
+
+    setDialogEvent({
+      type: DialogEventType.DeleteItem,
+      collectionId: event.collectionId,
+      itemId: event.itemId,
+    });
+  };
+
   const setInitialItem = useCallback(() => {
     if (
       event == null ||
@@ -124,7 +140,7 @@ function EditDialog() {
 
   return (
     <Dialog open={isOpen} onOpenChange={handleonOpenChange}>
-      <DialogContent className="w-full max-w-2xl">
+      <DialogContent className="w-full sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Edit Item</DialogTitle>
         </DialogHeader>
@@ -270,20 +286,26 @@ function EditDialog() {
             />
           </div>
         </div>
-        <DialogFooter>
-          <Button onClick={handleEditItem}>
+        <DialogFooter className="sm:justify-between">
+          <Button variant="destructive" onClick={handleDeleteItem}>
             <SaveIcon />
-            Save changes
+            Delete Item
           </Button>
-          <Button type="button" variant="secondary" onClick={setInitialItem}>
-            <RefreshCwIcon />
-            Reset
-          </Button>
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
+          <div className="flex gap-2">
+            <Button onClick={handleEditItem}>
+              <SaveIcon />
+              Save changes
             </Button>
-          </DialogClose>
+            <Button type="button" variant="secondary" onClick={setInitialItem}>
+              <RefreshCwIcon />
+              Reset
+            </Button>
+            <DialogClose asChild>
+              <Button type="button" variant="secondary">
+                Close
+              </Button>
+            </DialogClose>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
