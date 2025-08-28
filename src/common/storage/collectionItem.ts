@@ -66,11 +66,11 @@ class CollectionItem {
     _collectionId: string,
     _itemId: string,
     _targetCollectionId: string
-  ) {
+  ): Promise<boolean> {
     const collections = await Collections.fetch();
 
     if (_collectionId == _targetCollectionId) {
-      return;
+      return false;
     }
 
     let collectionIndex = _.findIndex(
