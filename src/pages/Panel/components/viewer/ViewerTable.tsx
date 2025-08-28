@@ -491,12 +491,18 @@ function ViewerTable({ type }: Prop) {
                         header.column.columnDef.header,
                         header.getContext()
                       )}
-                      <span>
-                        {{
-                          asc: <ArrowUpAZIcon className="size-6" />,
-                          desc: <ArrowDownAZIcon className="size-6" />,
-                        }[header.column.getIsSorted() as string] ?? null}
-                      </span>
+                      {{
+                        asc: (
+                          <span>
+                            <ArrowUpAZIcon className="size-6" />
+                          </span>
+                        ),
+                        desc: (
+                          <span>
+                            <ArrowDownAZIcon className="size-6" />
+                          </span>
+                        ),
+                      }[header.column.getIsSorted() as string] ?? null}
                     </div>
                   </TableHead>
                 ))}
