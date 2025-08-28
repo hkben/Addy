@@ -45,6 +45,7 @@ import {
 import {
   Table,
   TableBody,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -503,9 +504,20 @@ function ViewerTable({ type }: Prop) {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <RowItem key={row.id} row={row} />
-            ))}
+            {table.getRowModel().rows.length > 0 ? (
+              table
+                .getRowModel()
+                .rows.map((row) => <RowItem key={row.id} row={row} />)
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-30 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>
