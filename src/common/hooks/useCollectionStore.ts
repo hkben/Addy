@@ -74,6 +74,7 @@ const useCollectionStore = create<Store>()(
 
         if (index >= 0) {
           state.collection.items.splice(index, 1);
+          state.collection.modifyTime = new Date().toISOString();
         }
       });
 
@@ -111,6 +112,7 @@ const useCollectionStore = create<Store>()(
 
       set((state) => {
         state.collection.items = [];
+        state.collection.modifyTime = new Date().toISOString();
       });
 
       //refresh collection list
@@ -127,6 +129,7 @@ const useCollectionStore = create<Store>()(
 
       set((state) => {
         state.collection.color = _color;
+        state.collection.modifyTime = new Date().toISOString();
       });
 
       //refresh collection list
@@ -143,6 +146,7 @@ const useCollectionStore = create<Store>()(
 
       set((state) => {
         state.collection.name = _name;
+        state.collection.modifyTime = new Date().toISOString();
       });
 
       //refresh collection list
@@ -174,6 +178,7 @@ const useCollectionStore = create<Store>()(
         if (index >= 0) {
           state.collection.items.splice(index, 1);
         }
+        state.collection.modifyTime = new Date().toISOString();
       });
 
       //refresh collection list
