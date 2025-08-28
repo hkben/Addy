@@ -149,6 +149,11 @@ const useCollectionStore = create<Store>()(
       fetchCollectionsList();
     },
     moveCollectionItem: async (_collectionId, _itemId, _newCollectionId) => {
+      if (_collectionId === _newCollectionId) {
+        log.warn('[useCollectionStore] Same collection');
+        return;
+      }
+
       let result = await CollectionItem.move(
         _collectionId,
         _itemId,
