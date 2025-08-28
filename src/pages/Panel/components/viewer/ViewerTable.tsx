@@ -134,7 +134,7 @@ function ViewerTable({ type }: Prop) {
           className: 'w-10 cursor-pointer select-none px-2',
         },
         cell: ({ row }) => {
-          return <MenuIcon className="size-5" />;
+          return <MenuIcon className="size-5 mx-auto" />;
         },
         enableGlobalFilter: false,
       },
