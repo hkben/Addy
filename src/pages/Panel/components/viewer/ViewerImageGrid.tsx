@@ -197,7 +197,7 @@ function ViewerImageGrid() {
               .rows.map((row) => <ImageItem key={row.id} item={row.original} />)
           ) : (
             <div
-              className={`rounded-md border h-64 text-center flex items-center justify-center col-span-${numberOfItems}`}
+              className={`text-base select-none rounded-md border h-64 text-center flex items-center justify-center col-span-${numberOfItems}`}
             >
               No results.
             </div>

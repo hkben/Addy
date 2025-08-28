@@ -512,7 +512,7 @@ function ViewerTable({ type }: Prop) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-30 text-center"
+                  className="h-30 text-center text-base select-none"
                 >
                   No results.
                 </TableCell>
