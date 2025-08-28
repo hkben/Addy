@@ -157,11 +157,11 @@
     .bp-search-box {
       input {
         box-sizing: border-box;
-        font-size: var(--text-base);
+        font-size: var(--text-sm);
         color: var(--foreground);
         background-color: transparent;
         outline-color: color-mix(in oklab, var(--ring) 50%, transparent);
-        line-height: var(--tw-leading, var(--text-base--line-height));
+        line-height: var(--tw-leading, var(--text-sm--line-height));
         padding: calc(var(--spacing) * 1) calc(var(--spacing) * 2);
         width: 100%;
         border-radius: calc(var(--radius) - 2px);
@@ -211,8 +211,8 @@
       gap: calc(var(--spacing) * 2);
       align-items: center;
       justify-content: center;
-      font-size: var(--text-base);
-      line-height: var(--tw-leading, var(--text-base--line-height));
+      font-size: var(--text-xs);
+      line-height: var(--tw-leading, var(--text-xs--line-height));
       font-weight: 600;
       padding: calc(var(--spacing) * 1) calc(var(--spacing) * 3);
       color: #ffffff;
