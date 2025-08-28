@@ -15,16 +15,16 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { isBefore, isEqual, formatDistanceToNow, format } from 'date-fns';
-import { Setting } from '../../../common/storage';
+import { Setting } from '@/common/storage';
 import _ from 'lodash';
 import { Tooltip } from 'react-tooltip';
-import ImageTooltip from './ImageTooltip';
-import RowItem from '@Panel/components/viewer/RowItem';
+import ImageTooltip from './table/ImageTooltip';
+import RowItem from './table/RowItem';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
 import { useParams } from 'react-router-dom';
 import useSettingStore from '@/common/store/useSettingStore';
-import TableOption from './viewer/table/TableOption';
-import TablePagination from './viewer/table/TablePagination';
+import TableOption from './table/TableOption';
+import TablePagination from './table/TablePagination';
 import {
   DropdownMenu,
   DropdownMenuContent,

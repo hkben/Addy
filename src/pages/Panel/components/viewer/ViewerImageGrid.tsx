@@ -3,7 +3,7 @@ import { ICollectionItem } from '@/common/interface';
 import { isBefore, isEqual } from 'date-fns';
 import _ from 'lodash';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
-import ImageItem from '@Panel/components/viewer/ImageItem';
+import ImageItem from './grid/ImageItem';
 import useSettingStore from '@/common/store/useSettingStore';
 import {
   ColumnDef,
@@ -17,9 +17,8 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table';
-import GridOption from './viewer/grid/GridOption';
-import TablePagination from './viewer/table/TablePagination';
-
+import GridOption from './grid/GridOption';
+import TablePagination from './table/TablePagination';
 
 function ViewerImageGrid() {
   let collection = useCollectionStore((state) => state.collection);

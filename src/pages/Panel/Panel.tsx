@@ -25,8 +25,8 @@ import Layout from './layouts/Layout';
 import log from 'loglevel';
 import Common from '@/common/common';
 import useSettingStore from '@/common/store/useSettingStore';
-import ViewerTable from './components/ViewerTable';
-import ViewerImageGrid from './components/ViewerImageGrid';
+import ViewerTable from './components/viewer/ViewerTable';
+import ViewerImageGrid from './components/viewer/ViewerImageGrid';
 
 const router = createHashRouter(
   createRoutesFromElements(
