@@ -3,6 +3,7 @@
   "version": "1.4.0",
   "description": "A web extension for saving content quickly",
   "license": "MIT",
+  "test": "jest",
   "repository": {
     "type": "git",
     "url": "https://github.com/hkben/Addy"
@@ -10,7 +11,9 @@
   "scripts": {
     "build": "node utils/build.js",
     "start": "node utils/webserver.js",
-    "prettier": "prettier --write '**/*.{js,jsx,css,html}'"
+    "prettier": "prettier --write '**/*.{js,jsx,css,html}'",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity": "^3.75.0",
@@ -61,6 +64,7 @@
     "@babel/preset-env": "^7.12.17",
     "@babel/preset-react": "^7.12.13",
     "@tailwindcss/postcss": "^4.1.7",
+    "@types/jest": "^30.0.0",
     "@types/lodash": "^4.14.175",
     "@types/react-dom": "^18.3.0",
     "@types/uuid": "^8.3.4",
@@ -81,6 +85,7 @@
     "fs-extra": "^9.1.0",
     "html-loader": "^2.1.0",
     "html-webpack-plugin": "^5.2.0",
+    "jest": "^30.1.1",
     "mini-css-extract-plugin": "^2.3.0",
     "postcss": "^8.4.7",
     "postcss-cli": "^9.0.1",
@@ -92,6 +97,7 @@
     "style-loader": "^2.0.0",
     "tailwindcss": "^4.1.7",
     "terser-webpack-plugin": "^5.1.1",
+    "ts-jest": "^29.4.1",
     "ts-loader": "^8.0.17",
     "typescript": "^4.1.5",
     "webpack": "^5.23.0",
