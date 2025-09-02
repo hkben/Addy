@@ -3,6 +3,7 @@ import Collection from '../src/common/storage/collection';
 import Collections from '../src/common/storage/collections';
 import { ICollection } from '../src/common/interface';
 import log from 'loglevel';
+import CollectionItem from '../src/common/storage/collectionItem';
 
 // Mock global document for tests running in Node.js
 (global as any).document = {};
@@ -132,7 +133,7 @@ describe('Collection', () => {
     const type = 'bookmark';
     const source = 'http://example.com';
 
-    const result = await Collection.add('1', content, type, source);
+    const result = await CollectionItem.create('1', content, type, source);
     expect(result).toBe(true);
 
     // Verify the new collection is in the fetched collections

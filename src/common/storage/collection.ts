@@ -4,6 +4,7 @@ import { ICollection, ICollectionItem, IStorage } from '../interface';
 import { v4 as uuidv4 } from 'uuid';
 import Storage from './storage';
 import Collections from './collections';
+import CollectionItem from './collectionItem';
 
 class Collection {
   static async fetch(
@@ -45,34 +46,6 @@ class Collection {
     }
   }
 
-  static async add(
-    _collectionId: string,
-    _content: string,
-    _type: string,
-    _url: string = ''
-  ): Promise<boolean> {
-    const collections = await Collections.fetch();
-
-    let index = _.findIndex(collections, (i) => i.id == _collectionId);
-
-    let url = _url != '' ? _url : document.URL;
-
-    let item: ICollectionItem = {
-      id: uuidv4(),
-      content: _content,
-      type: _type,
-      source: url,
-      createTime: new Date().toISOString(),
-      modifyTime: new Date().toISOString(),
-    };
-
-    collections[index].items.push(item);
-    collections[index].modifyTime = new Date().toISOString();
-
-    let result = await Collections.update(collections);
-    return result;
-  }
-
   static async delete(_collectionId: string): Promise<boolean> {
     const collections = await Collections.fetch();
 
@@ -101,7 +74,7 @@ class Collection {
       return false;
     }
 
-    let result = await this.add(collectionId, _content, _type);
+    let result = await CollectionItem.create(collectionId, _content, _type);
 
     return result;
   }
