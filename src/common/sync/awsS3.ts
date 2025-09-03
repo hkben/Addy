@@ -83,7 +83,7 @@ class awsS3 implements ISyncProvider {
   }
 
   async createSyncFile(): Promise<void> {
-    let collections = await Collections.fetch();
+    let collections = await Collections.fetchAll();
 
     if (collections.length == 0) {
       return;

@@ -11,7 +11,7 @@ class Collection {
     _collectionId: string,
     _includeDeletedItem: boolean = false
   ): Promise<ICollection> {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
     let collection = _.find(collections, (o) => o.id == _collectionId)!;
 
     if (_includeDeletedItem == false) {
@@ -25,7 +25,7 @@ class Collection {
   }
 
   static async create(_collectionName: string): Promise<string> {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
 
     let collection: ICollection = {
       id: uuidv4(),
@@ -47,7 +47,7 @@ class Collection {
   }
 
   static async delete(_collectionId: string): Promise<boolean> {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
 
     let collectionIndex = _.findIndex(
       collections,
@@ -80,7 +80,7 @@ class Collection {
   }
 
   static async deleteAllItems(_collectionId: string) {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
 
     let collectionIndex = _.findIndex(
       collections,
@@ -101,7 +101,7 @@ class Collection {
   }
 
   static async updateName(_collectionId: string, _name: string) {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
 
     let index = _.findIndex(collections, (o) => o.id == _collectionId)!;
 
@@ -113,7 +113,7 @@ class Collection {
   }
 
   static async updateColor(_collectionId: string, _color: number) {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
 
     let index = _.findIndex(collections, (o) => o.id == _collectionId)!;
 

@@ -74,7 +74,7 @@ class GoogleDrive implements ISyncProvider {
   }
 
   async createSyncFile(): Promise<void> {
-    let collections = await Collections.fetch();
+    let collections = await Collections.fetchAll();
     let _json = JSON.stringify(collections);
 
     const fileName = `addy-sync.json`;
@@ -113,7 +113,7 @@ class GoogleDrive implements ISyncProvider {
   }
 
   async updateSyncFile(_file: IFileInfo): Promise<void> {
-    let collections = await Collections.fetch();
+    let collections = await Collections.fetchAll();
     let _json = JSON.stringify(collections);
 
     const fileName = `addy-sync.json`;

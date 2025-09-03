@@ -12,7 +12,7 @@ class CollectionItem {
     _type: string,
     _url: string = ''
   ): Promise<boolean> {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
 
     let index = _.findIndex(collections, (i) => i.id == _collectionId);
 
@@ -38,7 +38,7 @@ class CollectionItem {
     _collectionId: string,
     _itemId: string
   ): Promise<Boolean> {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
 
     let collectionIndex = _.findIndex(
       collections,
@@ -66,7 +66,7 @@ class CollectionItem {
     _itemId: string,
     _changes: Partial<ICollectionItem>
   ) {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
 
     let collectionIndex = _.findIndex(
       collections,
@@ -95,7 +95,7 @@ class CollectionItem {
     _itemId: string,
     _targetCollectionId: string
   ): Promise<boolean> {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
 
     if (_collectionId == _targetCollectionId) {
       return false;

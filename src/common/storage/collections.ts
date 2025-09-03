@@ -11,7 +11,7 @@ import Storage from './storage';
 import log from 'loglevel';
 
 class Collections {
-  static async fetch(): Promise<ICollection[]> {
+  static async fetchAll(): Promise<ICollection[]> {
     let collections: ICollection[] = [];
 
     try {
@@ -35,7 +35,7 @@ class Collections {
     _text: string = '',
     _includeDeleted: boolean = false
   ): Promise<ICollectionSummary[]> {
-    let collections = await this.fetch();
+    let collections = await this.fetchAll();
     let summary = collections.map((o) => CastSummary(o, _text));
 
     if (_includeDeleted == false) {
@@ -59,7 +59,7 @@ class Collections {
 
   static async import(_importCollections: ICollection[]) {
     try {
-      let collections = await this.fetch();
+      let collections = await this.fetchAll();
 
       _importCollections.forEach((importCollection) => {
         //find if collection if exists
@@ -129,7 +129,7 @@ class Collections {
   }
 
   static async restore() {
-    let collections = await this.fetch();
+    let collections = await this.fetchAll();
 
     let datetime = new Date().toISOString();
 
@@ -162,7 +162,7 @@ class Collections {
       dayRange = -1; // All
     }
 
-    let collections = await this.fetch();
+    let collections = await this.fetchAll();
 
     let collectionsToRemove: number[] = [];
 
@@ -199,7 +199,7 @@ class Collections {
 
   //for Migration only
   static async updateDeletedToDateTime() {
-    let collections = await this.fetch();
+    let collections = await this.fetchAll();
 
     if (collections.length <= 0) {
       return;

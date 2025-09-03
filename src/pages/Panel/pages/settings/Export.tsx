@@ -18,7 +18,7 @@ function Export() {
   }, []);
 
   const updateCollections = async () => {
-    let collections = await Collections.fetch();
+    let collections = await Collections.fetchAll();
     let _json = JSON.stringify(collections);
     setJson(_json);
   };
