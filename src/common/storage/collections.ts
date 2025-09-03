@@ -11,7 +11,7 @@ import Storage from './storage';
 import log from 'loglevel';
 
 class Collections {
-  static async fetch(_includeDeleted: boolean = false): Promise<ICollection[]> {
+  static async fetch(): Promise<ICollection[]> {
     let collections: ICollection[] = [];
 
     try {
