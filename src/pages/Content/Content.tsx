@@ -209,7 +209,7 @@ function Content(props: ISetting) {
   };
 
   const newCollectionAndSave = async () => {
-    let result = await Collection.createAndAdd(
+    let result = await Collection.createWithItem(
       searchKeyword,
       selection.content,
       selection.type

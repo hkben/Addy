@@ -63,7 +63,7 @@ class Collection {
     return result;
   }
 
-  static async createAndAdd(
+  static async createWithItem(
     _collectionName: string,
     _content: string,
     _type: string

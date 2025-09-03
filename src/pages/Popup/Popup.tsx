@@ -133,7 +133,7 @@ function Popup() {
   };
 
   const newCollectionAndSave = async () => {
-    let result = await Collection.createAndAdd(searchKeyword, text, 'text');
+    let result = await Collection.createWithItem(searchKeyword, text, 'text');
 
     if (result) {
       window.close();
