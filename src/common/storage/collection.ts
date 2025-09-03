@@ -7,7 +7,7 @@ import Collections from './collections';
 import CollectionItem from './collectionItem';
 
 class Collection {
-  static async fetch(
+  static async fetchOneById(
     _collectionId: string,
     _includeDeletedItem: boolean = false
   ): Promise<ICollection> {

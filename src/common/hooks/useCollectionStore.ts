@@ -34,7 +34,7 @@ const useCollectionStore = create<Store>()(
     },
     fetchCollection: async (collectionId: string) => {
       try {
-        const collection = await Collection.fetch(collectionId);
+        const collection = await Collection.fetchOneById(collectionId);
 
         log.debug(`Loading ${collectionId}`);
         log.debug(`Name: ${collection.name} Items: ${collection.items.length}`);
