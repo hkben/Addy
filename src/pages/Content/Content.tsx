@@ -8,7 +8,12 @@ import {
   ISetting,
   SortElement,
 } from '../../common/interface';
-import { Collection, Collections, Storage } from '@/common/storage';
+import {
+  Collection,
+  CollectionItem,
+  Collections,
+  Storage,
+} from '@/common/storage';
 import CollectionButton from './components/CollectionButton';
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
@@ -201,8 +206,12 @@ function Content(props: ISetting) {
     }
   };
 
-  const saveTextToCollection = async (name: string) => {
-    let result = await Collection.add(name, selection.content, selection.type);
+  const saveTextToCollection = async (collectionId: string) => {
+    let result = await CollectionItem.create(
+      collectionId,
+      selection.content,
+      selection.type
+    );
     if (result) {
       toggleBox();
     }

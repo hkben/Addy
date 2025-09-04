@@ -9,6 +9,7 @@ import {
 } from '../../common/interface';
 import {
   Collection,
+  CollectionItem,
   Collections,
   Setting,
   Storage,
@@ -90,14 +91,14 @@ function Popup() {
     Common.setLogLevel(debugMode);
   }, [setting?.debugMode]);
 
-  const saveTextToCollection = async (name: string) => {
+  const saveTextToCollection = async (collectionId: string) => {
     if (text == '') {
       return;
     }
 
     let url = await Common.getCurrentTab();
 
-    let result = await Collection.add(name, text, 'text', url);
+    let result = await CollectionItem.create(collectionId, text, 'text', url);
 
     if (result) {
       window.close();
