@@ -114,7 +114,8 @@ class CollectionItem {
     let item = _.cloneDeep(collections[collectionIndex].items[itemIndex]);
 
     //delete item
-    let datetime = new Date().toISOString();
+    let now = new Date();
+    let datetime = now.toISOString();
 
     collections[collectionIndex].items[itemIndex].deleted = datetime;
     collections[collectionIndex].items[itemIndex].modifyTime = datetime;
@@ -126,10 +127,14 @@ class CollectionItem {
       (o) => o.id == _targetCollectionId
     )!;
 
+    // Make sure the new item sorted after the original one
+    let msAfterNow = now.getTime() + 1;
+    let newDatetime = new Date(msAfterNow).toISOString();
+
     item.id = uuidv4();
-    item.modifyTime = datetime;
+    item.modifyTime = newDatetime;
     collections[targetCollectionIndex].items.push(item);
-    collections[targetCollectionIndex].modifyTime = datetime;
+    collections[targetCollectionIndex].modifyTime = newDatetime;
 
     let result = await Collections.update(collections);
 
