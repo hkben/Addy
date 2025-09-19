@@ -172,7 +172,9 @@ export function AppSidebar() {
 
       <SidebarContent className="mb-4">
         <SidebarGroup>
-          <SidebarGroupLabel>Collections</SidebarGroupLabel>
+          <SidebarGroupLabel>
+            Collections ({sortedCollections.length})
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {sortedCollections.map((collection) => (
