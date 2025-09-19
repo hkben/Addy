@@ -291,6 +291,7 @@ function Content(props: ISetting) {
                 type="text"
                 onChange={searchCollection}
                 ref={inputRef}
+                autoComplete="off"
               />
             </div>
 

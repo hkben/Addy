@@ -173,6 +173,7 @@ function Popup() {
           type="text"
           onChange={searchCollection}
           ref={inputRef}
+          autoComplete="off"
         />
 
         {isloading ? (

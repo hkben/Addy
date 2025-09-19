@@ -172,6 +172,7 @@ export function AppSidebar() {
                 className="pl-8 h-10"
                 value={searchKeyword}
                 onChange={searchCollection}
+                autoComplete="off"
               />
               <Button
                 type="button"
