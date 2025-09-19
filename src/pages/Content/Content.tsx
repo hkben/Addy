@@ -287,7 +287,7 @@ function Content(props: ISetting) {
             <div className="bp-search-box">
               <input
                 id="bp-search"
-                placeholder="Search or Add Collection"
+                placeholder="Search or Create Collection"
                 type="text"
                 onChange={searchCollection}
                 ref={inputRef}
@@ -298,8 +298,8 @@ function Content(props: ISetting) {
               <div className="bp-no-collections">
                 <p>No Collections found!</p>
                 <p>
-                  Type a name in the "Search or Add Collection" box above to
-                  create a new collection.
+                  Type a name in the "Search or Create Collection" input above
+                  to create a new collection.
                 </p>
               </div>
             ) : null}
