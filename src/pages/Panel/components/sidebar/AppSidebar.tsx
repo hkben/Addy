@@ -114,6 +114,28 @@ export function AppSidebar() {
     );
   };
 
+  const renderNoCollections = () => {
+    if (collections.length > 0) {
+      return null;
+    }
+
+    return (
+      <SidebarGroup className="py-0">
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem className="text-sm text-muted-foreground">
+              <p>No Collections found!</p>
+              <p>
+                Type a name in the "Search or Create" input above to create a
+                new collection.
+              </p>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    );
+  };
+
   return (
     <>
       <SidebarHeader>
@@ -146,7 +168,7 @@ export function AppSidebar() {
             <div className="relative w-full max-w-sm">
               <SidebarInput
                 id="search"
-                placeholder="Search the docs..."
+                placeholder="Search or Create..."
                 className="pl-8 h-10"
                 value={searchKeyword}
                 onChange={searchCollection}
@@ -184,6 +206,8 @@ export function AppSidebar() {
                 />
               ))}
             </SidebarMenu>
+
+            {renderNoCollections()}
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
