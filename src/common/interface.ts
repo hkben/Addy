@@ -51,7 +51,9 @@ export function CastSummary(
   if (_content != '') {
     let findExits = _.filter(
       _collection.items,
-      (i) => i.content.toLowerCase() == _content.toLowerCase()
+      (i) =>
+        i.content.toLowerCase() == _content.toLowerCase() &&
+        i.deleted == undefined
     );
 
     summary.isExists = findExits.length > 0 ? true : false;
