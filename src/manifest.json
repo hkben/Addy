@@ -16,7 +16,8 @@
     "open_in_tab": true
   },
   "background": {
-    "service_worker": "background.bundle.js"
+    "service_worker": "background.bundle.js",
+    "scripts": ["background.bundle.js"]
   },
   "action": {
     "default_popup": "popup.html",
@@ -34,5 +35,10 @@
   ],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; connect-src * data:"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{93ec5d7c-fa55-400e-b4bf-7d8906208287}"
+    }
   }
 }
