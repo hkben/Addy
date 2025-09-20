@@ -1,5 +1,5 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Addy",
   "description": "A web extension for saving content quickly",
 
@@ -16,9 +16,11 @@
     "open_in_tab": true
   },
   "background": {
-    "service_worker":  "background.bundle.js"
+    "scripts": [
+      "background.bundle.js"
+    ]
   },
-  "action": {
+  "browser_action": {
     "default_popup": "popup.html",
     "default_icon": "icon-34.png"
   },
@@ -32,9 +34,7 @@
       "run_at": "document_start"
     }
   ],
-  "content_security_policy": 
-  {
-    "extension_pages": "script-src 'self'; object-src 'self'; connect-src * data:"
-  }
 
+  "content_security_policy": "script-src 'self'; object-src 'self'; connect-src * data:"
+  
 }

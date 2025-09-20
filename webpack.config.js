@@ -142,7 +142,7 @@ var options = {
           },
         },
         {
-          from: 'src/manifest_v3.json',
+          from: 'src/manifest_v2.json',
           to: path.join(__dirname, 'build'),
           force: true,
           transform: function (content, path) {
