@@ -9,6 +9,7 @@ import {
   useLoaderData,
   useNavigate,
   useParams,
+  useRevalidator,
 } from 'react-router-dom';
 import useCollectionStore from '@/common/hooks/useCollectionStore';
 import log from 'loglevel';
@@ -23,6 +24,7 @@ import EventDialog from '../components/viewer/dialog/EventDialog';
 import ImageDownloadDialog from '../components/viewer/dialog/ImageDownloadDialog';
 import { format, formatDistanceToNow } from 'date-fns';
 import useSettingStore from '@/common/store/useSettingStore';
+import { useSyncStore } from '@/common/store/useSyncStore';
 
 export async function loader({ params }: LoaderFunctionArgs<any>) {
   var result = await useCollectionStore
@@ -36,6 +38,31 @@ function Viewer() {
   let collection = useCollectionStore((state) => state.collection);
 
   let setting = useSettingStore((state) => state.setting);
+
+  let lastSyncTime = useSyncStore((state) => state.lastSyncTime);
+
+  let sync = useSyncStore((state) => state.sync);
+
+  let revalidator = useRevalidator();
+
+  // Use ref to avoid missing dependency warning in useEffect
+  let isInitedRef = React.useRef(false);
+  let revalidatorRef = React.useRef(revalidator);
+
+  // Keep ref up to date
+  revalidatorRef.current = revalidator;
+
+  useEffect(() => {
+    if (!isInitedRef.current) {
+      isInitedRef.current = true;
+      return;
+    }
+
+    // Reload when synced is enabled and lastSyncTime changes
+    if (sync && lastSyncTime) {
+      revalidatorRef.current.revalidate();
+    }
+  }, [lastSyncTime, sync]);
 
   return (
     <SidebarInset>

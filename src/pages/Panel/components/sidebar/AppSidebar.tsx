@@ -31,6 +31,8 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import CollectionsListItem from '../../components/viewer/CollectionsListItem';
+import { useSyncStore } from '@/common/store/useSyncStore';
+import log from 'loglevel';
 
 export function AppSidebar() {
   const { setting } = useSettingStore();
@@ -40,6 +42,8 @@ export function AppSidebar() {
   const fetchCollectionsList = useCollectionsListStore(
     (state) => state.fetchList
   );
+
+  let lastSyncTime = useSyncStore((state) => state.lastSyncTime);
 
   const [ordering, setOrdering] = React.useState<IOrdering>(
     () => setting?.collectionsOrdering || ({} as IOrdering)
@@ -54,8 +58,10 @@ export function AppSidebar() {
   );
 
   useEffect(() => {
+    // Run on first render and whenever lastSyncTime changes
+    log.debug('Reload collections list');
     fetchCollectionsList();
-  }, [fetchCollectionsList]);
+  }, [fetchCollectionsList, lastSyncTime]);
 
   const newCollectionSubmit = async () => {
     if (searchKeyword === '') {
