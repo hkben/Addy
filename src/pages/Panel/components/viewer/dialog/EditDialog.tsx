@@ -78,6 +78,9 @@ function EditDialog() {
     editCollectionItem(collection.id, item.id, changes);
 
     setIsOpen(false);
+
+    // Reset dialog event after editing to avoid re-opening the dialog
+    resetDialogEvent();
   };
 
   const handleonOpenChange = (open: boolean) => {
