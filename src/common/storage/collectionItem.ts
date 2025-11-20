@@ -1,6 +1,11 @@
 import _ from 'lodash';
 import Browser from 'webextension-polyfill';
-import { ICollection, ICollectionItem } from '../interface';
+import {
+  BrowserMessageAction,
+  IBrowserMessage,
+  ICollection,
+  ICollectionItem,
+} from '../interface';
 import Collections from './collections';
 import Storage from './storage';
 import { v4 as uuidv4 } from 'uuid';
@@ -31,6 +36,12 @@ class CollectionItem {
     collections[index].modifyTime = new Date().toISOString();
 
     let result = await Collections.update(collections);
+
+    // create is only function called from content script, so we need to notify it to panel
+    Browser.runtime.sendMessage({
+      action: BrowserMessageAction.OnCollectionUpdated,
+    } as IBrowserMessage);
+
     return result;
   }
 

@@ -13,6 +13,7 @@ export enum BrowserMessageAction {
   SyncConnectionTestCompleted,
   SyncFileDeletion,
   SyncFileDeletionCompleted,
+  OnCollectionUpdated,
 }
 
 export interface IBrowserMessage {
