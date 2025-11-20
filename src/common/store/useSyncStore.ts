@@ -19,9 +19,11 @@ export interface Store {
   action?: BrowserMessageAction;
   message?: string;
   lastSyncTime?: Date;
+  needRefresh: boolean;
   fetch: () => Promise<boolean>;
   setSyncingState: (state: number) => void;
   startSyncAction: (action: BrowserMessageAction) => void;
+  resetRefreshFlag: () => void;
 }
 
 //Centralized State and Logic
@@ -43,6 +45,10 @@ const useSyncStore = create<Store>()(
         case BrowserMessageAction.SyncFileDeletionCompleted:
           onSyncFileDeletionCompleted(packet);
           break;
+        case BrowserMessageAction.OnCollectionUpdated:
+          // not related to sync function directly, but we update needRefresh flag to trigger UI refresh
+          set({ needRefresh: true });
+          break;
       }
     };
 
@@ -51,6 +57,7 @@ const useSyncStore = create<Store>()(
       if (packet.result) {
         set({ syncingState: SyncState.Completed });
         set({ lastSyncTime: new Date() });
+        set({ needRefresh: true });
         log.debug('Sync completed successfully');
       } else {
         set({ syncingState: SyncState.Error });
@@ -104,6 +111,7 @@ const useSyncStore = create<Store>()(
       action: undefined,
       message: undefined,
       lastSyncTime: undefined,
+      needRefresh: false,
       fetch: async () => {
         log.debug('[useSettingStore] Fetching setting from storage...');
 
@@ -134,6 +142,9 @@ const useSyncStore = create<Store>()(
 
         set({ action });
         set({ syncingState: SyncState.Running }); // Set to Running state
+      },
+      resetRefreshFlag: () => {
+        set({ needRefresh: false });
       },
     };
   })
