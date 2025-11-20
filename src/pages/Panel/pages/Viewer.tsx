@@ -39,30 +39,25 @@ function Viewer() {
 
   let setting = useSettingStore((state) => state.setting);
 
-  let lastSyncTime = useSyncStore((state) => state.lastSyncTime);
+  let needRefresh = useSyncStore((state) => state.needRefresh);
 
-  let sync = useSyncStore((state) => state.sync);
+  let resetRefreshFlag = useSyncStore((state) => state.resetRefreshFlag);
 
   let revalidator = useRevalidator();
 
   // Use ref to avoid missing dependency warning in useEffect
-  let isInitedRef = React.useRef(false);
   let revalidatorRef = React.useRef(revalidator);
 
   // Keep ref up to date
   revalidatorRef.current = revalidator;
 
   useEffect(() => {
-    if (!isInitedRef.current) {
-      isInitedRef.current = true;
-      return;
-    }
-
-    // Reload when synced is enabled and lastSyncTime changes
-    if (sync && lastSyncTime) {
+    // Reload when needRefresh changes
+    if (needRefresh) {
       revalidatorRef.current.revalidate();
+      resetRefreshFlag();
     }
-  }, [lastSyncTime, sync]);
+  }, [resetRefreshFlag, needRefresh]);
 
   return (
     <SidebarInset>

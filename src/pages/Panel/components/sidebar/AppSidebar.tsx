@@ -43,7 +43,9 @@ export function AppSidebar() {
     (state) => state.fetchList
   );
 
-  let lastSyncTime = useSyncStore((state) => state.lastSyncTime);
+  let needRefresh = useSyncStore((state) => state.needRefresh);
+
+  let resetRefreshFlag = useSyncStore((state) => state.resetRefreshFlag);
 
   const [ordering, setOrdering] = React.useState<IOrdering>(
     () => setting?.collectionsOrdering || ({} as IOrdering)
@@ -58,10 +60,18 @@ export function AppSidebar() {
   );
 
   useEffect(() => {
-    // Run on first render and whenever lastSyncTime changes
-    log.debug('Reload collections list');
-    fetchCollectionsList();
-  }, [fetchCollectionsList, lastSyncTime]);
+    // Run on first render and whenever needRefresh changes
+    if (collections.length === 0 || needRefresh) {
+      log.debug('Reload collections list');
+
+      // Initial load
+      fetchCollectionsList();
+
+      if (needRefresh) {
+        resetRefreshFlag();
+      }
+    }
+  }, [collections.length, fetchCollectionsList, needRefresh, resetRefreshFlag]);
 
   const newCollectionSubmit = async () => {
     if (searchKeyword === '') {
