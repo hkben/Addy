@@ -11,6 +11,7 @@ interface Store {
   setCollection: (collection: ICollection) => void;
   removeCollection: (_collectionId: string) => void;
   removeCollectionItem: (_collectionId: string, _item: string) => void;
+  removeCollectionItems: (_collectionId: string, _itemIds: string[]) => void;
   editCollectionItem: (
     _collectionId: string,
     _item: string,
@@ -76,6 +77,29 @@ const useCollectionStore = create<Store>()(
           state.collection.items.splice(index, 1);
           state.collection.modifyTime = new Date().toISOString();
         }
+      });
+
+      //refresh collection list
+      fetchCollectionsList();
+    },
+    removeCollectionItems: async (_collectionId, _itemIds) => {
+      let result = await CollectionItem.deleteMany(_collectionId, _itemIds);
+
+      if (result == false) {
+        return;
+      }
+
+      if (_itemIds.length == 0) {
+        return;
+      }
+
+      let fetchCollectionsList = useCollectionsListStore.getState().fetchList;
+
+      set((state) => {
+        state.collection.items = state.collection.items.filter(
+          (item) => _itemIds.includes(item.id) == false
+        );
+        state.collection.modifyTime = new Date().toISOString();
       });
 
       //refresh collection list

@@ -4,6 +4,7 @@ import log from 'loglevel';
 
 enum DialogEventType {
   DeleteItem,
+  DeleteItems,
   EditItem,
   DeleteCollection,
   EmptyCollection,
@@ -15,6 +16,7 @@ interface DialogEvent {
   type: DialogEventType;
   collectionId?: string;
   itemId?: string;
+  itemIds?: string[];
 }
 
 interface Store {

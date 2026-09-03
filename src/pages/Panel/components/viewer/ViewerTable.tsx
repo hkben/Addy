@@ -5,6 +5,7 @@ import {
   ColumnDef,
   PaginationState,
   Row,
+  RowSelectionState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -33,6 +34,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   ArrowUpAZIcon,
   ArrowDownAZIcon,
@@ -121,6 +123,8 @@ function ViewerTable({ type }: Prop) {
 
   const [globalFilter, setGlobalFilter] = React.useState('');
 
+  const [rowSelection, setRowSelection] = React.useState<RowSelectionState>({});
+
   const handleDeleteItem = (itemId: string) => {
     if (collectionId == null) {
       return;
@@ -145,6 +149,26 @@ function ViewerTable({ type }: Prop) {
     });
   };
 
+  const handleDeleteSelectedItems = () => {
+    if (collectionId == null) {
+      return;
+    }
+
+    const itemIds = table
+      .getSelectedRowModel()
+      .rows.map((row) => row.original.id);
+
+    if (itemIds.length === 0) {
+      return;
+    }
+
+    setDialogEvent({
+      type: DialogEventType.DeleteItems,
+      collectionId,
+      itemIds,
+    });
+  };
+
   const columns: ColumnDef<ICollectionItem>[] = useMemo(
     () => [
       {
@@ -158,6 +182,37 @@ function ViewerTable({ type }: Prop) {
         cell: ({ row }) => {
           return <MenuIcon className="size-5 mx-auto" />;
         },
+        enableGlobalFilter: false,
+      },
+      {
+        id: 'select',
+        header: ({ table }) => (
+          <Checkbox
+            aria-label="Select all"
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && 'indeterminate')
+            }
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+          />
+        ),
+        meta: {
+          name: 'Select',
+          className: 'w-10 p-0',
+        },
+        cell: ({ row }) => (
+          <div className="flex justify-center">
+            <Checkbox
+              aria-label="Select row"
+              checked={row.getIsSelected()}
+              onCheckedChange={(value) => row.toggleSelected(!!value)}
+            />
+          </div>
+        ),
+        enableSorting: false,
+        enableHiding: false,
         enableGlobalFilter: false,
       },
       {
@@ -440,14 +495,17 @@ function ViewerTable({ type }: Prop) {
     onSortingChange: setSorting,
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
+    onRowSelectionChange: setRowSelection,
     getFilteredRowModel: getFilteredRowModel(),
     globalFilterFn: 'includesString',
+    getRowId: (row) => row.id,
     state: {
       columnVisibility,
       columnOrder,
       sorting,
       pagination,
       globalFilter,
+      rowSelection,
     },
     autoResetPageIndex: false,
   });
@@ -509,6 +567,17 @@ function ViewerTable({ type }: Prop) {
     updatePagination();
   }, [pagination]);
 
+  // Reset row selection when pagination, global filter, type, or collectionId changes
+  useEffect(() => {
+    setRowSelection({});
+  }, [
+    pagination.pageIndex,
+    pagination.pageSize,
+    globalFilter,
+    type,
+    collectionId,
+  ]);
+
   useEffect(() => {
     let updateColumnOrder = async () => {
       let viewingOption = { ...setting!.viewingOption };
@@ -539,6 +608,14 @@ function ViewerTable({ type }: Prop) {
         <TableOption
           table={table}
           onKeywordChange={(value) => setGlobalFilter(value)}
+          action={
+            table.getSelectedRowModel().rows.length > 0 ? (
+              <Button variant="destructive" onClick={handleDeleteSelectedItems}>
+                <Trash2Icon />
+                <span>{table.getSelectedRowModel().rows.length} selected</span>
+              </Button>
+            ) : undefined
+          }
         />
       </div>
 

@@ -72,6 +72,37 @@ class CollectionItem {
     return result;
   }
 
+  static async deleteMany(
+    _collectionId: string,
+    _itemIds: string[]
+  ): Promise<boolean> {
+    const collections = await Collections.fetchAll();
+
+    let collectionIndex = _.findIndex(
+      collections,
+      (o) => o.id == _collectionId
+    )!;
+
+    const datetime = new Date().toISOString();
+    let deletedItems = false;
+
+    collections[collectionIndex].items.forEach((item) => {
+      if (_itemIds.includes(item.id) && !item.deleted) {
+        item.deleted = datetime;
+        item.modifyTime = datetime;
+        deletedItems = true;
+      }
+    });
+
+    if (deletedItems) {
+      collections[collectionIndex].modifyTime = datetime;
+    }
+
+    let result = await Collections.update(collections);
+
+    return result;
+  }
+
   static async updateContent(
     _collectionId: string,
     _itemId: string,

@@ -35,6 +35,16 @@ const stateMap: Partial<Record<DialogEventType, DialogAttributes>> = {
       </>
     ),
   },
+  [DialogEventType.DeleteItems]: {
+    title: 'Delete Selected Items',
+    message: '',
+    buttonContent: (
+      <>
+        <Trash2Icon />
+        <span>Delete</span>
+      </>
+    ),
+  },
   [DialogEventType.EmptyCollection]: {
     title: 'Empty Collection',
     message: 'Do you really want to delete all items in this collection?',
@@ -70,6 +80,10 @@ function EventDialog() {
     (state) => state.removeCollectionItem
   );
 
+  let removeCollectionItems = useCollectionStore(
+    (state) => state.removeCollectionItems
+  );
+
   let removeAllItems = useCollectionStore((state) => state.removeAllItems);
 
   let removeCollection = useCollectionStore((state) => state.removeCollection);
@@ -84,6 +98,9 @@ function EventDialog() {
     switch (event.type) {
       case DialogEventType.DeleteItem:
         removeCollectionItem(event.collectionId, event.itemId!);
+        break;
+      case DialogEventType.DeleteItems:
+        removeCollectionItems(event.collectionId, event.itemIds!);
         break;
       case DialogEventType.EmptyCollection:
         removeAllItems(event.collectionId);
@@ -118,6 +135,7 @@ function EventDialog() {
     // Only handle these event types
     if (
       event.type === DialogEventType.DeleteItem ||
+      event.type === DialogEventType.DeleteItems ||
       event.type === DialogEventType.EmptyCollection ||
       event.type === DialogEventType.DeleteCollection
     ) {
@@ -129,14 +147,20 @@ function EventDialog() {
     return null;
   }
 
+  // Determine the message to display based on the event type
+  const message =
+    event.type === DialogEventType.DeleteItems
+      ? `Do you really want to delete ${
+          event.itemIds?.length ?? 0
+        } selected items?`
+      : stateMap[event.type]!.message;
+
   return (
     <AlertDialog open={isOpen} onOpenChange={handleonOpenChange}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{stateMap[event.type]!.title}</AlertDialogTitle>
-          <AlertDialogDescription>
-            {stateMap[event.type]!.message}
-          </AlertDialogDescription>
+          <AlertDialogDescription>{message}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>

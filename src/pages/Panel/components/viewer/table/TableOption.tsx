@@ -9,9 +9,10 @@ import SpacingSelector from './SpacingSelector';
 interface Props<TData> {
   table: Table<TData>;
   onKeywordChange: (value: string) => void;
+  action?: React.ReactNode;
 }
 
-function TableOption<TData>({ table, onKeywordChange }: Props<TData>) {
+function TableOption<TData>({ table, onKeywordChange, action }: Props<TData>) {
   const [keyword, setKeyword] = React.useState<string>('');
 
   React.useEffect(() => {
@@ -45,6 +46,7 @@ function TableOption<TData>({ table, onKeywordChange }: Props<TData>) {
 
       <div className="ml-auto">
         <div className="flex items-center gap-2">
+          {action}
           <ColumnsSelector table={table} />
           <SpacingSelector />
         </div>

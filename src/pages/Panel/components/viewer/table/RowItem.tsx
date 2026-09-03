@@ -23,7 +23,9 @@ function RowItem({ row }: Prop) {
 
   return (
     <TableRow
-      className={isDragging ? 'opacity-50' : ''}
+      className={`${isDragging ? 'opacity-50' : ''} ${
+        row.getIsSelected() ? 'bg-muted' : ''
+      }`}
       key={row.id}
       ref={previewRef}
     >
