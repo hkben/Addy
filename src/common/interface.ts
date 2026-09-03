@@ -125,6 +125,7 @@ export enum SortElement {
 
 export interface IViewingOption {
   hiddenColumns: string[];
+  columnOrder: string[];
   spacing: string;
   imageColumns: number;
   sortBy: SortingState;

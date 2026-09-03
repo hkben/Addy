@@ -15,6 +15,7 @@ class Setting {
       darkMode: false,
       viewingOption: {
         hiddenColumns: [],
+        columnOrder: [],
         spacing: 'normal',
         imageColumns: 3,
         sortBy: [],

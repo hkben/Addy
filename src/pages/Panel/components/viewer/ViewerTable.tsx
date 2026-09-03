@@ -98,6 +98,27 @@ function ViewerTable({ type }: Prop) {
     pageSize: setting!.viewingOption.pageSize || 20,
   });
 
+  const [columnOrder, setColumnOrder] = React.useState<string[]>(() => {
+    const savedOrder = setting!.viewingOption.columnOrder;
+
+    if (savedOrder && savedOrder.length > 0) {
+      return savedOrder;
+    }
+
+    // Use the default order of columns if no saved order is found
+    return [
+      'drag',
+      'content',
+      'type',
+      'createTime',
+      'modifyTime',
+      'source',
+      'edit',
+      'delete',
+      'action',
+    ];
+  });
+
   const [globalFilter, setGlobalFilter] = React.useState('');
 
   const handleDeleteItem = (itemId: string) => {
@@ -415,6 +436,7 @@ function ViewerTable({ type }: Prop) {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
+    onColumnOrderChange: setColumnOrder,
     onSortingChange: setSorting,
     getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
@@ -422,6 +444,7 @@ function ViewerTable({ type }: Prop) {
     globalFilterFn: 'includesString',
     state: {
       columnVisibility,
+      columnOrder,
       sorting,
       pagination,
       globalFilter,
@@ -485,6 +508,22 @@ function ViewerTable({ type }: Prop) {
 
     updatePagination();
   }, [pagination]);
+
+  useEffect(() => {
+    let updateColumnOrder = async () => {
+      let viewingOption = { ...setting!.viewingOption };
+
+      if (_.isEqual(viewingOption.columnOrder, columnOrder)) {
+        return;
+      }
+
+      viewingOption.columnOrder = columnOrder;
+
+      await updateSetting({ viewingOption });
+    };
+
+    updateColumnOrder();
+  }, [columnOrder]);
 
   useEffect(() => {
     // Prevent state updates during initial render
