@@ -110,6 +110,7 @@ function ViewerTable({ type }: Prop) {
     // Use the default order of columns if no saved order is found
     return [
       'drag',
+      'select',
       'content',
       'type',
       'createTime',
