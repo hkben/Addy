@@ -8,6 +8,7 @@ enum DialogEventType {
   DeleteCollection,
   EmptyCollection,
   ImagesDownload,
+  ColumnReorder,
 }
 
 interface DialogEvent {
