@@ -131,6 +131,7 @@ function ViewerTable({ type }: Prop) {
         enableSorting: false,
         enableHiding: false,
         meta: {
+          name: 'Drag',
           className: 'w-10 cursor-pointer select-none px-2',
         },
         cell: ({ row }) => {
@@ -139,8 +140,10 @@ function ViewerTable({ type }: Prop) {
         enableGlobalFilter: false,
       },
       {
+        id: 'content',
         header: 'Content',
         meta: {
+          name: 'Content',
           className: 'whitespace-pre-line px-2 max-w-lg break-all',
         },
         accessorFn: (row) => {
@@ -178,8 +181,10 @@ function ViewerTable({ type }: Prop) {
         cell: (info) => info.getValue(),
       },
       {
+        id: 'type',
         header: 'Type',
         meta: {
+          name: 'Type',
           className: 'text-center',
         },
         accessorFn: (row) => row.type,
@@ -187,8 +192,10 @@ function ViewerTable({ type }: Prop) {
         enableGlobalFilter: false,
       },
       {
+        id: 'createTime',
         header: 'Created Time',
         meta: {
+          name: 'Created Time',
           className: 'text-center w-36 whitespace-nowrap',
         },
         accessorFn: (row) => {
@@ -234,8 +241,10 @@ function ViewerTable({ type }: Prop) {
         enableGlobalFilter: false,
       },
       {
+        id: 'modifyTime',
         header: 'Last Modified',
         meta: {
+          name: 'Last Modified',
           className: 'text-center w-36 whitespace-nowrap',
         },
         accessorFn: (row) => {
@@ -283,6 +292,7 @@ function ViewerTable({ type }: Prop) {
       {
         id: 'source',
         meta: {
+          name: 'Source',
           className: 'w-10',
         },
         enableSorting: false,
@@ -303,6 +313,7 @@ function ViewerTable({ type }: Prop) {
       {
         id: 'action',
         meta: {
+          name: 'Action',
           className: 'w-10',
         },
         enableSorting: false,
