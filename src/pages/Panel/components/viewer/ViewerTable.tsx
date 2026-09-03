@@ -311,6 +311,48 @@ function ViewerTable({ type }: Prop) {
         },
       },
       {
+        id: 'edit',
+        meta: {
+          name: 'Edit',
+          className: 'w-10',
+        },
+        enableSorting: true,
+        enableHiding: true,
+        cell: ({ row }) => {
+          return (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => handleEditItem(row.original.id)}
+            >
+              <FileCodeIcon />
+            </Button>
+          );
+        },
+        enableGlobalFilter: false,
+      },
+      {
+        id: 'delete',
+        meta: {
+          name: 'Delete',
+          className: 'w-10',
+        },
+        enableSorting: true,
+        enableHiding: true,
+        cell: ({ row }) => {
+          return (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => handleDeleteItem(row.original.id)}
+            >
+              <Trash2Icon />
+            </Button>
+          );
+        },
+        enableGlobalFilter: false,
+      },
+      {
         id: 'action',
         meta: {
           name: 'Action',
