@@ -35,7 +35,7 @@ import { useSyncStore } from '@/common/store/useSyncStore';
 import log from 'loglevel';
 
 export function AppSidebar() {
-  const { setting } = useSettingStore();
+  const { setting, updateSetting } = useSettingStore();
 
   const collections = useCollectionsListStore((state) => state.summary);
 
@@ -91,6 +91,12 @@ export function AppSidebar() {
       ...prevState,
       type: value,
     }));
+
+    // Update the collections ordering setting with the new type value
+    let collectionsOrdering = { ...setting!.collectionsOrdering };
+    collectionsOrdering.type = value;
+
+    await updateSetting({ collectionsOrdering });
   };
 
   const handleDescendingOption = async (
@@ -102,6 +108,12 @@ export function AppSidebar() {
       ...prevState,
       descending: value,
     }));
+
+    // Update the collections ordering setting with the new descending value
+    let collectionsOrdering = { ...setting!.collectionsOrdering };
+    collectionsOrdering.descending = value;
+
+    await updateSetting({ collectionsOrdering });
   };
 
   const searchCollection = (event: React.ChangeEvent<HTMLInputElement>) => {
