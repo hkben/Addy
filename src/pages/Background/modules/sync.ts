@@ -371,13 +371,17 @@ export const syncFileDeletion = async () => {
   //Delete Logic here
 
   let _result = false;
+  let errorMessage = 'Sync file deletion failed';
+  updateStatus('Initializing sync...');
 
   try {
     await syncProvider.init();
 
+    updateStatus('Searching for sync file...');
     let fileInfo = await syncProvider.searchSyncFile();
 
     if (fileInfo != null && fileInfo.id != '') {
+      updateStatus('Deleting sync file...');
       log.debug('[Sync] Deleting...');
       await syncProvider.deleteSyncFile(fileInfo);
     }
@@ -389,10 +393,12 @@ export const syncFileDeletion = async () => {
   } catch (error) {
     log.error('[Sync] Error...');
     log.error(error);
+    errorMessage = error instanceof Error ? error.message : errorMessage;
   } finally {
     sendMessage({
       action: BrowserMessageAction.SyncFileDeletionCompleted,
       result: _result,
+      message: _result ? undefined : errorMessage,
     });
   }
 };

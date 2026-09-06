@@ -75,13 +75,16 @@ function SyncDeleteButton() {
   };
 
   const messageContent = () => {
-    if (
-      syncingState === SyncState.Error &&
-      action === BrowserMessageAction.SyncFileDeletion
-    )
+    if (message && action === BrowserMessageAction.SyncFileDeletion)
       return (
-        <p className="text-destructive text-sm mt-2">
-          {message || 'An error occurred during sync.'}
+        <p
+          className={`text-sm mt-2 ${
+            syncingState === SyncState.Error
+              ? 'text-destructive'
+              : 'text-muted-foreground'
+          }`}
+        >
+          {message}
         </p>
       );
   };

@@ -96,6 +96,7 @@ const useSyncStore = create<Store>()(
     const onSyncFileDeletionCompleted = (packet: IBrowserMessage) => {
       if (packet.result) {
         set({ syncingState: SyncState.Completed });
+        set({ message: undefined });
         log.debug('Sync file deletion completed successfully');
       } else {
         set({ syncingState: SyncState.Error });
