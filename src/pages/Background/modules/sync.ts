@@ -24,6 +24,13 @@ const sendMessage = (message: IBrowserMessage) => {
   Browser.runtime.sendMessage(message);
 };
 
+const updateStatus = (message: string) => {
+  sendMessage({
+    action: BrowserMessageAction.StatusUpdated,
+    message,
+  });
+};
+
 export const getSyncProvider = (
   _provider: string
 ): SyncProvider | undefined => {
