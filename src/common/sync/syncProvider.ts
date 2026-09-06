@@ -7,8 +7,8 @@ export interface IFileInfo {
 export default interface ISyncProvider {
   init(): Promise<void>;
   searchSyncFile(): Promise<IFileInfo>;
-  createSyncFile(): Promise<void>;
-  updateSyncFile(_file: IFileInfo): Promise<void>;
+  createSyncFile(payload: string): Promise<void>;
+  updateSyncFile(_file: IFileInfo, payload: string): Promise<void>;
   getSyncFile(_file: IFileInfo): Promise<string>;
   deleteSyncFile(_file: IFileInfo): Promise<void>;
   connectionTest(): Promise<boolean>;

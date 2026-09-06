@@ -82,16 +82,12 @@ class awsS3 implements ISyncProvider {
     return result;
   }
 
-  async createSyncFile(): Promise<void> {
-    let collections = await Collections.fetchAll();
-
-    if (collections.length == 0) {
+  async createSyncFile(payload: string): Promise<void> {
+    if (!payload) {
       return;
     }
 
-    let _json = JSON.stringify(collections);
-
-    const blob = new Blob([_json], { type: 'application/json' });
+    const blob = new Blob([payload], { type: 'application/json' });
 
     await this.s3Client.send(
       new PutObjectCommand({
@@ -104,8 +100,8 @@ class awsS3 implements ISyncProvider {
     return;
   }
 
-  async updateSyncFile(_file: IFileInfo): Promise<void> {
-    this.createSyncFile(); //create new file with same name will replace old one
+  async updateSyncFile(_file: IFileInfo, payload: string): Promise<void> {
+    await this.createSyncFile(payload); //create new file with same name will replace old one
   }
 
   async deleteSyncFile(_file: IFileInfo): Promise<void> {

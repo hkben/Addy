@@ -4,6 +4,7 @@ import {
   BrowserMessageAction,
   IBrowserMessage,
   ICollection,
+  ISyncSetting,
 } from '@/common/interface';
 import { Collections } from '@/common/storage';
 import SyncSetting from '@/common/storage/syncSetting';
@@ -27,6 +28,13 @@ export const getSyncProvider = (
     default:
       return undefined;
   }
+};
+
+const getUploadPayload = async (syncSetting: ISyncSetting) => {
+  const collections = await Collections.fetchAll();
+  const payload = JSON.stringify(collections);
+
+  return payload;
 };
 
 export const syncBackgroundRun = async () => {
@@ -69,7 +77,7 @@ export const syncBackgroundRun = async () => {
     //If file is not exists on server, create one
     if (fileInfo == null || fileInfo.id == '') {
       log.debug('[Sync] Remote Sync File is not exists, creating...');
-      await syncProvider.createSyncFile();
+      await syncProvider.createSyncFile(await getUploadPayload(_syncSetting));
     } else {
       log.debug('[Sync] Download Data...');
       let json = await syncProvider.getSyncFile(fileInfo);
@@ -85,7 +93,10 @@ export const syncBackgroundRun = async () => {
       await Collections.removeDeleted();
 
       log.debug('[Sync] Uploading imported Data...');
-      await syncProvider.updateSyncFile(fileInfo);
+      await syncProvider.updateSyncFile(
+        fileInfo,
+        await getUploadPayload(_syncSetting)
+      );
     }
 
     let _datetime = new Date().toISOString();

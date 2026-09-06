@@ -73,12 +73,9 @@ class GoogleDrive implements ISyncProvider {
     return result;
   }
 
-  async createSyncFile(): Promise<void> {
-    let collections = await Collections.fetchAll();
-    let _json = JSON.stringify(collections);
-
+  async createSyncFile(payload: string): Promise<void> {
     const fileName = `addy-sync.json`;
-    const blob = new Blob([_json], { type: 'application/json' });
+    const blob = new Blob([payload], { type: 'application/json' });
 
     //selectFile is File Object
     var metadata = {
@@ -112,12 +109,9 @@ class GoogleDrive implements ISyncProvider {
     return;
   }
 
-  async updateSyncFile(_file: IFileInfo): Promise<void> {
-    let collections = await Collections.fetchAll();
-    let _json = JSON.stringify(collections);
-
+  async updateSyncFile(_file: IFileInfo, payload: string): Promise<void> {
     const fileName = `addy-sync.json`;
-    const blob = new Blob([_json], { type: 'application/json' });
+    const blob = new Blob([payload], { type: 'application/json' });
 
     //selectFile is File Object
     var metadata = {
