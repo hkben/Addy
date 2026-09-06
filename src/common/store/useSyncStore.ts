@@ -85,6 +85,8 @@ const useSyncStore = create<Store>()(
       if (!packet.result) {
         set({ message: packet.message || 'Connection test failed' });
         log.error('Connection test failed');
+      } else {
+        set({ message: undefined });
       }
 
       setTimeout(resetSyncingState, 5000);

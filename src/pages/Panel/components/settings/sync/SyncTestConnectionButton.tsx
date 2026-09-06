@@ -64,13 +64,16 @@ function SyncConnectionTestButton() {
   };
 
   const messageContent = () => {
-    if (
-      syncingState === SyncState.Error &&
-      action === BrowserMessageAction.SyncConnectionTest
-    )
+    if (message && action === BrowserMessageAction.SyncConnectionTest)
       return (
-        <p className="text-destructive text-sm mt-2">
-          {message || 'An error occurred during sync.'}
+        <p
+          className={`text-sm mt-2 ${
+            syncingState === SyncState.Error
+              ? 'text-destructive'
+              : 'text-muted-foreground'
+          }`}
+        >
+          {message}
         </p>
       );
   };

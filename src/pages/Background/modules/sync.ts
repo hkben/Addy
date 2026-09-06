@@ -210,10 +210,13 @@ export const syncConnectionTest = async () => {
   //Test Logic here
 
   let _result = false;
+  let errorMessage = 'Connection test failed';
+  updateStatus('Initializing sync...');
 
   try {
     await syncProvider.init();
 
+    updateStatus('Initializing connection test...');
     let testConnection = await syncProvider.connectionTest();
 
     if (testConnection) {
@@ -224,10 +227,12 @@ export const syncConnectionTest = async () => {
   } catch (error) {
     log.error('[Sync] Error...');
     log.error(error);
+    errorMessage = error instanceof Error ? error.message : errorMessage;
   } finally {
     sendMessage({
       action: BrowserMessageAction.SyncConnectionTestCompleted,
       result: _result,
+      message: _result ? undefined : errorMessage,
     });
   }
 };
