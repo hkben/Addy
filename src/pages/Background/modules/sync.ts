@@ -95,6 +95,7 @@ export const syncBackgroundRun = async () => {
   //Sync Logic here
 
   let _result = false;
+  let errorMessage = 'Sync failed';
 
   try {
     await syncProvider.init();
@@ -108,6 +109,24 @@ export const syncBackgroundRun = async () => {
     } else {
       log.debug('[Sync] Download Data...');
       let json = await syncProvider.getSyncFile(fileInfo);
+
+      if (isPayloadEncrypted(json)) {
+        log.debug('[Sync] Payload is encrypted.');
+
+        if (!_syncSetting.encryptionKey) {
+          log.error(
+            '[Sync] Encrypted sync is locked. Encryption key is missing.'
+          );
+
+          throw new Error(
+            'Encrypted sync is locked. Unlock it in Sync settings before syncing or delete the remote file.'
+          );
+        }
+
+        json = await decryptPayload(json, _syncSetting.encryptionKey);
+
+        log.debug('[Sync] Payload decrypted.');
+      }
 
       log.debug('[Sync] Importing Data...');
       const collections: ICollection[] = JSON.parse(json);
@@ -134,10 +153,12 @@ export const syncBackgroundRun = async () => {
   } catch (error) {
     log.error('[Sync] Error...');
     log.error(error);
+    errorMessage = error instanceof Error ? error.message : errorMessage;
   } finally {
     sendMessage({
       action: BrowserMessageAction.SyncCompleted,
       result: _result,
+      message: _result ? undefined : errorMessage,
     });
   }
 };
