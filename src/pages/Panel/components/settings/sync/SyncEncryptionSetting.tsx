@@ -7,7 +7,7 @@ import SettingItem from '../SettingItem';
 import { Switch } from '@/components/ui/switch';
 import { Input } from '@/components/ui/input';
 import { SyncState, useSyncStore } from '@/common/store/useSyncStore';
-import { CloudAlertIcon, CloudOffIcon, RefreshCwIcon } from 'lucide-react';
+import { CloudAlertIcon, KeyRound, RefreshCwIcon } from 'lucide-react';
 
 interface Prop {
   syncSetting: ISyncSetting;
@@ -60,7 +60,7 @@ function SyncEncryptionSetting({ syncSetting, handleInputChange }: Prop) {
     ) {
       return (
         <>
-          <CloudOffIcon />
+          <KeyRound />
           <span>Set Encryption Password</span>
         </>
       );
@@ -84,7 +84,7 @@ function SyncEncryptionSetting({ syncSetting, handleInputChange }: Prop) {
       default:
         return (
           <>
-            <CloudOffIcon />
+            <KeyRound />
             <span>Set Encryption Password</span>
           </>
         );
