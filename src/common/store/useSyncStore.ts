@@ -49,6 +49,9 @@ const useSyncStore = create<Store>()(
         case BrowserMessageAction.SetSyncEncryptionCompleted:
           onSetSyncEncryptionCompleted(packet);
           break;
+        case BrowserMessageAction.StatusUpdated:
+          onStatusUpdated(packet);
+          break;
         case BrowserMessageAction.OnCollectionUpdated:
           // not related to sync function directly, but we update needRefresh flag to trigger UI refresh
           set({ needRefresh: true });
@@ -121,6 +124,11 @@ const useSyncStore = create<Store>()(
       }
 
       setTimeout(resetSyncingState, 5000);
+    };
+
+    // Function to handle status updates
+    const onStatusUpdated = (packet: IBrowserMessage) => {
+      set({ message: packet.message || 'Status updated' });
     };
 
     Browser.runtime.onMessage.addListener(onMessageListener);

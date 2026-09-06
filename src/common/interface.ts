@@ -16,6 +16,7 @@ export enum BrowserMessageAction {
   SetSyncEncryption,
   SetSyncEncryptionCompleted,
   OnCollectionUpdated,
+  StatusUpdated,
 }
 
 export interface IBrowserMessage {
