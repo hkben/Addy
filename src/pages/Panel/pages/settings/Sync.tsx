@@ -21,6 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import SyncEncryptionSetting from '../../components/settings/sync/SyncEncryptionSetting';
 
 function Sync() {
   const lastSyncTime = useSyncStore((state) => state.lastSyncTime);
@@ -212,6 +213,11 @@ function Sync() {
         </SettingItem>
 
         {syncProviderSetting()}
+
+        <SyncEncryptionSetting
+          syncSetting={syncSetting}
+          handleInputChange={handleInputChange}
+        />
 
         <SettingItem title="Connection Test">
           <SyncConnectionTestButton />
