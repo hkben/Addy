@@ -198,11 +198,11 @@ function Sync() {
             onValueChange={handleProviderSelection}
           >
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Ordering" />
+              <SelectValue placeholder="Select a provider" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Ordering</SelectLabel>
+                <SelectLabel>Provider</SelectLabel>
                 <SelectItem value="none">----</SelectItem>
                 <SelectItem value="googleDrive">Google Drive</SelectItem>
                 <SelectItem value="awsS3">AWS S3</SelectItem>
