@@ -175,7 +175,7 @@ function ViewerTable({ type }: Prop) {
       {
         id: 'drag',
         enableSorting: false,
-        enableHiding: false,
+        enableHiding: true,
         meta: {
           name: 'Drag',
           className: 'w-10 cursor-pointer select-none px-2',
@@ -213,7 +213,7 @@ function ViewerTable({ type }: Prop) {
           </div>
         ),
         enableSorting: false,
-        enableHiding: false,
+        enableHiding: true,
         enableGlobalFilter: false,
       },
       {
@@ -436,7 +436,7 @@ function ViewerTable({ type }: Prop) {
           className: 'w-10',
         },
         enableSorting: false,
-        enableHiding: false,
+        enableHiding: true,
         cell: ({ row }) => {
           return (
             <DropdownMenu>
