@@ -163,6 +163,18 @@ function SyncEncryptionSetting({ syncSetting, handleInputChange }: Prop) {
           </div>
         </div>
       )}
+
+      <div className="grid gap-3 py-5">
+        <p className="text-sm text-muted-foreground">
+          Losing this password will result in the inability to decrypt your sync
+          data.
+        </p>
+        <p className="text-sm text-muted-foreground">
+          If you forget the password, you can delete your remote sync files and
+          set a new password again. And remember to update the password on all
+          your devices.
+        </p>
+      </div>
     </>
   );
 }
