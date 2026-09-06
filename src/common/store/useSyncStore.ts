@@ -65,6 +65,7 @@ const useSyncStore = create<Store>()(
         set({ syncingState: SyncState.Completed });
         set({ lastSyncTime: new Date() });
         set({ needRefresh: true });
+        set({ message: undefined });
         log.debug('Sync completed successfully');
       } else {
         set({ syncingState: SyncState.Error });

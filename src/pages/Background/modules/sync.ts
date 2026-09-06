@@ -103,21 +103,26 @@ export const syncBackgroundRun = async () => {
 
   let _result = false;
   let errorMessage = 'Sync failed';
+  updateStatus('Initializing sync...');
 
   try {
     await syncProvider.init();
 
+    updateStatus('Searching for remote sync file...');
     let fileInfo = await syncProvider.searchSyncFile();
 
     //If file is not exists on server, create one
     if (fileInfo == null || fileInfo.id == '') {
+      updateStatus('Remote sync file not found. Creating a new one...');
       log.debug('[Sync] Remote Sync File is not exists, creating...');
       await syncProvider.createSyncFile(await getUploadPayload(_syncSetting));
     } else {
+      updateStatus('Remote sync file found. Downloading...');
       log.debug('[Sync] Download Data...');
       let json = await syncProvider.getSyncFile(fileInfo);
 
       if (isPayloadEncrypted(json)) {
+        updateStatus('Remote sync file is encrypted. Decrypting...');
         log.debug('[Sync] Payload is encrypted.');
 
         if (!_syncSetting.encryptionKey) {
@@ -130,11 +135,14 @@ export const syncBackgroundRun = async () => {
           );
         }
 
+        updateStatus('Decrypting payload...');
         json = await decryptPayload(json, _syncSetting.encryptionKey);
 
+        updateStatus('Payload decrypted...');
         log.debug('[Sync] Payload decrypted.');
       }
 
+      updateStatus('Importing Data...');
       log.debug('[Sync] Importing Data...');
       const collections: ICollection[] = JSON.parse(json);
 
@@ -142,9 +150,11 @@ export const syncBackgroundRun = async () => {
         await Collections.import(collections);
       }
 
+      updateStatus('Removing Deleted Data...');
       log.debug('[Sync] Remove Deleted...');
       await Collections.removeDeleted();
 
+      updateStatus('Uploading new data to remote sync file...');
       log.debug('[Sync] Uploading imported Data...');
       await syncProvider.updateSyncFile(
         fileInfo,
