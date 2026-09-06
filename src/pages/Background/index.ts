@@ -4,6 +4,7 @@ import Browser from 'webextension-polyfill';
 import { BrowserMessageAction, IBrowserMessage } from '@/common/interface';
 import {
   autoSyncChecking,
+  setSyncEncryption,
   syncBackgroundRun,
   syncConnectionTest,
   syncFileDeletion,
@@ -107,6 +108,13 @@ const onMessageListener = async (packet: IBrowserMessage, sender: any) => {
       return;
     case BrowserMessageAction.SyncFileDeletion:
       syncFileDeletion().catch(log.error);
+      return;
+    case BrowserMessageAction.SetSyncEncryption:
+      if (!packet.syncPassword) {
+        return;
+      }
+
+      setSyncEncryption(packet.syncPassword).catch(log.error);
       return;
   }
 };

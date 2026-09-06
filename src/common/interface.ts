@@ -13,6 +13,8 @@ export enum BrowserMessageAction {
   SyncConnectionTestCompleted,
   SyncFileDeletion,
   SyncFileDeletionCompleted,
+  SetSyncEncryption,
+  SetSyncEncryptionCompleted,
   OnCollectionUpdated,
 }
 
@@ -22,6 +24,7 @@ export interface IBrowserMessage {
   linkUrl?: string;
   result?: boolean;
   message?: string;
+  syncPassword?: string;
 }
 
 //Collectiom
@@ -146,4 +149,7 @@ export interface ISyncSetting {
   awsS3_IdentityPoolId?: string;
   google_email?: string;
   google_oAuthAccessToken?: string;
+  encryptionEnabled?: boolean;
+  encryptionKey?: string;
+  encryptionSalt?: string;
 }

@@ -23,6 +23,7 @@ export interface Store {
   fetch: () => Promise<boolean>;
   setSyncingState: (state: number) => void;
   startSyncAction: (action: BrowserMessageAction) => void;
+  setSyncEncryption: (password: string) => void;
   resetRefreshFlag: () => void;
 }
 
@@ -44,6 +45,9 @@ const useSyncStore = create<Store>()(
           break;
         case BrowserMessageAction.SyncFileDeletionCompleted:
           onSyncFileDeletionCompleted(packet);
+          break;
+        case BrowserMessageAction.SetSyncEncryptionCompleted:
+          onSetSyncEncryptionCompleted(packet);
           break;
         case BrowserMessageAction.OnCollectionUpdated:
           // not related to sync function directly, but we update needRefresh flag to trigger UI refresh
@@ -103,6 +107,22 @@ const useSyncStore = create<Store>()(
       set({ message: undefined });
     };
 
+    // Function to handle encryption configuration completion
+    const onSetSyncEncryptionCompleted = (packet: IBrowserMessage) => {
+      if (packet.result) {
+        set({ syncingState: SyncState.Completed });
+        log.debug('Sync encryption configuration completed successfully');
+      } else {
+        set({ syncingState: SyncState.Error });
+        set({
+          message: packet.message || 'Sync encryption configuration failed',
+        });
+        log.error('Sync encryption configuration failed');
+      }
+
+      setTimeout(resetSyncingState, 5000);
+    };
+
     Browser.runtime.onMessage.addListener(onMessageListener);
 
     return {
@@ -141,6 +161,22 @@ const useSyncStore = create<Store>()(
         Browser.runtime.sendMessage({ action } as IBrowserMessage);
 
         set({ action });
+        set({ syncingState: SyncState.Running }); // Set to Running state
+      },
+      setSyncEncryption: async (password: string) => {
+        if (get().syncingState !== SyncState.Idle) {
+          log.warn('[useSyncStore] Sync already in progress');
+          return;
+        }
+
+        var message: IBrowserMessage = {
+          action: BrowserMessageAction.SetSyncEncryption,
+          syncPassword: password,
+        };
+
+        Browser.runtime.sendMessage(message);
+
+        set({ action: message.action });
         set({ syncingState: SyncState.Running }); // Set to Running state
       },
       resetRefreshFlag: () => {

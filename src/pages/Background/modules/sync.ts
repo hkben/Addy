@@ -11,6 +11,13 @@ import SyncSetting from '@/common/storage/syncSetting';
 import AwsS3 from '@/common/sync/awsS3';
 import GoogleDrive from '@/common/sync/googleDrive';
 import SyncProvider from '@/common/sync/syncProvider';
+import {
+  createEncryptionKey,
+  decryptPayload,
+  encryptPayload,
+  isPayloadEncrypted,
+  unlockEncryptedPayload,
+} from '@/common/sync/payloadEncryption';
 import log from 'loglevel';
 
 const sendMessage = (message: IBrowserMessage) => {
@@ -165,6 +172,109 @@ export const syncConnectionTest = async () => {
       result: _result,
     });
   }
+};
+
+export const setSyncEncryption = async (password: string) => {
+  let _syncSetting = await SyncSetting.fetch();
+
+  if (_syncSetting.enable == false) {
+    sendMessage({
+      action: BrowserMessageAction.SetSyncEncryptionCompleted,
+      result: false,
+      message: 'Sync is disabled',
+    });
+    return;
+  }
+
+  let syncProvider = getSyncProvider(_syncSetting.provider);
+
+  if (syncProvider == undefined) {
+    log.error('[Sync] Sync Provider is undefined');
+
+    sendMessage({
+      action: BrowserMessageAction.SetSyncEncryptionCompleted,
+      result: false,
+    });
+
+    return;
+  }
+
+  // Main Logic
+
+  log.debug('[Sync] Setting sync encryption with password.');
+
+  let _result = false;
+  let errorMessage = 'Failed to configure sync encryption';
+
+  try {
+    await syncProvider.init();
+
+    var remoteKey = await retrieveKeyFromRemoteFile(syncProvider, password);
+
+    if (remoteKey) {
+      log.info('[Sync] Retrieved remote key from remote file.');
+
+      _syncSetting.encryptionKey = remoteKey.encryptionKey;
+      _syncSetting.encryptionSalt = remoteKey.encryptionSalt;
+    } else {
+      log.info('[Sync] No remote key found, creating a new one.');
+
+      const key = await createEncryptionKey(password);
+      _syncSetting.encryptionKey = key.storedKey;
+      _syncSetting.encryptionSalt = key.storedSalt;
+    }
+
+    _syncSetting.encryptionEnabled = true;
+
+    // Update the sync setting with the new encryption configuration
+    await SyncSetting.update(_syncSetting);
+
+    log.info('[Sync] Sync encryption configuration completed successfully.');
+
+    _result = true;
+  } catch (error) {
+    log.error('[Sync] Error...');
+    log.error(error);
+    errorMessage = error instanceof Error ? error.message : errorMessage;
+  } finally {
+    sendMessage({
+      action: BrowserMessageAction.SetSyncEncryptionCompleted,
+      result: _result,
+      message: _result ? undefined : errorMessage,
+    });
+  }
+};
+
+export const retrieveKeyFromRemoteFile = async (
+  syncProvider: SyncProvider,
+  password: string
+) => {
+  log.debug('[Sync] Retrieving key from remote file.');
+
+  //Search for existing sync file
+  const fileInfo = await syncProvider.searchSyncFile();
+
+  if (!fileInfo?.id) {
+    return undefined;
+  }
+
+  log.debug('[Sync] Found existing sync file with ID:', fileInfo.id);
+
+  // If a sync file exists, attempt to retrieve and unlock it with the provided password.
+  const remotePayload = await syncProvider.getSyncFile(fileInfo);
+
+  if (isPayloadEncrypted(remotePayload) == false) {
+    return undefined;
+  }
+
+  log.info('[Sync] File is encrypted. Unlocking with provided password.');
+
+  const unlocked = await unlockEncryptedPayload(remotePayload, password);
+
+  return {
+    encryptionKey: unlocked.storedKey,
+    encryptionSalt: unlocked.storedSalt,
+  };
 };
 
 export const syncFileDeletion = async () => {
