@@ -41,7 +41,27 @@ const getUploadPayload = async (syncSetting: ISyncSetting) => {
   const collections = await Collections.fetchAll();
   const payload = JSON.stringify(collections);
 
-  return payload;
+  if (syncSetting.encryptionEnabled == false) {
+    log.debug('[Sync] Encryption is not enabled, returning plain payload.');
+
+    return payload;
+  }
+
+  if (!syncSetting.encryptionKey || !syncSetting.encryptionSalt) {
+    log.error(
+      '[Sync] Encryption is enabled but encryption key or salt is missing.'
+    );
+
+    throw new Error(
+      'Encrypted sync is locked. Unlock it in Sync settings before syncing.'
+    );
+  }
+
+  return encryptPayload(
+    payload,
+    syncSetting.encryptionKey,
+    syncSetting.encryptionSalt
+  );
 };
 
 export const syncBackgroundRun = async () => {
