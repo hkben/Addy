@@ -268,18 +268,22 @@ export const setSyncEncryption = async (password: string) => {
 
   let _result = false;
   let errorMessage = 'Failed to configure sync encryption';
+  updateStatus('Initializing sync encryption...');
 
   try {
     await syncProvider.init();
 
+    updateStatus('Retrieving remote key...');
     var remoteKey = await retrieveKeyFromRemoteFile(syncProvider, password);
 
     if (remoteKey) {
+      updateStatus('Remote key retrieved successfully.');
       log.info('[Sync] Retrieved remote key from remote file.');
 
       _syncSetting.encryptionKey = remoteKey.encryptionKey;
       _syncSetting.encryptionSalt = remoteKey.encryptionSalt;
     } else {
+      updateStatus('No remote key found, creating a new one.');
       log.info('[Sync] No remote key found, creating a new one.');
 
       const key = await createEncryptionKey(password);

@@ -118,6 +118,7 @@ const useSyncStore = create<Store>()(
     const onSetSyncEncryptionCompleted = (packet: IBrowserMessage) => {
       if (packet.result) {
         set({ syncingState: SyncState.Completed });
+        set({ message: undefined });
         log.debug('Sync encryption configuration completed successfully');
       } else {
         set({ syncingState: SyncState.Error });

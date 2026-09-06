@@ -92,16 +92,18 @@ function SyncEncryptionSetting({ syncSetting, handleInputChange }: Prop) {
   };
 
   const messageContent = () => {
-    if (
-      syncingState === SyncState.Error &&
-      action === BrowserMessageAction.SetSyncEncryption
-    ) {
+    if (message && action === BrowserMessageAction.SetSyncEncryption)
       return (
-        <p className="text-destructive text-sm mt-2">
-          {message || 'An error occurred during sync.'}
+        <p
+          className={`text-sm mt-2 ${
+            syncingState === SyncState.Error
+              ? 'text-destructive'
+              : 'text-muted-foreground'
+          }`}
+        >
+          {message}
         </p>
       );
-    }
 
     if (infoMessage) {
       return <p className="text-destructive text-sm mt-2">{infoMessage}</p>;
