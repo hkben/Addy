@@ -60,6 +60,9 @@ function ViewerImageGrid() {
       {
         id: 'content',
         header: 'Content',
+        meta: {
+          name: 'Content',
+        },
         accessorFn: (row) => {
           return row.content;
         },
@@ -67,6 +70,9 @@ function ViewerImageGrid() {
       {
         id: 'createTime',
         header: 'Created Time',
+        meta: {
+          name: 'Created Time',
+        },
         accessorFn: (row) => {
           return row.createTime;
         },
@@ -84,6 +90,9 @@ function ViewerImageGrid() {
       {
         id: 'modifyTime',
         header: 'Last Modified',
+        meta: {
+          name: 'Last Modified',
+        },
         accessorFn: (row) => {
           return row.modifyTime;
         },

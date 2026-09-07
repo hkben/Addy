@@ -56,7 +56,7 @@ function SortSelector<TData>({ table }: Props<TData>) {
               .filter((column) => column.getCanSort())
               .map((column) => (
                 <SelectItem key={column.id} value={column.id}>
-                  {column.id}
+                  {column.columnDef.meta?.name ?? column.id}
                 </SelectItem>
               ))}
           </SelectGroup>
