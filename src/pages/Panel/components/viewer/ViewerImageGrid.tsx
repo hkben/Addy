@@ -58,12 +58,14 @@ function ViewerImageGrid() {
   const columns: ColumnDef<ICollectionItem>[] = useMemo(
     () => [
       {
+        id: 'content',
         header: 'Content',
         accessorFn: (row) => {
           return row.content;
         },
       },
       {
+        id: 'createTime',
         header: 'Created Time',
         accessorFn: (row) => {
           return row.createTime;
@@ -80,6 +82,7 @@ function ViewerImageGrid() {
         enableGlobalFilter: false,
       },
       {
+        id: 'modifyTime',
         header: 'Last Modified',
         accessorFn: (row) => {
           return row.modifyTime;
