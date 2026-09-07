@@ -611,6 +611,22 @@ function ViewerTable({ type }: Prop) {
     }
   }, [table, type]);
 
+  // Tooltip Ready State for Rendering
+  const rowCount = table.getRowModel().rows.length;
+  const [tooltipReady, setTooltipReady] = React.useState(false);
+
+  useEffect(() => {
+    // Reset tooltip ready state before updating
+    setTooltipReady(false);
+
+    // Mount tooltip one frame after rows are committed to DOM
+    const animationFrameId = window.requestAnimationFrame(() => {
+      setTooltipReady(true);
+    });
+
+    return () => window.cancelAnimationFrame(animationFrameId);
+  }, [rowCount]);
+
   return (
     <div className="w-full">
       <div className="w-full mb-4">
@@ -628,19 +644,21 @@ function ViewerTable({ type }: Prop) {
         />
       </div>
 
-      <Tooltip
-        id="tooltip"
-        place="top"
-        render={({ content, activeAnchor }) => {
-          let type = activeAnchor?.getAttribute('data-type') ?? 'text';
+      {tooltipReady && rowCount > 0 && (
+        <Tooltip
+          id="tooltip"
+          place="top"
+          render={({ content, activeAnchor }) => {
+            let type = activeAnchor?.getAttribute('data-type') ?? 'text';
 
-          if (type == 'image') {
-            return <ImageTooltip imageSrc={content ?? ''} />;
-          }
+            if (type == 'image') {
+              return <ImageTooltip imageSrc={content ?? ''} />;
+            }
 
-          return <span>{content}</span>;
-        }}
-      />
+            return <span>{content}</span>;
+          }}
+        />
+      )}
 
       <div className="rounded-md border">
         <Table
