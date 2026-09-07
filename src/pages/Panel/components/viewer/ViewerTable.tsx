@@ -227,7 +227,15 @@ function ViewerTable({ type }: Prop) {
           //Hide Base64 Image Text
           if (row.content.startsWith('data:image')) {
             const text = `<Base64 Image>`;
-            return <p data-tip={row.content}>{text}</p>;
+            return (
+              <p
+                data-tooltip-id="tooltip"
+                data-tooltip-content={row.content}
+                data-type="image"
+              >
+                {text}
+              </p>
+            );
           }
 
           if (row.type == 'image') {
