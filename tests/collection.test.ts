@@ -81,6 +81,7 @@ beforeAll(() => {
       return Promise.resolve(true);
     }
   );
+  (Browser.runtime as any).sendMessage = jest.fn().mockResolvedValue(undefined);
 
   // (Collections.fetchOneById as jest.Mock).mockResolvedValue([...mockCollections]);
   // (Collections.update as jest.Mock).mockResolvedValue(true);
