@@ -40,6 +40,8 @@ if (fileSystem.existsSync(secretsPath)) {
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
+const browser = process.env.BROWSER || 'chrome';
+
 var options = {
   mode: process.env.NODE_ENV || 'development',
   entry: {
@@ -127,8 +129,8 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/manifest.json',
-          to: path.join(__dirname, 'build'),
+          from: `src/manifest.${browser}.json`,
+          to: path.join(__dirname, 'build', `manifest.json`),
           force: true,
           transform: function (content, path) {
             // generates the manifest file using the package.json informations

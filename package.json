@@ -9,8 +9,10 @@
     "url": "https://github.com/hkben/Addy"
   },
   "scripts": {
-    "build": "node utils/build.js",
-    "start": "node utils/webserver.js",
+    "build:chrome": "node utils/build.js --browser chrome",
+    "build:firefox": "node utils/build.js --browser firefox",
+    "start:chrome": "node utils/webserver.js --browser chrome",
+    "start:firefox": "node utils/webserver.js --browser firefox",
     "prettier": "prettier --write '**/*.{js,jsx,css,html}'",
     "test": "jest",
     "test:watch": "jest --watch"
