@@ -29,8 +29,9 @@ class awsS3 implements ISyncProvider {
 
     this.s3Client = new S3Client({
       region: this.region,
+      requestChecksumCalculation: 'WHEN_REQUIRED',
       credentials: fromCognitoIdentityPool({
-        client: new CognitoIdentityClient({ region: this.region }),
+        clientConfig: { region: this.region },
         identityPoolId: this.identityPoolId,
       }),
     });
