@@ -82,7 +82,7 @@ beforeAll(() => {
     }
   );
 
-  // (Collections.fetch as jest.Mock).mockResolvedValue([...mockCollections]);
+  // (Collections.fetchOneById as jest.Mock).mockResolvedValue([...mockCollections]);
   // (Collections.update as jest.Mock).mockResolvedValue(true);
 });
 
@@ -92,7 +92,7 @@ beforeEach(() => {
 
 describe('Collection', () => {
   it('should fetch a collection includeing deleted items', async () => {
-    const collection = await Collection.fetch('1', true);
+    const collection = await Collection.fetchOneById('1', true);
 
     expect(collection).not.toBeUndefined();
     expect(collection).not.toBeNull();
@@ -103,7 +103,7 @@ describe('Collection', () => {
   });
 
   it('should fetch a collection', async () => {
-    const collection = await Collection.fetch('1', false);
+    const collection = await Collection.fetchOneById('1', false);
 
     expect(collection).not.toBeUndefined();
     expect(collection).not.toBeNull();
@@ -120,7 +120,7 @@ describe('Collection', () => {
     expect(id).not.toBe('');
 
     // Verify the new collection is in the fetched collections
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
     const newCollection = collections.find((c) => c.id === id);
     expect(newCollection).not.toBeNull();
     expect(newCollection).not.toBeUndefined();
@@ -137,7 +137,7 @@ describe('Collection', () => {
     expect(result).toBe(true);
 
     // Verify the new collection is in the fetched collections
-    const collection = await Collection.fetch('1');
+    const collection = await Collection.fetchOneById('1');
     expect(collection).not.toBeNull();
     expect(collection).not.toBeUndefined();
 
@@ -157,7 +157,7 @@ describe('Collection', () => {
     expect(result).toBe(true);
 
     // Verify the new collection is in the fetched collections
-    const collections = await Collection.fetch('1');
+    const collections = await Collection.fetchOneById('1');
     expect(collections).not.toBeNull();
     expect(collections).not.toBeUndefined();
 
@@ -171,7 +171,7 @@ describe('Collection', () => {
     expect(result).toBe(true);
 
     // Verify the new collection is in the fetched collections
-    const collection = await Collection.fetch('1');
+    const collection = await Collection.fetchOneById('1');
     expect(collection).not.toBeNull();
     expect(collection).not.toBeUndefined();
 
@@ -183,7 +183,7 @@ describe('Collection', () => {
     expect(result).toBe(true);
 
     // Verify the new collection is in the fetched collections
-    const collection = await Collection.fetch('1', true);
+    const collection = await Collection.fetchOneById('1', true);
     expect(collection).not.toBeNull();
     expect(collection).not.toBeUndefined();
 
@@ -196,7 +196,7 @@ describe('Collection', () => {
     expect(result).toBe(true);
 
     // Verify the new collection is in the fetched collections
-    const collection = await Collection.fetch('1', true); // Include deleted items
+    const collection = await Collection.fetchOneById('1', true); // Include deleted items
     expect(collection).not.toBeNull();
     expect(collection).not.toBeUndefined();
     expect(collection!.items.length).toBe(2);
@@ -208,11 +208,11 @@ describe('Collection', () => {
     const content = 'Content';
     const type = 'bookmark';
 
-    const result = await Collection.createAndAdd(name, content, type);
+    const result = await Collection.createWithItem(name, content, type);
     expect(result).toBe(true);
 
     // Verify the new collection is in the fetched collections
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
     expect(collections).not.toBeNull();
     expect(collections).not.toBeUndefined();
 
@@ -230,13 +230,13 @@ describe('Collection', () => {
 
 describe('Collections', () => {
   it('should returns all collections', async () => {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
     expect(collections.length).toBe(2);
     expect(collections[0].id).toBe('1');
   });
 
   it('should restore undeletes items and collections', async () => {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
     expect(collections.length).toBe(2);
     expect(collections[0].id).toBe('1');
     expect(collections[0].deleted).toBeDefined();
@@ -245,13 +245,13 @@ describe('Collections', () => {
     expect(result).toBe(true);
 
     // Verify the new collection is in the fetched collections
-    let collection = await Collection.fetch('1');
+    let collection = await Collection.fetchOneById('1');
     expect(collection.deleted).not.toBeDefined();
     expect(collection.deleted).not.toBeNull();
   });
 
   it('should removeDeleted removes items older than 30 days', async () => {
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
     expect(collections.length).toBe(2);
     expect(collections[0].id).toBe('1');
     expect(collections[0].deleted).toBeDefined();
@@ -260,7 +260,7 @@ describe('Collections', () => {
     expect(result).toBe(true);
 
     // Verify the new collection is in the fetched collections
-    let newCollections = await Collections.fetch();
+    let newCollections = await Collections.fetchAll();
     expect(newCollections.length).toBe(1);
   });
 
@@ -285,7 +285,7 @@ describe('Collections', () => {
     expect(result).toBe(true);
 
     // Verify the new collection is in the fetched collections
-    const collections = await Collections.fetch();
+    const collections = await Collections.fetchAll();
     expect(collections.length).toBe(3);
   });
 });
