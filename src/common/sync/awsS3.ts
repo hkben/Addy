@@ -5,8 +5,11 @@ import {
   GetObjectCommand,
   DeleteObjectCommand,
 } from '@aws-sdk/client-s3';
-import { CognitoIdentityClient } from '@aws-sdk/client-cognito-identity';
-import { fromCognitoIdentityPool } from '@aws-sdk/credential-provider-cognito-identity';
+import {
+  CognitoIdentityClient,
+  GetCredentialsForIdentityCommand,
+  GetIdCommand,
+} from '@aws-sdk/client-cognito-identity';
 import { Collections } from '../storage';
 import { ICollection } from '../interface';
 import SyncSetting from '../storage/syncSetting';
@@ -27,13 +30,35 @@ class awsS3 implements ISyncProvider {
     this.region = _syncSetting.awsS3_Region || '';
     this.identityPoolId = _syncSetting.awsS3_IdentityPoolId || '';
 
+    const cognito = new CognitoIdentityClient({ region: this.region });
+
+    const { IdentityId } = await cognito.send(
+      new GetIdCommand({ IdentityPoolId: this.identityPoolId })
+    );
+
+    const { Credentials } = await cognito.send(
+      new GetCredentialsForIdentityCommand({ IdentityId })
+    );
+
+    if (
+      !Credentials ||
+      !Credentials.AccessKeyId ||
+      !Credentials.SecretKey ||
+      !Credentials.SessionToken ||
+      !Credentials.Expiration
+    ) {
+      throw new Error('Cognito did not return valid AWS credentials.');
+    }
+
     this.s3Client = new S3Client({
       region: this.region,
       requestChecksumCalculation: 'WHEN_REQUIRED',
-      credentials: fromCognitoIdentityPool({
-        clientConfig: { region: this.region },
-        identityPoolId: this.identityPoolId,
-      }),
+      credentials: {
+        accessKeyId: Credentials!.AccessKeyId!,
+        secretAccessKey: Credentials!.SecretKey!,
+        sessionToken: Credentials!.SessionToken!,
+        expiration: Credentials!.Expiration!,
+      },
     });
 
     return;
