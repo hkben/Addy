@@ -8,12 +8,13 @@ process.env.BROWSER =
   browserIndex !== -1 ? process.argv[browserIndex + 1] : 'chrome';
 
 var webpack = require('webpack'),
-  config = require('../webpack.config');
+  config = require('../webpack.config'),
+  backgroundConfig = require('../webpack.background.config');
 
 delete config.chromeExtensionBoilerplate;
 
 config.mode = 'production';
 
-webpack(config, function (err) {
+webpack([config, backgroundConfig], function (err) {
   if (err) throw err;
 });

@@ -10,6 +10,7 @@ process.env.BROWSER =
 var WebpackDevServer = require('webpack-dev-server'),
   webpack = require('webpack'),
   config = require('../webpack.config'),
+  backgroundConfig = require('../webpack.background.config'),
   env = require('./env'),
   path = require('path');
 
@@ -31,7 +32,7 @@ config.plugins = [new webpack.HotModuleReplacementPlugin()].concat(
 
 delete config.chromeExtensionBoilerplate;
 
-var compiler = webpack(config);
+var compiler = webpack([config, backgroundConfig]);
 
 var server = new WebpackDevServer(
   {

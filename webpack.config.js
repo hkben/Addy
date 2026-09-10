@@ -46,7 +46,6 @@ var options = {
   mode: process.env.NODE_ENV || 'development',
   entry: {
     popup: path.join(__dirname, 'src', 'pages', 'Popup', 'index.tsx'),
-    background: path.join(__dirname, 'src', 'pages', 'Background', 'index.ts'),
     contentScript: path.join(__dirname, 'src', 'pages', 'Content', 'index.tsx'),
     panel: path.join(__dirname, 'src', 'pages', 'Panel', 'index.tsx'),
   },
@@ -123,6 +122,13 @@ var options = {
     new CleanWebpackPlugin({
       verbose: true,
       cleanStaleWebpackAssets: true,
+      // Keep background files intact during the clean process.
+      cleanOnceBeforeBuildPatterns: [
+        '**/*',
+        '!background.bundle.js',
+        '!background.bundle.js.map',
+        '!background.html',
+      ],
     }),
     // expose and write the allowed env vars on the compiled bundle
     new webpack.EnvironmentPlugin(['NODE_ENV']),
@@ -191,18 +197,6 @@ var options = {
       template: path.join(__dirname, 'src', 'pages', 'Panel', 'index.html'),
       filename: 'panel.html',
       chunks: ['panel'],
-      cache: false,
-    }),
-    new HtmlWebpackPlugin({
-      template: path.join(
-        __dirname,
-        'src',
-        'pages',
-        'background',
-        'index.html'
-      ),
-      filename: 'background.html',
-      chunks: ['background'],
       cache: false,
     }),
   ],
