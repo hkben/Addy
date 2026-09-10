@@ -50,6 +50,14 @@ var options = {
   },
   plugins: [
     new webpack.EnvironmentPlugin(['NODE_ENV']),
+    // Replace the browser-specific XML parser with the DOM-free version for AWS SDK.
+    new webpack.NormalModuleReplacementPlugin(
+      /xml-parser\.browser\.js$/,
+      path.resolve(
+        __dirname,
+        'node_modules/@aws-sdk/xml-builder/dist-es/xml-parser.js'
+      )
+    ),
     new HtmlWebpackPlugin({
       template: path.join(
         __dirname,
